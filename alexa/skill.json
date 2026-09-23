@@ -3,13 +3,13 @@
     "publishingInformation": {
       "locales": {
         "en-US": {
-          "name": "V A S D Lunch",
+          "name": "Verona School Lunch",
           "summary": "Daily and weekly lunch menus for Verona Area School District.",
           "description": "Listen to spoken school lunch menus for the Verona Area School District (VASD). Ask what is for lunch for elementary school, middle school, or high school for today, tomorrow, yesterday, or next week.",
           "examplePhrases": [
-            "Alexa, open V A S D Lunch",
-            "Alexa, ask V A S D Lunch what's for lunch today for elementary school",
-            "Alexa, ask V A S D Lunch what's for lunch next week for middle school"
+            "Alexa, open Verona School Lunch",
+            "Alexa, ask Verona School Lunch what's for lunch today for elementary school",
+            "Alexa, ask Verona School Lunch what's for lunch next week for middle school"
           ],
           "keywords": [
             "verona",
@@ -35,7 +35,7 @@
         }
       },
       "isAvailableWorldwide": false,
-      "testingInstructions": "Open the skill by saying 'Alexa, open V A S D Lunch'. Respond with 'elementary', 'middle', or 'high school'. Or ask directly: 'Alexa, ask V A S D Lunch what's for lunch tomorrow for high school'.",
+      "testingInstructions": "Open the skill by saying 'Alexa, open Verona School Lunch'. Respond with 'elementary', 'middle', or 'high school'. Or ask directly: 'Alexa, ask Verona School Lunch what's for lunch tomorrow for high school'.",
       "category": "EDUCATION_AND_REFERENCE",
       "distributionCountries": [
         "US"

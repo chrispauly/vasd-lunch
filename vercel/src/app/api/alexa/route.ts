@@ -16,7 +16,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   return NextResponse.json({
     status: 'online',
-    skill: 'V A S D Lunch',
+    skill: 'Verona School Lunch',
     endpoint: '/api/alexa',
     message: 'Alexa Custom Skill endpoint is active. Configure this URL as your HTTPS endpoint in the Amazon Alexa Developer Console.',
   });
@@ -28,9 +28,9 @@ export async function POST(req: NextRequest) {
     const { request, session } = body;
     const sessionAttributes = session?.attributes ? { ...session.attributes } : {};
 
-    // 1. Handle LaunchRequest ("Alexa, open V A S D Lunch")
+    // 1. Handle LaunchRequest ("Alexa, open Verona School Lunch")
     if (request.type === 'LaunchRequest') {
-      const speech = 'Welcome to V A S D Lunch! Would you like the lunch menu for elementary, middle, or high school?';
+      const speech = 'Welcome to Verona School Lunch! Would you like the lunch menu for elementary, middle, or high school?';
       const reprompt = 'Which school level would you like: elementary, middle, or high school?';
       return NextResponse.json(
         buildAlexaResponse({
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
           repromptText: reprompt,
           shouldEndSession: false,
           sessionAttributes,
-          cardTitle: 'V A S D Lunch',
+          cardTitle: 'Verona School Lunch',
         })
       );
     }
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
             repromptText: reprompt,
             shouldEndSession: false,
             sessionAttributes,
-            cardTitle: 'V A S D Lunch Help',
+            cardTitle: 'Verona School Lunch Help',
           })
         );
       }
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
             repromptText: reprompt,
             shouldEndSession: false,
             sessionAttributes,
-            cardTitle: 'V A S D Lunch',
+            cardTitle: 'Verona School Lunch',
           })
         );
       }
@@ -117,7 +117,7 @@ export async function POST(req: NextRequest) {
             repromptText: reprompt,
             shouldEndSession: false,
             sessionAttributes,
-            cardTitle: 'V A S D Lunch',
+            cardTitle: 'Verona School Lunch',
           })
         );
       }
@@ -204,7 +204,7 @@ export async function POST(req: NextRequest) {
     // Default fallback for any unrecognized request type
     return NextResponse.json(
       buildAlexaResponse({
-        speechText: 'Welcome to V A S D Lunch. Which school would you like: elementary, middle, or high school?',
+        speechText: 'Welcome to Verona School Lunch. Which school would you like: elementary, middle, or high school?',
         repromptText: 'Please say elementary, middle, or high school.',
         shouldEndSession: false,
         sessionAttributes,
