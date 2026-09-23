@@ -13,24 +13,38 @@
           ],
           "keywords": [
             "verona",
+            "verona Wisconsin",
+            "verona WI",
+            "VASD",
+            "lunch menu",
             "lunch",
             "school lunch",
             "vasd",
             "elementary",
             "middle school",
-            "high school"
-          ]
+            "high school",
+            "CKCS",
+            "Badger Ridge",
+            "New Century",
+            "Sugar Creek Elementary",
+            "VAHS",
+            "Verona Area High School"
+          ],
+          "smallIconUri": "https://vasd-lunch.vercel.app/icon_108.png",
+          "largeIconUri": "https://vasd-lunch.vercel.app/icon_512.png"
         }
       },
-      "isAvailableWorldwide": true,
+      "isAvailableWorldwide": false,
       "testingInstructions": "Open the skill by saying 'Alexa, open V A S D Lunch'. Respond with 'elementary', 'middle', or 'high school'. Or ask directly: 'Alexa, ask V A S D Lunch what's for lunch tomorrow for high school'.",
       "category": "EDUCATION_AND_REFERENCE",
-      "distributionCountries": []
+      "distributionCountries": [
+        "US"
+      ]
     },
     "apis": {
       "custom": {
         "endpoint": {
-          "uri": "https://your-domain.vercel.app/api/alexa",
+          "uri": "https://vasd-lunch.vercel.app/api/alexa",
           "sslCertificateType": "Wildcard"
         },
         "interfaces": []
