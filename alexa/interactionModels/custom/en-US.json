@@ -1,0 +1,143 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "v a s d lunch",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "GetLunchIntent",
+          "slots": [
+            {
+              "name": "schoolLevel",
+              "type": "SCHOOL_LEVEL"
+            },
+            {
+              "name": "date",
+              "type": "AMAZON.DATE"
+            }
+          ],
+          "samples": [
+            "what's for lunch",
+            "what is for lunch",
+            "what's for lunch {date}",
+            "what is for lunch {date}",
+            "what's for lunch for {schoolLevel}",
+            "what is for lunch for {schoolLevel}",
+            "what's for lunch for {schoolLevel} {date}",
+            "what is for lunch for {schoolLevel} {date}",
+            "what is {schoolLevel} having for lunch",
+            "what is {schoolLevel} having for lunch {date}",
+            "what are they having for lunch",
+            "what are they having for lunch {date}",
+            "what are they having for lunch for {schoolLevel}",
+            "what are they having for lunch for {schoolLevel} {date}",
+            "tell me the {schoolLevel} lunch",
+            "tell me the {schoolLevel} lunch for {date}",
+            "tell me what's for lunch",
+            "tell me what's for lunch {date}",
+            "tell me what is for lunch for {schoolLevel}",
+            "tell me what is for lunch for {schoolLevel} {date}",
+            "lunch for {schoolLevel}",
+            "lunch for {schoolLevel} {date}",
+            "{schoolLevel} lunch",
+            "{schoolLevel} lunch for {date}",
+            "{schoolLevel} lunch {date}",
+            "{schoolLevel}",
+            "{schoolLevel} for {date}",
+            "{schoolLevel} {date}",
+            "what's the menu",
+            "what is the menu",
+            "what's the menu {date}",
+            "what is the menu {date}",
+            "what's the menu for {schoolLevel}",
+            "what is the menu for {schoolLevel}",
+            "what's the menu for {schoolLevel} {date}",
+            "what is the menu for {schoolLevel} {date}",
+            "school lunch",
+            "school lunch {date}",
+            "school lunch for {schoolLevel}",
+            "school lunch for {schoolLevel} {date}"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "SCHOOL_LEVEL",
+          "values": [
+            {
+              "id": "ES",
+              "name": {
+                "value": "elementary",
+                "synonyms": [
+                  "elementary school",
+                  "elementary schools",
+                  "elementaries",
+                  "grade school",
+                  "grade schools",
+                  "primary",
+                  "primary school",
+                  "k five",
+                  "k-5",
+                  "k through five",
+                  "k to five"
+                ]
+              }
+            },
+            {
+              "id": "MS",
+              "name": {
+                "value": "middle",
+                "synonyms": [
+                  "middle school",
+                  "middle schools",
+                  "junior high",
+                  "junior high school",
+                  "jr high",
+                  "jr high school",
+                  "six to eight",
+                  "six through eight",
+                  "6-8"
+                ]
+              }
+            },
+            {
+              "id": "HS",
+              "name": {
+                "value": "high school",
+                "synonyms": [
+                  "high",
+                  "high schools",
+                  "senior high",
+                  "senior high school",
+                  "hs",
+                  "nine to twelve",
+                  "nine through twelve",
+                  "9-12"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

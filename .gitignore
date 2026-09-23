@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Next.js build output
+.next/
+**/.next/
+out/
+build/
+
+# Environment Variables & Secrets (CRITICAL)
+.env
+**/.env
+.env*.local
+**/.env*.local
+!.env.example
+!**/.env.example
+
+# Vercel deployment artifacts
+.vercel/
+**/.vercel/
+
+# Temporary / Scratch files
+scratch/
+**/scratch/
+scratch_*
+*.log
+
+# OS Metadata
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
