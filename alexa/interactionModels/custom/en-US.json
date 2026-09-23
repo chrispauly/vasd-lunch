@@ -19,10 +19,7 @@
           "name": "AMAZON.FallbackIntent",
           "samples": []
         },
-        {
-          "name": "AMAZON.NavigateHomeIntent",
-          "samples": []
-        },
+
         {
           "name": "GetLunchIntent",
           "slots": [
