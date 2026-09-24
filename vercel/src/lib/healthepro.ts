@@ -162,6 +162,7 @@ export function getDatesForIsoWeek(isoWeek: string): string[] {
   if (!match) return [];
   const year = parseInt(match[1], 10);
   const week = parseInt(match[2], 10);
+  if (week < 1 || week > 53 || year < 2020 || year > 2050) return [];
 
   // Jan 4th is always in ISO week 1
   const jan4 = new Date(Date.UTC(year, 0, 4));

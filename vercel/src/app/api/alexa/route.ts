@@ -38,6 +38,9 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body: AlexaRequestEnvelope = await req.json();
+    if (!body || !body.request) {
+      return NextResponse.json({ error: 'Invalid Alexa request payload' }, { status: 400 });
+    }
     const { request, session } = body;
     const sessionAttributes = session?.attributes ? { ...session.attributes } : {};
 

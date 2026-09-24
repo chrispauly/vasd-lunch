@@ -20,6 +20,7 @@ import {
   Layers,
   Calendar,
   MessageSquare,
+  CalendarDays,
 } from 'lucide-react';
 import { LunchLevel, LunchSummaryResult, MealType } from '@/lib/types';
 
@@ -44,6 +45,25 @@ function getDateOffset(days: number): string {
   }).format(now);
 }
 
+function getIsoWeekString(date: Date): string {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+  return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+}
+
+function getThisWeekIsoStr(): string {
+  return getIsoWeekString(new Date());
+}
+
+function getNextWeekIsoStr(): string {
+  const d = new Date();
+  d.setDate(d.getDate() + 7);
+  return getIsoWeekString(d);
+}
+
 function formatModelName(model: string): string {
   if (model.includes('3.5')) return 'Gemini 3.5 Flash Lite';
   if (model.includes('2.0')) return 'Gemini 2.0 Flash Lite';
@@ -54,25 +74,26 @@ function formatModelName(model: string): string {
 export default function HomePage() {
   const configuredModel = process.env.NEXT_PUBLIC_GEMINI_MODEL || 'gemini-3.5-flash-lite';
   const todayStr = getTodayStr();
+  const nextWeekStr = getNextWeekIsoStr();
+  const thisWeekStr = getThisWeekIsoStr();
 
   const [level, setLevel] = useState<LunchLevel>('ES');
   const [mealType, setMealType] = useState<MealType>('both');
   const [date, setDate] = useState<string>(todayStr);
   const [loading, setLoading] = useState<boolean>(false);
-  const [result, setResult] = useState<LunchSummaryResult | null>(null);
+  const [result, setResult] = useState<any>(null);
   const [copied, setCopied] = useState<string | null>(null);
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [showRawJson, setShowRawJson] = useState<boolean>(false);
   const [rawData, setRawData] = useState<any>(null);
   const [loadingRaw, setLoadingRaw] = useState<boolean>(false);
 
-  // Quick date options including Yesterday, Today, Tomorrow, and upcoming school days
+  // Quick date shortcuts including Yesterday, Today, Tomorrow, and Next Week
   const dateShortcuts = [
-    { label: 'Yesterday', date: getDateOffset(-1) },
-    { label: 'Today', date: todayStr },
-    { label: 'Tomorrow', date: getDateOffset(1) },
-    { label: '+2 Days', date: getDateOffset(2) },
-    { label: '+3 Days', date: getDateOffset(3) },
+    { label: 'Yesterday', date: getDateOffset(-1), isWeek: false },
+    { label: 'Today', date: todayStr, isWeek: false },
+    { label: 'Tomorrow', date: getDateOffset(1), isWeek: false },
+    { label: 'Next Week', date: nextWeekStr, isWeek: true },
   ];
 
   const toggleRawData = async () => {
@@ -97,7 +118,6 @@ export default function HomePage() {
       const res = await fetch(`/api/lunch?level=${targetLevel}&date=${targetDate}&meal=${targetMeal}`);
       const data = await res.json();
       setResult(data);
-      // Reset cached raw view so user can re-fetch matching debug data if toggled
       setRawData(null);
     } catch (err) {
       console.error('Failed to load summary', err);
@@ -151,10 +171,10 @@ export default function HomePage() {
             src="/paw-logo.png"
             alt="Verona Wildcats Paw Logo"
             style={{
-              width: '72px',
-              height: '72px',
+              width: '76px',
+              height: '76px',
               objectFit: 'contain',
-              filter: 'drop-shadow(0 4px 14px rgba(249, 115, 22, 0.45))',
+              filter: 'drop-shadow(0 4px 16px rgba(249, 115, 22, 0.45))',
             }}
           />
         </div>
@@ -192,12 +212,12 @@ export default function HomePage() {
         <p
           style={{
             color: 'var(--text-secondary)',
-            maxWidth: '680px',
+            maxWidth: '700px',
             margin: '0 auto',
             fontSize: '1.05rem',
           }}
         >
-          Voice-optimized breakfast, lunch, and combo menus for Verona Area School District, designed for Amazon Alexa Flash Briefings and Alexa Custom Skills.
+          Voice-optimized daily and weekly breakfast, lunch, and combo menus for Verona Area School District, designed for Amazon Alexa Flash Briefings and Alexa Custom Skills.
         </p>
       </header>
 
@@ -308,7 +328,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* 3. Date Picker & Quick Shortcuts */}
+          {/* 3. Date / Week Picker & Quick Shortcuts */}
           <div>
             <label
               style={{
@@ -321,13 +341,14 @@ export default function HomePage() {
                 marginBottom: '8px',
               }}
             >
-              Date
+              Date or Week (YYYY-MM-DD or YYYY-Www)
             </label>
             <div style={{ display: 'flex', gap: '8px' }}>
               <input
-                type="date"
+                type="text"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
+                placeholder="YYYY-MM-DD or YYYY-Www"
                 style={{
                   flex: 1,
                   background: 'rgba(255, 255, 255, 0.05)',
@@ -339,6 +360,34 @@ export default function HomePage() {
                   outline: 'none',
                 }}
               />
+              <input
+                type="date"
+                id="native-date-picker"
+                onChange={(e) => {
+                  if (e.target.value) setDate(e.target.value);
+                }}
+                style={{ display: 'none' }}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const picker = document.getElementById('native-date-picker') as HTMLInputElement | null;
+                  picker?.showPicker?.();
+                }}
+                title="Open calendar picker"
+                style={{
+                  padding: '10px 14px',
+                  borderRadius: '10px',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: 'var(--text-secondary)',
+                  border: '1px solid var(--border)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Calendar size={18} />
+              </button>
               <button
                 onClick={() => fetchSummary()}
                 disabled={loading}
@@ -360,7 +409,7 @@ export default function HomePage() {
               </button>
             </div>
 
-            {/* Quick date shortcuts with Yesterday, Today, Tomorrow */}
+            {/* Quick date shortcuts with Yesterday, Today, Tomorrow, and Next Week */}
             <div style={{ display: 'flex', gap: '6px', marginTop: '8px', flexWrap: 'wrap' }}>
               {dateShortcuts.map((sc) => {
                 const isCurrent = date === sc.date;
@@ -376,9 +425,13 @@ export default function HomePage() {
                       color: isCurrent ? '#fb923c' : 'var(--text-muted)',
                       border: isCurrent ? '1px solid rgba(249, 115, 22, 0.4)' : '1px solid transparent',
                       fontWeight: isCurrent ? 700 : 500,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
                     }}
                   >
-                    {sc.label} ({sc.date.slice(5)})
+                    {sc.isWeek && <CalendarDays size={12} color="#fb923c" />}
+                    {sc.label} ({sc.isWeek ? sc.date : sc.date.slice(5)})
                   </button>
                 );
               })}
@@ -418,11 +471,20 @@ export default function HomePage() {
                   textTransform: 'uppercase',
                 }}
               >
-                {mealType === 'breakfast' ? 'Breakfast' : mealType === 'lunch' ? 'Lunch' : 'Breakfast & Lunch'}
+                {result?.type === 'week'
+                  ? `Weekly Forecast (${result.week})`
+                  : mealType === 'breakfast'
+                  ? 'Breakfast'
+                  : mealType === 'lunch'
+                  ? 'Lunch'
+                  : 'Breakfast & Lunch'}
               </span>
             </div>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-              Date: <strong style={{ color: 'var(--text-secondary)' }}>{result?.date || date}</strong>
+              {result?.type === 'week' ? 'Week' : 'Date'}:{' '}
+              <strong style={{ color: 'var(--text-secondary)' }}>
+                {result?.week || result?.date || date}
+              </strong>
             </p>
           </div>
 
@@ -552,17 +614,56 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* Breakdown of Extracted Items */}
-        {result?.breakfast && result?.lunch ? (
+        {/* Weekly Day-by-Day Forecast Breakdown */}
+        {result?.type === 'week' && result?.days ? (
+          <div style={{ marginTop: '20px' }}>
+            <h4 style={{ fontSize: '0.95rem', color: '#fb923c', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <CalendarDays size={16} /> Week Forecast ({result.week}) Breakdown
+            </h4>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '10px' }}>
+              {result.days.map((day: any) => {
+                const dObj = new Date(day.date + 'T12:00:00');
+                const dayName = dObj.toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' });
+                return (
+                  <div key={day.date} style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid var(--border)', borderRadius: '10px', padding: '12px' }}>
+                    <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#fb923c', marginBottom: '6px' }}>{dayName}</div>
+                    {!day.hasSchool ? (
+                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>No School</span>
+                    ) : day.breakfast || day.lunch ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        {day.breakfast && (
+                          <div>
+                            <div style={{ fontSize: '0.7rem', color: '#fed7aa', fontWeight: 700 }}>Breakfast:</div>
+                            <div style={{ fontSize: '0.75rem', color: '#e4e4e7' }}>{day.breakfast.specialEntrees?.join(', ') || 'Standard'}</div>
+                          </div>
+                        )}
+                        {day.lunch && (
+                          <div>
+                            <div style={{ fontSize: '0.7rem', color: '#fde68a', fontWeight: 700 }}>Lunch:</div>
+                            <div style={{ fontSize: '0.75rem', color: '#e4e4e7' }}>{day.lunch.specialEntrees?.join(', ') || 'Standard'}</div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div style={{ fontSize: '0.75rem', color: '#e4e4e7' }}>
+                        {day.specialEntrees?.length ? day.specialEntrees.join(', ') : 'Standard Menu'}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : result?.breakfast && result?.lunch ? (
+          /* Single Day Combined Breakdown */
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
-            {/* Breakfast section */}
             <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border)' }}>
               <div style={{ fontSize: '0.85rem', color: '#fb923c', fontWeight: 700, marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Coffee size={15} /> Breakfast Entrees & Sides
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {result.breakfast.specialEntrees?.length ? (
-                  result.breakfast.specialEntrees.map((it) => (
+                  result.breakfast.specialEntrees.map((it: string) => (
                     <span key={it} style={{ fontSize: '0.8rem', padding: '4px 10px', borderRadius: '6px', background: 'rgba(249, 115, 22, 0.2)', color: '#fdba74', fontWeight: 600 }}>
                       {it}
                     </span>
@@ -570,7 +671,7 @@ export default function HomePage() {
                 ) : (
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>None listed</span>
                 )}
-                {result.breakfast.sides?.map((it) => (
+                {result.breakfast.sides?.map((it: string) => (
                   <span key={it} style={{ fontSize: '0.8rem', padding: '4px 10px', borderRadius: '6px', background: 'rgba(255, 255, 255, 0.05)', color: '#d4d4d8' }}>
                     {it}
                   </span>
@@ -578,14 +679,13 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Lunch section */}
             <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border)' }}>
               <div style={{ fontSize: '0.85rem', color: '#f59e0b', fontWeight: 700, marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Utensils size={15} /> Lunch Hot Entrees & Sides
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {result.lunch.specialEntrees?.length ? (
-                  result.lunch.specialEntrees.map((it) => (
+                  result.lunch.specialEntrees.map((it: string) => (
                     <span key={it} style={{ fontSize: '0.8rem', padding: '4px 10px', borderRadius: '6px', background: 'rgba(245, 158, 11, 0.2)', color: '#fde68a', fontWeight: 600 }}>
                       {it}
                     </span>
@@ -593,7 +693,7 @@ export default function HomePage() {
                 ) : (
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>None listed</span>
                 )}
-                {[...(result.lunch.treats || []), ...(result.lunch.sides || [])].map((it) => (
+                {[...(result.lunch.treats || []), ...(result.lunch.sides || [])].map((it: string) => (
                   <span key={it} style={{ fontSize: '0.8rem', padding: '4px 10px', borderRadius: '6px', background: 'rgba(255, 255, 255, 0.05)', color: '#d4d4d8' }}>
                     {it}
                   </span>
@@ -602,6 +702,7 @@ export default function HomePage() {
             </div>
           </div>
         ) : (
+          /* Single Day Single Meal Breakdown */
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
             <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border)' }}>
               <div style={{ fontSize: '0.82rem', color: '#fb923c', fontWeight: 700, marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -609,7 +710,7 @@ export default function HomePage() {
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {result?.details?.specialEntrees?.length ? (
-                  result.details.specialEntrees.map((it) => (
+                  result.details.specialEntrees.map((it: string) => (
                     <span key={it} style={{ fontSize: '0.8rem', padding: '4px 10px', borderRadius: '6px', background: 'rgba(249, 115, 22, 0.2)', color: '#fdba74', fontWeight: 600 }}>
                       {it}
                     </span>
@@ -625,7 +726,7 @@ export default function HomePage() {
                 Sides & Treats
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {[...(result?.details?.treats || []), ...(result?.details?.sides || [])].map((it) => (
+                {[...(result?.details?.treats || []), ...(result?.details?.sides || [])].map((it: string) => (
                   <span key={it} style={{ fontSize: '0.8rem', padding: '4px 10px', borderRadius: '6px', background: 'rgba(245, 158, 11, 0.15)', color: '#fde68a', fontWeight: 500 }}>
                     {it}
                   </span>
@@ -641,7 +742,7 @@ export default function HomePage() {
                 Ignored Staples (Filtered Out)
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {result?.details?.stapleEntrees?.map((it) => (
+                {result?.details?.stapleEntrees?.map((it: string) => (
                   <span key={it} style={{ fontSize: '0.75rem', padding: '3px 8px', borderRadius: '6px', background: 'rgba(255, 255, 255, 0.04)', color: 'var(--text-muted)' }}>
                     {it}
                   </span>
@@ -652,7 +753,7 @@ export default function HomePage() {
         )}
       </div>
 
-      {/* Interactive Examples: Breakfast, Lunch, and Combo */}
+      {/* Interactive Examples: Breakfast, Lunch, Combo, and Next Week */}
       <div
         style={{
           background: 'var(--bg-card)',
@@ -670,7 +771,7 @@ export default function HomePage() {
           Click any example below to test that configuration live in the viewer above, or ask Alexa using the phrase shown:
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '14px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>
           {/* Example 1: Breakfast */}
           <div
             onClick={() => {
@@ -680,7 +781,7 @@ export default function HomePage() {
             }}
             style={{
               background: 'rgba(0, 0, 0, 0.35)',
-              border: mealType === 'breakfast' ? '1px solid var(--primary)' : '1px solid var(--border)',
+              border: mealType === 'breakfast' && !date.includes('-W') ? '1px solid var(--primary)' : '1px solid var(--border)',
               borderRadius: '12px',
               padding: '16px',
               cursor: 'pointer',
@@ -694,7 +795,7 @@ export default function HomePage() {
               </span>
             </div>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '10px' }}>
-              Retrieves the morning rotating entree (pancake bars, muffins, etc.) and fruit sides.
+              Morning rotating entrees (muffins, pancake bars, etc.) and fruit sides.
             </p>
             <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '8px 10px', borderRadius: '8px', fontSize: '0.8rem', color: '#fdba74', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <MessageSquare size={13} /> "Alexa, ask Verona School Lunch what's for breakfast tomorrow"
@@ -710,7 +811,7 @@ export default function HomePage() {
             }}
             style={{
               background: 'rgba(0, 0, 0, 0.35)',
-              border: mealType === 'lunch' ? '1px solid var(--primary)' : '1px solid var(--border)',
+              border: mealType === 'lunch' && !date.includes('-W') ? '1px solid var(--primary)' : '1px solid var(--border)',
               borderRadius: '12px',
               padding: '16px',
               cursor: 'pointer',
@@ -724,7 +825,7 @@ export default function HomePage() {
               </span>
             </div>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '10px' }}>
-              Retrieves hot lunch specials, vegetables, and special desserts while filtering out PB&J/deli staples.
+              Hot lunch specials, vegetables, and treats with daily staples filtered out.
             </p>
             <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '8px 10px', borderRadius: '8px', fontSize: '0.8rem', color: '#fde68a', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <MessageSquare size={13} /> "Alexa, ask Verona School Lunch what's for lunch today"
@@ -740,7 +841,7 @@ export default function HomePage() {
             }}
             style={{
               background: 'rgba(0, 0, 0, 0.35)',
-              border: mealType === 'both' ? '1px solid var(--primary)' : '1px solid var(--border)',
+              border: mealType === 'both' && !date.includes('-W') ? '1px solid var(--primary)' : '1px solid var(--border)',
               borderRadius: '12px',
               padding: '16px',
               cursor: 'pointer',
@@ -750,14 +851,44 @@ export default function HomePage() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
               <Layers size={18} color="#ff6a00" />
               <span style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ff6a00' }}>
-                Both (Breakfast & Lunch Combo)
+                Both (Breakfast & Lunch)
               </span>
             </div>
             <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '10px' }}>
-              Full day readout starting with breakfast followed by lunch in a natural conversational flow.
+              Full day readout starting with breakfast followed by lunch.
             </p>
             <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '8px 10px', borderRadius: '8px', fontSize: '0.8rem', color: '#fed7aa', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <MessageSquare size={13} /> "Alexa, ask Verona School Lunch what's the menu"
+            </div>
+          </div>
+
+          {/* Example 4: Next Week Full Forecast */}
+          <div
+            onClick={() => {
+              setMealType('both');
+              setLevel('ES');
+              setDate(nextWeekStr);
+            }}
+            style={{
+              background: 'rgba(0, 0, 0, 0.35)',
+              border: date === nextWeekStr ? '1px solid var(--primary)' : '1px solid var(--border)',
+              borderRadius: '12px',
+              padding: '16px',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <CalendarDays size={18} color="#34d399" />
+              <span style={{ fontSize: '0.95rem', fontWeight: 700, color: '#34d399' }}>
+                Next Week Forecast
+              </span>
+            </div>
+            <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', marginBottom: '10px' }}>
+              Full Monday–Friday preview with day-by-day menu highlights.
+            </p>
+            <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '8px 10px', borderRadius: '8px', fontSize: '0.8rem', color: '#a7f3d0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <MessageSquare size={13} /> "Alexa, ask Verona School Lunch what's the menu next week"
             </div>
           </div>
         </div>

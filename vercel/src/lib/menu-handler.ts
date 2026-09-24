@@ -28,7 +28,10 @@ export function parseDate(param: string | null): string {
   if (!param) return getTodayDateStr();
   const trimmed = param.trim();
   if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
-    return trimmed;
+    const [y, m, d] = trimmed.split('-').map(Number);
+    if (y >= 2020 && y <= 2050 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+      return trimmed;
+    }
   }
   return getTodayDateStr();
 }

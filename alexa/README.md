@@ -9,13 +9,14 @@ This guide walks you through setting up the **"Verona School Lunch"** Alexa Cust
 - **Invocation Name:** `verona school lunch` (natural, crystal-clear spoken words).
 - **Conversational Launch:**
   - *"Alexa, open Verona School Lunch"*
-  - Alexa asks: *"Welcome to Verona School Lunch! Would you like the lunch menu for elementary, middle, or high school?"*
-  - You answer: *"Elementary"* (or *"Middle school for tomorrow"*, etc.)
+  - Alexa asks: *"Welcome to Verona School Lunch! Would you like the menu for elementary, middle, or high school? You can also ask for breakfast or lunch."*
+  - You answer: *"Elementary"* (or *"Breakfast for high school"*, etc.)
 - **One-Shot Direct Invocations:**
-  - *"Alexa, ask Verona School Lunch what's for lunch today for elementary school"*
-  - *"Alexa, ask Verona School Lunch what's for lunch tomorrow for middle school"*
-  - *"Alexa, ask Verona School Lunch what's for lunch next week for high school"*
-  - *"Alexa, ask Verona School Lunch what was for lunch yesterday for elementary school"*
+  - **Breakfast**: *"Alexa, ask Verona School Lunch what's for breakfast tomorrow for elementary school"*
+  - **Lunch**: *"Alexa, ask Verona School Lunch what's for lunch today for middle school"*
+  - **Combined Menu**: *"Alexa, ask Verona School Lunch what's the menu for high school"*
+  - **Weekly Forecast**: *"Alexa, ask Verona School Lunch what's the menu next week for elementary school"*
+  - **Past Days**: *"Alexa, ask Verona School Lunch what was for lunch yesterday for elementary school"*
 - **Timeframes Supported:**
   - `today`
   - `tomorrow`
@@ -23,6 +24,10 @@ This guide walks you through setting up the **"Verona School Lunch"** Alexa Cust
   - `next week` (speaks Monday through Friday hot entrees)
   - `this week`
   - Specific days (e.g. `Friday`, `next Monday`, or exact dates)
+- **Meals Supported:**
+  - `breakfast`
+  - `lunch`
+  - `both` / `the menu` (speaks breakfast followed by lunch)
 - **School Levels:**
   - Elementary Schools (K-5)
   - Middle Schools (6-8)
