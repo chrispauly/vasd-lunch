@@ -68,7 +68,7 @@ Here are the lunch options:
 Instructions:
 1. Provide a friendly, natural 2-to-3 sentence spoken summary of lunch for ${label.toLowerCase()}.
 2. If it is past (yesterday), use past tense (e.g. "Yesterday for elementary lunch, the main hot entree was...").
-3. If it is today or future (tomorrow), use present/future tense (e.g. "Today for elementary lunch, the main hot entree is..." or "Tomorrow for middle school lunch...").
+3. If it is today, say "Today for...". If tomorrow, say "Tomorrow for...". If another day in the future, say "${label} for...". NEVER say "Today" unless the target date is actually today.
 4. Focus ONLY on the special rotating hot entrees and any special treats.
 5. DO NOT mention everyday staples like milk cartons, routine salad bar items, or daily cold wraps unless they are the only items.
 6. DO NOT use markdown, bullet points, asterisks (*), hashtags, or special characters. It will be read aloud by Alexa Text-to-Speech.
@@ -133,7 +133,8 @@ function generateFallbackSummary(
 
 export async function generateWeeklyLunchSummary(
   levelName: string,
-  days: LunchDayData[]
+  days: LunchDayData[],
+  weekLabel: string = 'this week'
 ): Promise<{ speechText: string; summary: string }> {
   if (!days || days.length === 0) {
     const text = `No lunch menu information is available for ${levelName} for that week.`;
@@ -154,7 +155,7 @@ export async function generateWeeklyLunchSummary(
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return generateFallbackWeeklySummary(levelName, days);
+    return generateFallbackWeeklySummary(levelName, days, weekLabel);
   }
 
   try {
@@ -171,16 +172,18 @@ export async function generateWeeklyLunchSummary(
 You are an assistant preparing a spoken weekly school lunch summary for Amazon Alexa.
 Target Audience: Parents and students listening to Alexa smart speaker.
 School Level: ${levelName}
+Timeframe: ${weekLabel}
 
 Here are the lunch options for Monday through Friday:
 ${dayDescriptions.join('\n')}
 
 Instructions:
 1. Provide a concise, clear, and friendly spoken summary of the entire week (approximately 3 to 5 sentences).
-2. Go day by day from Monday to Friday, stating the main featured hot entree. If a day has no school, mention that there is no school that day.
-3. DO NOT mention sides, condiments, or milk.
-4. DO NOT use markdown, bullet points, asterisks (*), hashtags, or special characters. It will be read aloud by Alexa Text-to-Speech.
-5. Example phrasing: "Here is next week's lunch for elementary school. On Monday, the main entree is Chicken Nuggets. Tuesday is Walking Tacos. Wednesday is Bosco Sticks. Thursday is Cheeseburgers, and on Friday there is no school."
+2. Start by introducing the timeframe: "Here is ${weekLabel}'s lunch menu for ${levelName}."
+3. Go day by day from Monday to Friday, stating the main featured hot entree. If a day has no school, mention that there is no school that day.
+4. DO NOT mention sides, condiments, or milk.
+5. DO NOT use markdown, bullet points, asterisks (*), hashtags, or special characters. It will be read aloud by Alexa Text-to-Speech.
+6. Example phrasing: "Here is ${weekLabel}'s lunch menu for elementary school. On Monday, the main entree is Pizza Bites. Tuesday features Chicken Nuggets. Wednesday is Cheese Pizza. Thursday is Hot Dogs, and on Friday the entree is Macaroni and Cheese."
 `;
 
     const result = await model.generateContent(prompt);
@@ -193,13 +196,14 @@ Instructions:
     };
   } catch (err) {
     console.error('Gemini weekly summary failed, using fallback:', err);
-    return generateFallbackWeeklySummary(levelName, days);
+    return generateFallbackWeeklySummary(levelName, days, weekLabel);
   }
 }
 
 function generateFallbackWeeklySummary(
   levelName: string,
-  days: LunchDayData[]
+  days: LunchDayData[],
+  weekLabel: string = 'this week'
 ): { speechText: string; summary: string } {
   const daySentences = days.map(d => {
     const dateObj = new Date(d.date + 'T12:00:00');
@@ -211,6 +215,6 @@ function generateFallbackWeeklySummary(
     return `on ${weekday}, ${entree}`;
   });
 
-  const speechText = `Here is the lunch menu for ${levelName}: ${daySentences.join('; ')}.`;
+  const speechText = `Here is ${weekLabel}'s lunch menu for ${levelName}: ${daySentences.join('; ')}.`;
   return { speechText, summary: speechText };
 }

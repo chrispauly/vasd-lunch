@@ -208,7 +208,18 @@ export function resolveDateSlot(slot?: AlexaSlot): ResolvedDate {
 
   // Check if it's an ISO week format (e.g. "2026-W40")
   if (/^\d{4}-W\d{2}$/.test(raw)) {
-    return { type: 'week', weekStr: raw, label: 'that week' };
+    const today = new Date(todayStr + 'T12:00:00');
+    const thisWeek = getIsoWeekString(today);
+    let label = 'that week';
+    if (raw === thisWeek) {
+      label = 'this week';
+    } else {
+      const nextWeekDate = new Date(today.getTime() + 7 * 86400000);
+      if (raw === getIsoWeekString(nextWeekDate)) {
+        label = 'next week';
+      }
+    }
+    return { type: 'week', weekStr: raw, label };
   }
 
   // Check if it's a specific date (YYYY-MM-DD)

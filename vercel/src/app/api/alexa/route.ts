@@ -143,7 +143,7 @@ export async function POST(req: NextRequest) {
       // Case A: User asked about a week (e.g. "next week", "this week", or ISO week)
       if (resolvedDate.type === 'week') {
         const weekData = await fetchLunchMenuForWeek(resolvedDate.weekStr, schoolLevel);
-        const { speechText } = await generateWeeklyLunchSummary(levelConfig.name, weekData);
+        const { speechText } = await generateWeeklyLunchSummary(levelConfig.name, weekData, resolvedDate.label || 'this week');
 
         return NextResponse.json(
           buildAlexaResponse({
