@@ -105,8 +105,9 @@ export async function POST(req: NextRequest) {
       if (!schoolLevel) {
         // If a date was provided in this utterance, remember it for the next turn
         const rawDateSlot = slots.date;
-        if (rawDateSlot?.value) {
-          sessionAttributes.pendingDate = rawDateSlot.value;
+        const rawDateVal = rawDateSlot?.value || (rawDateSlot as any)?.slotValue?.value;
+        if (rawDateVal) {
+          sessionAttributes.pendingDate = rawDateVal;
         }
 
         const speech = 'Would you like the lunch menu for elementary, middle, or high school?';
