@@ -54,110 +54,112 @@ export async function fetchMenuForDay(
   const sidesSet = new Set<string>();
   const treatsSet = new Set<string>();
 
-  // Fetch for each relevant menu ID
-  for (const menuId of menuIds) {
-    try {
-      const overUrl = `${BASE_URL}/organizations/${ORG_ID}/menus/${menuId}/year/${year}/month/${monthNum}/date_overwrites`;
-      const recUrl = `${BASE_URL}/organizations/${ORG_ID}/menus/${menuId}/start_date/${dateStr}/end_date/${dateStr}/recipes/`;
-
-      const [overRes, recRes] = await Promise.all([
-        fetch(overUrl, {
-          headers: { 'User-Agent': 'Mozilla/5.0' },
-          next: { revalidate: 3600 }, // Cache on edge/fetch layer for 1 hour
-        }),
-        fetch(recUrl, {
-          headers: { 'User-Agent': 'Mozilla/5.0' },
-          next: { revalidate: 3600 },
-        }).catch(() => null),
-      ]);
-
-      if (!overRes.ok) continue;
-
-      // Build recipe metadata lookup
-      const recipeLookup = new Map<number | string, {
-        id: number;
-        name: string;
-        image_path?: string | null;
-        allergens?: string[];
-      }>();
-
-      if (recRes && recRes.ok) {
-        try {
-          const recJson = await recRes.json();
-          for (const r of recJson.data || []) {
-            const meta = {
-              id: r.id,
-              name: r.name,
-              image_path: r.image_path || null,
-              allergens: (r.allergens || []).map((a: any) => a.name),
-            };
-            recipeLookup.set(r.id, meta);
-            if (r.name) {
-              recipeLookup.set(r.name.toLowerCase().trim(), meta);
-            }
-          }
-        } catch {
-          // ignore recipe parse error
-        }
-      }
-
-      const json = await overRes.json();
-      const entries: DateOverwriteEntry[] = json.data || [];
-      const dayEntry = entries.find(e => e.day === dateStr);
-
-      if (!dayEntry || !dayEntry.setting) continue;
-
-      let settingObj: { current_display?: Array<{ name: string; type: string; item?: number }> } = {};
+  // Fetch for each relevant menu ID in parallel
+  await Promise.all(
+    menuIds.map(async (menuId) => {
       try {
-        settingObj = JSON.parse(dayEntry.setting);
-      } catch {
-        continue;
-      }
+        const overUrl = `${BASE_URL}/organizations/${ORG_ID}/menus/${menuId}/year/${year}/month/${monthNum}/date_overwrites`;
+        const recUrl = `${BASE_URL}/organizations/${ORG_ID}/menus/${menuId}/start_date/${dateStr}/end_date/${dateStr}/recipes/`;
 
-      let currentCategory = 'Other';
-      for (const el of settingObj.current_display || []) {
-        if (el.type === 'category') {
-          currentCategory = el.name || 'Other';
-        } else if (el.type === 'recipe' && el.name) {
-          const itemName = el.name.trim();
-          if (!itemName) continue;
+        const [overRes, recRes] = await Promise.all([
+          fetch(overUrl, {
+            headers: { 'User-Agent': 'Mozilla/5.0' },
+            next: { revalidate: 3600 }, // Cache on edge/fetch layer for 1 hour
+          }),
+          fetch(recUrl, {
+            headers: { 'User-Agent': 'Mozilla/5.0' },
+            next: { revalidate: 3600 },
+          }).catch(() => null),
+        ]);
 
-          const isStaple = isStapleItem(itemName, level);
-          const itemType = categorizeItem(itemName, currentCategory);
+        if (!overRes.ok) return;
 
-          const recipeMeta = (el.item ? recipeLookup.get(el.item) : null) || recipeLookup.get(itemName.toLowerCase().trim());
-          const imageUrl = recipeMeta?.image_path || null;
-          const allergens = recipeMeta?.allergens || [];
+        // Build recipe metadata lookup
+        const recipeLookup = new Map<number | string, {
+          id: number;
+          name: string;
+          image_path?: string | null;
+          allergens?: string[];
+        }>();
 
-          if (!rawItemsMap.has(itemName)) {
-            rawItemsMap.set(itemName, {
-              name: itemName,
-              category: currentCategory,
-              isStaple,
-              imageUrl,
-              allergens,
-            });
-          }
-
-          if (itemType === 'treat') {
-            treatsSet.add(itemName);
-          } else if (itemType === 'entree') {
-            if (isStaple) {
-              stapleEntreesSet.add(itemName);
-            } else {
-              specialEntreesSet.add(itemName);
+        if (recRes && recRes.ok) {
+          try {
+            const recJson = await recRes.json();
+            for (const r of recJson.data || []) {
+              const meta = {
+                id: r.id,
+                name: r.name,
+                image_path: r.image_path || null,
+                allergens: (r.allergens || []).map((a: any) => a.name),
+              };
+              recipeLookup.set(r.id, meta);
+              if (r.name) {
+                recipeLookup.set(r.name.toLowerCase().trim(), meta);
+              }
             }
-          } else if (itemType === 'side') {
-            if (!isStaple) {
-              sidesSet.add(itemName);
+          } catch {
+            // ignore recipe parse error
+          }
+        }
+
+        const json = await overRes.json();
+        const entries: DateOverwriteEntry[] = json.data || [];
+        const dayEntry = entries.find(e => e.day === dateStr);
+
+        if (!dayEntry || !dayEntry.setting) return;
+
+        let settingObj: { current_display?: Array<{ name: string; type: string; item?: number }> } = {};
+        try {
+          settingObj = JSON.parse(dayEntry.setting);
+        } catch {
+          return;
+        }
+
+        let currentCategory = 'Other';
+        for (const el of settingObj.current_display || []) {
+          if (el.type === 'category') {
+            currentCategory = el.name || 'Other';
+          } else if (el.type === 'recipe' && el.name) {
+            const itemName = el.name.trim();
+            if (!itemName) continue;
+
+            const isStaple = isStapleItem(itemName, level);
+            const itemType = categorizeItem(itemName, currentCategory);
+
+            const recipeMeta = (el.item ? recipeLookup.get(el.item) : null) || recipeLookup.get(itemName.toLowerCase().trim());
+            const imageUrl = recipeMeta?.image_path || null;
+            const allergens = recipeMeta?.allergens || [];
+
+            if (!rawItemsMap.has(itemName)) {
+              rawItemsMap.set(itemName, {
+                name: itemName,
+                category: currentCategory,
+                isStaple,
+                imageUrl,
+                allergens,
+              });
+            }
+
+            if (itemType === 'treat') {
+              treatsSet.add(itemName);
+            } else if (itemType === 'entree') {
+              if (isStaple) {
+                stapleEntreesSet.add(itemName);
+              } else {
+                specialEntreesSet.add(itemName);
+              }
+            } else if (itemType === 'side') {
+              if (!isStaple) {
+                sidesSet.add(itemName);
+              }
             }
           }
         }
+      } catch (err) {
+        console.error(`Error fetching menu ${menuId}:`, err);
       }
-    } catch (err) {
-      console.error(`Error fetching menu ${menuId}:`, err);
-    }
-  }
+    })
+  );
 
   const specialEntrees = Array.from(specialEntreesSet);
   const stapleEntrees = Array.from(stapleEntreesSet);

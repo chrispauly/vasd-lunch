@@ -49,21 +49,7 @@
         },
         "interfaces": [
           {
-            "type": "ALEXA_PRESENTATION_APL",
-            "supportedViewports": [
-              {
-                "mode": "HUB",
-                "shape": "ROUND"
-              },
-              {
-                "mode": "HUB",
-                "shape": "RECTANGLE"
-              },
-              {
-                "mode": "TV",
-                "shape": "RECTANGLE"
-              }
-            ]
+            "type": "ALEXA_PRESENTATION_APL"
           }
         ]
       }
