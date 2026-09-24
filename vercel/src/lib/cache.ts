@@ -18,21 +18,25 @@ export function isToday(dateStr: string): boolean {
   return dateStr === getTodayDateStr();
 }
 
-function getCacheKey(dateStr: string, level: LunchLevel): string {
-  return `lunch_${dateStr}_${level}`;
+function getCacheKey(dateStr: string, level: LunchLevel, meal: string = 'lunch'): string {
+  return `menu_${meal}_${dateStr}_${level}`;
 }
 
-function getTmpFilePath(dateStr: string, level: LunchLevel): string {
-  return path.join('/tmp', `lunch_${dateStr}_${level}.json`);
+function getTmpFilePath(dateStr: string, level: LunchLevel, meal: string = 'lunch'): string {
+  return path.join('/tmp', `menu_${meal}_${dateStr}_${level}.json`);
 }
 
-export async function getCachedLunch(dateStr: string, level: LunchLevel): Promise<LunchSummaryResult | null> {
+export async function getCachedMenu(
+  dateStr: string,
+  level: LunchLevel,
+  meal: string = 'lunch'
+): Promise<LunchSummaryResult | null> {
   // Caching is only active for the current day
   if (!isToday(dateStr)) {
     return null;
   }
 
-  const key = getCacheKey(dateStr, level);
+  const key = getCacheKey(dateStr, level, meal);
 
   // 1. Check in-memory cache
   if (memoryCache.has(key)) {
@@ -42,7 +46,7 @@ export async function getCachedLunch(dateStr: string, level: LunchLevel): Promis
 
   // 2. Check /tmp filesystem (persisted across warm serverless requests)
   try {
-    const tmpPath = getTmpFilePath(dateStr, level);
+    const tmpPath = getTmpFilePath(dateStr, level, meal);
     if (fs.existsSync(tmpPath)) {
       const data = fs.readFileSync(tmpPath, 'utf-8');
       const parsed = JSON.parse(data) as LunchSummaryResult;
@@ -77,9 +81,10 @@ export async function getCachedLunch(dateStr: string, level: LunchLevel): Promis
   return null;
 }
 
-export async function setCachedLunch(
+export async function setCachedMenu(
   dateStr: string,
   level: LunchLevel,
+  meal: string,
   result: LunchSummaryResult
 ): Promise<void> {
   // Only save cache if it's the current day
@@ -87,14 +92,14 @@ export async function setCachedLunch(
     return;
   }
 
-  const key = getCacheKey(dateStr, level);
+  const key = getCacheKey(dateStr, level, meal);
 
   // 1. Save to in-memory
   memoryCache.set(key, result);
 
   // 2. Save to /tmp
   try {
-    const tmpPath = getTmpFilePath(dateStr, level);
+    const tmpPath = getTmpFilePath(dateStr, level, meal);
     fs.writeFileSync(tmpPath, JSON.stringify(result), 'utf-8');
   } catch {
     // Ignore tmp write errors
@@ -112,4 +117,16 @@ export async function setCachedLunch(
       // Ignore Redis errors
     }
   }
+}
+
+export async function getCachedLunch(dateStr: string, level: LunchLevel): Promise<LunchSummaryResult | null> {
+  return getCachedMenu(dateStr, level, 'lunch');
+}
+
+export async function setCachedLunch(
+  dateStr: string,
+  level: LunchLevel,
+  result: LunchSummaryResult
+): Promise<void> {
+  return setCachedMenu(dateStr, level, 'lunch', result);
 }

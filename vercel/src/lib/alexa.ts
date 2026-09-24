@@ -1,4 +1,4 @@
-import { LunchLevel } from './types';
+import { LunchLevel, MealType } from './types';
 import { getTodayDateStr } from './cache';
 
 export interface AlexaSlot {
@@ -162,6 +162,56 @@ export function resolveSchoolLevel(
   }
 
   return null;
+}
+
+/**
+ * Resolves meal type from Alexa slot or fallback to session attributes.
+ * Defaults to 'both' if user asks for 'the menu' or doesn't specify.
+ */
+export function resolveMealType(
+  slot?: AlexaSlot,
+  sessionAttributes?: Record<string, any>
+): MealType {
+  // 1. Check entity resolution from slot
+  if (slot?.resolutions?.resolutionsPerAuthority) {
+    for (const auth of slot.resolutions.resolutionsPerAuthority) {
+      if (auth.status?.code === 'ER_SUCCESS_MATCH' && auth.values && auth.values.length > 0) {
+        const id = auth.values[0].value.id.toUpperCase();
+        if (id === 'BREAKFAST') return 'breakfast';
+        if (id === 'LUNCH') return 'lunch';
+        if (id === 'BOTH') return 'both';
+      }
+    }
+  }
+
+  // 2. Check slot spoken value
+  const val = slot?.value || (slot as any)?.slotValue?.value;
+  if (val) {
+    const v = String(val).toLowerCase().trim();
+    if (v.includes('both') || v.includes('all') || v.includes('everything') || (v.includes('breakfast') && v.includes('lunch'))) {
+      return 'both';
+    }
+    if (v.includes('breakfast') || v.includes('morning')) {
+      return 'breakfast';
+    }
+    if (v.includes('lunch') || v.includes('afternoon') || v.includes('dinner')) {
+      return 'lunch';
+    }
+    if (v.includes('menu')) {
+      return 'both';
+    }
+  }
+
+  // 3. Fallback to existing session attribute if already known
+  if (sessionAttributes?.mealType) {
+    const mt = String(sessionAttributes.mealType).toLowerCase();
+    if (mt === 'breakfast' || mt === 'lunch' || mt === 'both') {
+      return mt as MealType;
+    }
+  }
+
+  // 4. Default: User asked for "the menu", so include both breakfast and lunch
+  return 'both';
 }
 
 export type ResolvedDate =

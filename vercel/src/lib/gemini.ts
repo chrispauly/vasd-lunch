@@ -218,3 +218,237 @@ function generateFallbackWeeklySummary(
   const speechText = `Here is ${weekLabel}'s lunch menu for ${levelName}: ${daySentences.join('; ')}.`;
   return { speechText, summary: speechText };
 }
+
+export async function generateBreakfastSummary(dayData: LunchDayData): Promise<{ speechText: string; summary: string }> {
+  const { levelName, date, hasSchool, specialEntrees, sides, treats } = dayData;
+  const { label, dateFormatted, isPast } = getDateRelativeLabel(date);
+
+  if (!hasSchool || (specialEntrees.length === 0 && sides.length === 0 && treats.length === 0)) {
+    const verb = isPast ? 'was' : 'is';
+    const noSchoolText = `There ${verb} no school breakfast scheduled for ${levelName} on ${dateFormatted}.`;
+    return {
+      speechText: noSchoolText,
+      summary: noSchoolText,
+    };
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!apiKey) {
+    console.warn('GEMINI_API_KEY not set. Using template-based fallback summary.');
+    return generateFallbackBreakfastSummary(dayData, label, dateFormatted, isPast);
+  }
+
+  try {
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: DEFAULT_MODEL,
+      generationConfig: {
+        maxOutputTokens: 150,
+        temperature: 0.3,
+      },
+    });
+
+    const prompt = `
+You are an assistant preparing a short, spoken school breakfast announcement for Amazon Alexa.
+Target Audience: Parents and students listening to Alexa smart speaker.
+School Level: ${levelName}
+Date: ${dateFormatted} (${label})
+Is Past Date: ${isPast}
+
+Breakfast items:
+- Entrees: ${specialEntrees.length > 0 ? specialEntrees.join(', ') : 'Standard breakfast options'}
+- Fruit / Sides: ${sides.length > 0 ? sides.join(', ') : 'Standard fruit and sides'}
+- Treats: ${treats.length > 0 ? treats.join(', ') : 'None'}
+
+Instructions:
+1. Provide a friendly, natural 2-to-3 sentence spoken summary of breakfast for ${label.toLowerCase()}.
+2. If it is past (yesterday), use past tense (e.g. "Yesterday for elementary breakfast, students had...").
+3. If it is today, say "Today for...". If tomorrow, say "Tomorrow for...". If another day in the future, say "${label} for...". NEVER say "Today" unless the target date is actually today.
+4. Focus on the main rotating breakfast entrees (like muffins, pancakes, breakfast bars, or cereals) and featured fruit.
+5. DO NOT mention everyday staples like plain milk cartons or butter.
+6. DO NOT use markdown, bullet points, asterisks (*), hashtags, or special characters. It will be read aloud by Alexa Text-to-Speech.
+`;
+
+    const result = await model.generateContent(prompt);
+    let speechText = result.response.text().trim();
+    speechText = speechText.replace(/[*_#`]/g, '').replace(/\s+/g, ' ').trim();
+
+    return {
+      speechText,
+      summary: speechText,
+    };
+  } catch (error) {
+    console.error('Gemini breakfast summary failed, falling back:', error);
+    return generateFallbackBreakfastSummary(dayData, label, dateFormatted, isPast);
+  }
+}
+
+function generateFallbackBreakfastSummary(
+  dayData: LunchDayData,
+  label: string,
+  dateFormatted: string,
+  isPast: boolean
+): { speechText: string; summary: string } {
+  const { levelName, specialEntrees, sides } = dayData;
+  const verbIs = isPast ? 'was' : 'is';
+  const prefix = label.startsWith('On ') ? `${label} for ${levelName} breakfast` : `${label} for ${levelName} breakfast`;
+
+  let speechText = `${prefix}, `;
+  if (specialEntrees.length > 0) {
+    speechText += `the entree ${verbIs} ${specialEntrees.slice(0, 2).join(' or ')}`;
+    if (sides.length > 0) {
+      speechText += ` with ${sides[0]}.`;
+    } else {
+      speechText += '.';
+    }
+  } else {
+    speechText += 'standard breakfast options are available.';
+  }
+
+  return { speechText, summary: speechText };
+}
+
+export async function generateCombinedMenuSummary(
+  breakfastData: LunchDayData,
+  lunchData: LunchDayData
+): Promise<{ speechText: string; summary: string }> {
+  const { levelName, date } = lunchData;
+  const { label, dateFormatted, isPast } = getDateRelativeLabel(date);
+
+  const hasSchool = breakfastData.hasSchool || lunchData.hasSchool;
+  if (!hasSchool) {
+    const verb = isPast ? 'was' : 'is';
+    const noSchoolText = `There ${verb} no school meals scheduled for ${levelName} on ${dateFormatted}.`;
+    return {
+      speechText: noSchoolText,
+      summary: noSchoolText,
+    };
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  if (!apiKey) {
+    return generateFallbackCombinedSummary(breakfastData, lunchData, label, dateFormatted, isPast);
+  }
+
+  try {
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: DEFAULT_MODEL,
+      generationConfig: {
+        maxOutputTokens: 250,
+        temperature: 0.3,
+      },
+    });
+
+    const prompt = `
+You are an assistant preparing a short, spoken school menu announcement for Amazon Alexa covering BOTH breakfast and lunch.
+Target Audience: Parents and students listening to Alexa smart speaker.
+School Level: ${levelName}
+Date: ${dateFormatted} (${label})
+Is Past Date: ${isPast}
+
+Breakfast items:
+- Entrees: ${breakfastData.specialEntrees.length > 0 ? breakfastData.specialEntrees.join(', ') : 'None listed'}
+- Fruit / Sides: ${breakfastData.sides.length > 0 ? breakfastData.sides.join(', ') : 'Standard sides'}
+
+Lunch items:
+- Featured Hot Specials: ${lunchData.specialEntrees.length > 0 ? lunchData.specialEntrees.join(', ') : 'None listed'}
+- Featured Sides: ${lunchData.sides.length > 0 ? lunchData.sides.join(', ') : 'Standard sides'}
+- Special Treats: ${lunchData.treats.length > 0 ? lunchData.treats.join(', ') : 'None'}
+
+Instructions:
+1. Provide a friendly, concise, natural 3-to-4 sentence spoken summary covering both breakfast and lunch.
+2. Structure: Start with the timeframe and school level, mention what is for breakfast, and then what is for lunch.
+3. If it is past, use past tense. If today, say "Today for...". If tomorrow, say "Tomorrow for...". If another day in the future, say "${label} for...". NEVER say "Today" unless the target date is actually today.
+4. Focus only on the featured rotating entrees and special treats. DO NOT mention plain milk cartons or common condiments.
+5. DO NOT use markdown, bullet points, asterisks (*), hashtags, or special characters. It will be read aloud by Alexa Text-to-Speech.
+6. Example: "Tomorrow for elementary school, breakfast features a Birthday Cake Bar with dried cranberries and juice. For lunch, the hot special is mini corn dogs served with vegetarian baked beans and a dragon punch juice box."
+`;
+
+    const result = await model.generateContent(prompt);
+    let speechText = result.response.text().trim();
+    speechText = speechText.replace(/[*_#`]/g, '').replace(/\s+/g, ' ').trim();
+
+    return {
+      speechText,
+      summary: speechText,
+    };
+  } catch (error) {
+    console.error('Gemini combined summary failed, falling back:', error);
+    return generateFallbackCombinedSummary(breakfastData, lunchData, label, dateFormatted, isPast);
+  }
+}
+
+function generateFallbackCombinedSummary(
+  breakfastData: LunchDayData,
+  lunchData: LunchDayData,
+  label: string,
+  dateFormatted: string,
+  isPast: boolean
+): { speechText: string; summary: string } {
+  const b = generateFallbackBreakfastSummary(breakfastData, label, dateFormatted, isPast);
+  const l = generateFallbackSummary(lunchData, label, dateFormatted, isPast);
+  const speechText = `${b.speechText} ${l.speechText}`;
+  return { speechText, summary: speechText };
+}
+
+export async function generateWeeklyCombinedSummary(
+  levelName: string,
+  breakfastDays: LunchDayData[],
+  lunchDays: LunchDayData[],
+  weekLabel: string = 'this week'
+): Promise<{ speechText: string; summary: string }> {
+  const dayDescriptions = lunchDays.map((ld, i) => {
+    const bd = breakfastDays[i] || ld;
+    const dateObj = new Date(ld.date + 'T12:00:00');
+    const weekday = dateObj.toLocaleDateString('en-US', { weekday: 'long' });
+    if (!ld.hasSchool && !bd.hasSchool) {
+      return `${weekday}: No school scheduled`;
+    }
+    const bEntree = bd.specialEntrees.length > 0 ? bd.specialEntrees[0] : 'Standard breakfast';
+    const lEntree = ld.specialEntrees.length > 0 ? ld.specialEntrees[0] : 'Standard lunch';
+    return `${weekday}: Breakfast is ${bEntree}; Lunch is ${lEntree}`;
+  });
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    const speechText = `Here is ${weekLabel}'s menu for ${levelName}: ${dayDescriptions.join('. ')}.`;
+    return { speechText, summary: speechText };
+  }
+
+  try {
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: DEFAULT_MODEL,
+      generationConfig: { maxOutputTokens: 300, temperature: 0.3 },
+    });
+
+    const prompt = `
+You are an assistant preparing a spoken weekly school menu summary for Amazon Alexa covering both breakfast and lunch.
+Target Audience: Parents and students listening to Alexa smart speaker.
+School Level: ${levelName}
+Timeframe: ${weekLabel}
+
+Options Monday through Friday:
+${dayDescriptions.join('\n')}
+
+Instructions:
+1. Provide a concise, clear 4-to-5 sentence spoken summary of the entire week covering both breakfast and lunch.
+2. Start: "Here is ${weekLabel}'s menu for ${levelName}."
+3. Mention Monday through Friday concisely (e.g. "On Monday, breakfast is ... and lunch is ...").
+4. DO NOT mention sides, milk, or condiments.
+5. DO NOT use markdown or special characters.
+`;
+
+    const result = await model.generateContent(prompt);
+    let speechText = result.response.text().trim();
+    speechText = speechText.replace(/[*_#`]/g, '').replace(/\s+/g, ' ').trim();
+    return { speechText, summary: speechText };
+  } catch (err) {
+    const speechText = `Here is ${weekLabel}'s menu for ${levelName}: ${dayDescriptions.join('. ')}.`;
+    return { speechText, summary: speechText };
+  }
+}
+

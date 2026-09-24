@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { LunchLevel } from '@/lib/types';
-import { fetchLunchMenuForDay } from '@/lib/healthepro';
+import { LunchLevel, MealType } from '@/lib/types';
+import { fetchLunchMenuForDay, fetchBreakfastMenuForDay } from '@/lib/healthepro';
 import { getTodayDateStr } from '@/lib/cache';
 
 export const dynamic = 'force-dynamic';
@@ -22,14 +22,111 @@ function parseDate(param: string | null): string {
   return getTodayDateStr();
 }
 
+function parseMealType(param: string | null): MealType {
+  if (!param) return 'lunch';
+  const clean = param.trim().toLowerCase();
+  if (clean === 'breakfast' || clean === 'b') return 'breakfast';
+  if (clean === 'both' || clean === 'all' || clean === 'menu') return 'both';
+  return 'lunch';
+}
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const level = parseLevel(searchParams.get('level'));
     const date = parseDate(searchParams.get('date'));
+    const meal = parseMealType(searchParams.get('meal'));
+
+    if (meal === 'breakfast') {
+      const dayData = await fetchBreakfastMenuForDay(date, level);
+      return NextResponse.json(
+        {
+          debug: true,
+          source: 'Health-e Pro Scraper (Pre-AI)',
+          organizationId: 3368,
+          date,
+          level,
+          mealType: 'breakfast',
+          levelName: dayData.levelName,
+          hasSchool: dayData.hasSchool,
+          counts: {
+            totalRawItems: dayData.rawItems.length,
+            specialEntrees: dayData.specialEntrees.length,
+            stapleEntrees: dayData.stapleEntrees.length,
+            sides: dayData.sides.length,
+            treats: dayData.treats.length,
+          },
+          specialEntrees: dayData.specialEntrees,
+          stapleEntrees: dayData.stapleEntrees,
+          sides: dayData.sides,
+          treats: dayData.treats,
+          allRawItems: dayData.rawItems,
+        },
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'no-cache',
+          },
+        }
+      );
+    }
+
+    if (meal === 'both') {
+      const [dayDataB, dayDataL] = await Promise.all([
+        fetchBreakfastMenuForDay(date, level),
+        fetchLunchMenuForDay(date, level),
+      ]);
+      return NextResponse.json(
+        {
+          debug: true,
+          source: 'Health-e Pro Scraper (Pre-AI)',
+          organizationId: 3368,
+          date,
+          level,
+          mealType: 'both',
+          levelName: dayDataL.levelName,
+          hasSchool: dayDataL.hasSchool || dayDataB.hasSchool,
+          breakfast: {
+            counts: {
+              totalRawItems: dayDataB.rawItems.length,
+              specialEntrees: dayDataB.specialEntrees.length,
+              stapleEntrees: dayDataB.stapleEntrees.length,
+              sides: dayDataB.sides.length,
+              treats: dayDataB.treats.length,
+            },
+            specialEntrees: dayDataB.specialEntrees,
+            stapleEntrees: dayDataB.stapleEntrees,
+            sides: dayDataB.sides,
+            treats: dayDataB.treats,
+            allRawItems: dayDataB.rawItems,
+          },
+          lunch: {
+            counts: {
+              totalRawItems: dayDataL.rawItems.length,
+              specialEntrees: dayDataL.specialEntrees.length,
+              stapleEntrees: dayDataL.stapleEntrees.length,
+              sides: dayDataL.sides.length,
+              treats: dayDataL.treats.length,
+            },
+            specialEntrees: dayDataL.specialEntrees,
+            stapleEntrees: dayDataL.stapleEntrees,
+            sides: dayDataL.sides,
+            treats: dayDataL.treats,
+            allRawItems: dayDataL.rawItems,
+          },
+        },
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'no-cache',
+          },
+        }
+      );
+    }
 
     const dayData = await fetchLunchMenuForDay(date, level);
-
     return NextResponse.json(
       {
         debug: true,
@@ -37,6 +134,7 @@ export async function GET(req: NextRequest) {
         organizationId: 3368,
         date,
         level,
+        mealType: 'lunch',
         levelName: dayData.levelName,
         hasSchool: dayData.hasSchool,
         counts: {

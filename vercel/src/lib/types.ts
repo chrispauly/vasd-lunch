@@ -1,5 +1,7 @@
 export type LunchLevel = 'ES' | 'MS' | 'HS';
 
+export type MealType = 'breakfast' | 'lunch' | 'both';
+
 export interface LunchItem {
   name: string;
   category: string;
@@ -10,6 +12,7 @@ export interface LunchDayData {
   date: string;
   level: LunchLevel;
   levelName: string;
+  mealType?: 'breakfast' | 'lunch';
   entrees: string[];
   stapleEntrees: string[];
   specialEntrees: string[];
@@ -23,11 +26,24 @@ export interface LunchSummaryResult {
   date: string;
   level: LunchLevel;
   levelName: string;
+  mealType?: MealType;
   speechText: string;
   summary: string;
   cached: boolean;
   generatedAt: string;
   details: {
+    specialEntrees: string[];
+    sides: string[];
+    treats: string[];
+    stapleEntrees: string[];
+  };
+  breakfast?: {
+    specialEntrees: string[];
+    sides: string[];
+    treats: string[];
+    stapleEntrees: string[];
+  };
+  lunch?: {
     specialEntrees: string[];
     sides: string[];
     treats: string[];
@@ -42,3 +58,4 @@ export interface AlexaFlashBriefingItem {
   mainText: string;
   redirectionUrl: string;
 }
+

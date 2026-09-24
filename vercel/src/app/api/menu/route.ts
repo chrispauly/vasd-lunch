@@ -4,5 +4,5 @@ import { handleMenuRequest } from '@/lib/menu-handler';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
-  return handleMenuRequest(req, 'lunch');
+  return handleMenuRequest(req, 'both');
 }

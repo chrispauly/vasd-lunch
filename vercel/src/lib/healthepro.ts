@@ -4,19 +4,32 @@ import { isStapleItem, categorizeItem } from './filter';
 const BASE_URL = 'https://menus.healthepro.com/api';
 const ORG_ID = 3368;
 
-export const LEVEL_CONFIG: Record<LunchLevel, { name: string; menuIds: number[] }> = {
+export const LEVEL_MENU_CONFIG: Record<LunchLevel, {
+  name: string;
+  breakfastMenuIds: number[];
+  lunchMenuIds: number[];
+}> = {
   ES: {
     name: 'Elementary School (K-5)',
-    menuIds: [128400], // Elementary Lunch (K-5)
+    breakfastMenuIds: [128399], // Elementary Breakfast (K-5)
+    lunchMenuIds: [128400],     // Elementary Lunch (K-5)
   },
   MS: {
     name: 'Middle School (6-8)',
-    menuIds: [128403, 128404], // Line 1 and Line 2
+    breakfastMenuIds: [128402], // Middle School Breakfast
+    lunchMenuIds: [128403, 128404], // Line 1 and Line 2
   },
   HS: {
     name: 'High School (9-12)',
-    menuIds: [128409, 128408, 128406, 128407], // Cafe, Pizza Line, Line 1, Line 3
+    breakfastMenuIds: [128405], // High School Breakfast
+    lunchMenuIds: [128409, 128408, 128406, 128407], // Cafe, Pizza Line, Line 1, Line 3
   },
+};
+
+export const LEVEL_CONFIG: Record<LunchLevel, { name: string; menuIds: number[] }> = {
+  ES: { name: LEVEL_MENU_CONFIG.ES.name, menuIds: LEVEL_MENU_CONFIG.ES.lunchMenuIds },
+  MS: { name: LEVEL_MENU_CONFIG.MS.name, menuIds: LEVEL_MENU_CONFIG.MS.lunchMenuIds },
+  HS: { name: LEVEL_MENU_CONFIG.HS.name, menuIds: LEVEL_MENU_CONFIG.HS.lunchMenuIds },
 };
 
 interface DateOverwriteEntry {
@@ -25,11 +38,13 @@ interface DateOverwriteEntry {
   setting: string;
 }
 
-export async function fetchLunchMenuForDay(
+export async function fetchMenuForDay(
   dateStr: string, // YYYY-MM-DD
-  level: LunchLevel
+  level: LunchLevel,
+  meal: 'breakfast' | 'lunch' = 'lunch'
 ): Promise<LunchDayData> {
-  const config = LEVEL_CONFIG[level] || LEVEL_CONFIG.ES;
+  const config = LEVEL_MENU_CONFIG[level] || LEVEL_MENU_CONFIG.ES;
+  const menuIds = meal === 'breakfast' ? config.breakfastMenuIds : config.lunchMenuIds;
   const [year, month] = dateStr.split('-');
   const monthNum = parseInt(month, 10).toString(); // e.g. "10" or "9"
 
@@ -40,7 +55,7 @@ export async function fetchLunchMenuForDay(
   const treatsSet = new Set<string>();
 
   // Fetch for each relevant menu ID
-  for (const menuId of config.menuIds) {
+  for (const menuId of menuIds) {
     try {
       const url = `${BASE_URL}/organizations/${ORG_ID}/menus/${menuId}/year/${year}/month/${monthNum}/date_overwrites`;
       const res = await fetch(url, {
@@ -114,6 +129,7 @@ export async function fetchLunchMenuForDay(
     date: dateStr,
     level,
     levelName: config.name,
+    mealType: meal,
     entrees: allEntrees,
     specialEntrees,
     stapleEntrees,
@@ -122,6 +138,20 @@ export async function fetchLunchMenuForDay(
     rawItems,
     hasSchool,
   };
+}
+
+export async function fetchLunchMenuForDay(
+  dateStr: string,
+  level: LunchLevel
+): Promise<LunchDayData> {
+  return fetchMenuForDay(dateStr, level, 'lunch');
+}
+
+export async function fetchBreakfastMenuForDay(
+  dateStr: string,
+  level: LunchLevel
+): Promise<LunchDayData> {
+  return fetchMenuForDay(dateStr, level, 'breakfast');
 }
 
 /**
@@ -150,13 +180,35 @@ export function getDatesForIsoWeek(isoWeek: string): string[] {
 }
 
 /**
+ * Fetch menus for all weekdays of an ISO week for a specific meal
+ */
+export async function fetchMenuForWeek(
+  weekStr: string,
+  level: LunchLevel,
+  meal: 'breakfast' | 'lunch' = 'lunch'
+): Promise<LunchDayData[]> {
+  const dates = getDatesForIsoWeek(weekStr);
+  if (dates.length === 0) return [];
+  return Promise.all(dates.map(date => fetchMenuForDay(date, level, meal)));
+}
+
+/**
  * Fetch lunch menus for all weekdays of an ISO week
  */
 export async function fetchLunchMenuForWeek(
   weekStr: string,
   level: LunchLevel
 ): Promise<LunchDayData[]> {
-  const dates = getDatesForIsoWeek(weekStr);
-  if (dates.length === 0) return [];
-  return Promise.all(dates.map(date => fetchLunchMenuForDay(date, level)));
+  return fetchMenuForWeek(weekStr, level, 'lunch');
 }
+
+/**
+ * Fetch breakfast menus for all weekdays of an ISO week
+ */
+export async function fetchBreakfastMenuForWeek(
+  weekStr: string,
+  level: LunchLevel
+): Promise<LunchDayData[]> {
+  return fetchMenuForWeek(weekStr, level, 'breakfast');
+}
+
