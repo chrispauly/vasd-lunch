@@ -20,6 +20,10 @@
           "samples": []
         },
         {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
           "name": "GetLunchIntent",
           "slots": [
             {
@@ -36,6 +40,17 @@
             }
           ],
           "samples": [
+            "open",
+            "open menu",
+            "open the menu",
+            "launch",
+            "start",
+            "menu",
+            "the menu",
+            "get the menu",
+            "check the menu",
+            "what's on the menu",
+            "what is on the menu",
             "what's for {mealType}",
             "what is for {mealType}",
             "what's for {mealType} {date}",
