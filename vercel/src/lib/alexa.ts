@@ -186,11 +186,20 @@ export function getIsoWeekString(date: Date): string {
 export function resolveDateSlot(slot?: AlexaSlot): ResolvedDate {
   const todayStr = getTodayDateStr();
 
-  if (!slot?.value) {
+  let val = slot?.value || (slot as any)?.slotValue?.value;
+  if (!val && Array.isArray((slot as any)?.slotValue?.values) && (slot as any)?.slotValue?.values.length > 0) {
+    val = (slot as any).slotValue.values[0]?.value;
+  }
+
+  if (!val) {
     return { type: 'day', dateStr: todayStr, label: 'today' };
   }
 
-  let raw = slot.value.trim().toUpperCase();
+  let raw = String(val).trim().toUpperCase();
+
+  if (raw === 'PRESENT_REF') {
+    return { type: 'day', dateStr: todayStr, label: 'today' };
+  }
 
   // Alexa may send week with weekend suffix like "2026-W39-WE", strip it
   if (raw.endsWith('-WE')) {

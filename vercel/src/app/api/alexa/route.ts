@@ -126,8 +126,9 @@ export async function POST(req: NextRequest) {
       sessionAttributes.schoolLevel = schoolLevel;
 
       // Determine date: check slot first, then check pendingDate from previous turn, else default to today
+      const dateVal = slots.date?.value || (slots.date as any)?.slotValue?.value;
       let resolvedDate: ResolvedDate;
-      if (slots.date?.value) {
+      if (dateVal) {
         resolvedDate = resolveDateSlot(slots.date);
       } else if (sessionAttributes.pendingDate) {
         resolvedDate = resolveDateSlot({ name: 'date', value: sessionAttributes.pendingDate });
@@ -148,7 +149,7 @@ export async function POST(req: NextRequest) {
             speechText,
             shouldEndSession: true,
             sessionAttributes,
-            cardTitle: `${levelConfig.name} Lunch (${resolvedDate.weekStr})`,
+            cardTitle: `${levelConfig.name} Lunch (${resolvedDate.weekStr}) [Slot: ${slots.date?.value ?? 'NO_VALUE'}]`,
           })
         );
       }
@@ -196,7 +197,7 @@ export async function POST(req: NextRequest) {
           speechText,
           shouldEndSession: true,
           sessionAttributes,
-          cardTitle: `${dayData.levelName} Lunch - ${dateStr}`,
+          cardTitle: `${dayData.levelName} Lunch - ${dateStr} [Slot: ${slots.date?.value ?? 'NO_VALUE'}]`,
         })
       );
     }
