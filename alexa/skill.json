@@ -47,7 +47,25 @@
           "uri": "https://vasd-lunch.vercel.app/api/alexa",
           "sslCertificateType": "Wildcard"
         },
-        "interfaces": []
+        "interfaces": [
+          {
+            "type": "ALEXA_PRESENTATION_APL",
+            "supportedViewports": [
+              {
+                "mode": "HUB",
+                "shape": "ROUND"
+              },
+              {
+                "mode": "HUB",
+                "shape": "RECTANGLE"
+              },
+              {
+                "mode": "TV",
+                "shape": "RECTANGLE"
+              }
+            ]
+          }
+        ]
       }
     },
     "manifestVersion": "1.0",

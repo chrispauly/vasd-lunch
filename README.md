@@ -13,9 +13,10 @@ An intelligent, voice-optimized service that scrapes daily and weekly **breakfas
 ## 🌟 Features
 
 * **🎙️ Amazon Alexa Custom Skill (`"verona school lunch"`)**: Interactive voice skill supporting single-day inquiries, multi-turn level prompting, and weekly forecasts.
+* **🖼️ Multimodal Alexa APL Screen Support**: Tailored visual interfaces for Echo Show 5, 8, 10, 15, and Fire TV with real food photography pulled directly from Health-e Pro CDN.
 * **🥐 Breakfast, Lunch, and Combined Menus**: Ask for just breakfast, just lunch, or the full daily/weekly menu.
 * **📅 Flexible Date Resolution**: Supports *"today"*, *"tomorrow"*, *"yesterday"*, specific calendar dates (`YYYY-MM-DD`), and full weekly forecasts (`YYYY-Www` e.g., *"this week"*, *"next week"*).
-* **🐾 Official VASD Wildcats Dashboard**: Interactive web viewer built in athletic orange & black with audio playback preview and one-click examples.
+* **🐾 Official VASD Wildcats Dashboard**: Interactive web viewer built in athletic orange & black with audio playback preview, live Echo Show screen simulator, and one-click examples.
 * **⚡ Multi-Tier Zero-Cost Caching**: In-memory + `/tmp` warm serverless caching + optional Redis / Vercel KV ensures near-zero AI latency and minimal API costs.
 * **🛡️ Zero-Failure Resilience**: Automatic rule-based fallback guarantees announcements are always served even during temporary AI outages or high demand spikes.
 
@@ -90,6 +91,22 @@ If you don't mention a school level, Alexa remembers your date and meal preferen
 > **Alexa**: *"Would you like the menu for elementary, middle, or high school?"*  
 > **User**: *"Elementary"*  
 > **Alexa**: *"Tomorrow for Elementary School (K-5) breakfast, the entree is Mini Cinni with Banana. Tomorrow for Elementary School (K-5) lunch, the main hot entree is French Toast Slice, accompanied by Potato Smiles."*
+
+---
+
+## 📱 Alexa Multimodal Experience (APL)
+
+When accessed via Echo Show or Fire TV devices, the skill detects display capability and returns an official **Alexa Presentation Language (APL)** document featuring real food photography scraped from the Health-e Pro CDN:
+
+| Device Profile | Screen Resolution | Multimodal Layout Experience |
+| :--- | :--- | :--- |
+| **Echo Show 5 & Echo Spot** | `960×480` / `480×480` | **Hero Course Spotlight**: High-contrast card with crisp photo of the primary entree, bold school level/meal badges, date, and item count tag. |
+| **Echo Show 8** | `1280×800` | **Split Dual-Pane Experience**: Left featured card with hero food image and speech description; right touch-scrollable list of all alternative entrees, sides, and veggies with individual thumbnails. |
+| **Echo Show 10, 15 & Fire TV** | `1920×1080` | **Widescreen Kitchen Hub**: Top wide-banner hero entree card + bottom horizontal touch-scrollable carousel of all items with high-resolution food photos and allergen badges. |
+| **Weekly Forecast** | All Sizes | **5-Day Visual Planner**: Monday through Friday cards showing each day's date, featured hot entree, and food image. |
+
+> [!TIP]
+> You can preview the live Echo Show 5, 8, and 15 layouts directly inside the web dashboard by clicking the **`Echo Show Display`** toggle button!
 
 ---
 

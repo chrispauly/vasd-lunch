@@ -75,7 +75,19 @@ Your Alexa custom skill endpoint is hosted directly on your Vercel deployment:
 
 ---
 
-### Step 5: Test the Skill
+### Step 5: Enable Alexa Presentation Language (APL) for Screen Devices
+
+To enable visual displays on Echo Show (5, 8, 10, 15) and Fire TV:
+1. In the left navigation, click **Interfaces**.
+2. Toggle on **Alexa Presentation Language**.
+3. Ensure **Hub Round**, **Hub Landscape (Small, Medium, Large, Extra Large)**, and **TV Landscape** are checked.
+4. Click **Save Interfaces**.
+5. Re-click **Build Model** under Interaction Model to commit the interface change.
+6. (Optional) In the **Multimodal** tab $\rightarrow$ **Authoring Tool**, you can test the standalone document in [`alexa/apl/menu-document.json`](apl/menu-document.json) with sample data in [`alexa/apl/sample-datasource.json`](apl/sample-datasource.json).
+
+---
+
+### Step 6: Test the Skill
 
 1. Click on the **Test** tab at the top of the Alexa Developer Console.
 2. In the top-left dropdown where it says *"Skill testing is enabled in:"*, change it from **Off** to **Development**.

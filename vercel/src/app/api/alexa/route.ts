@@ -6,7 +6,14 @@ import {
   resolveDateSlot,
   resolveMealType,
   ResolvedDate,
+  supportsApl,
 } from '@/lib/alexa';
+import {
+  buildMenuAplDocument,
+  buildMenuAplDatasource,
+  buildWeeklyAplDocument,
+  buildWeeklyAplDatasource,
+} from '@/lib/apl';
 import { LunchLevel, LunchSummaryResult, MealType } from '@/lib/types';
 import {
   fetchLunchMenuForDay,
@@ -178,17 +185,42 @@ export async function POST(req: NextRequest) {
         const weekLabel = resolvedDate.label || 'this week';
         let speechText = '';
         let cardMealTitle = 'Menu';
+        let weekResult: any;
 
         if (mealType === 'breakfast') {
           cardMealTitle = 'Breakfast';
           const weekData = await fetchBreakfastMenuForWeek(resolvedDate.weekStr, schoolLevel);
           const res = await generateWeeklyLunchSummary(levelConfig.name, weekData, `${weekLabel}'s breakfast`);
           speechText = res.speechText;
+          weekResult = {
+            levelName: levelConfig.name,
+            week: `${resolvedDate.weekStr} (${weekLabel})`,
+            days: weekData.map((d) => ({
+              date: d.date,
+              hasSchool: d.hasSchool,
+              specialEntrees: d.specialEntrees,
+              sides: d.sides,
+              treats: d.treats,
+              heroImage: d.heroImage,
+            })),
+          };
         } else if (mealType === 'lunch') {
           cardMealTitle = 'Lunch';
           const weekData = await fetchLunchMenuForWeek(resolvedDate.weekStr, schoolLevel);
           const res = await generateWeeklyLunchSummary(levelConfig.name, weekData, weekLabel);
           speechText = res.speechText;
+          weekResult = {
+            levelName: levelConfig.name,
+            week: `${resolvedDate.weekStr} (${weekLabel})`,
+            days: weekData.map((d) => ({
+              date: d.date,
+              hasSchool: d.hasSchool,
+              specialEntrees: d.specialEntrees,
+              sides: d.sides,
+              treats: d.treats,
+              heroImage: d.heroImage,
+            })),
+          };
         } else {
           cardMealTitle = 'Menu';
           const [bWeek, lWeek] = await Promise.all([
@@ -197,7 +229,32 @@ export async function POST(req: NextRequest) {
           ]);
           const res = await generateWeeklyCombinedSummary(levelConfig.name, bWeek, lWeek, weekLabel);
           speechText = res.speechText;
+          weekResult = {
+            levelName: levelConfig.name,
+            week: `${resolvedDate.weekStr} (${weekLabel})`,
+            days: lWeek.map((ld, i) => {
+              const bd = bWeek[i];
+              return {
+                date: ld.date,
+                hasSchool: ld.hasSchool || bd?.hasSchool,
+                heroImage: ld.heroImage || bd?.heroImage,
+                breakfast: bd ? { specialEntrees: bd.specialEntrees } : null,
+                lunch: { specialEntrees: ld.specialEntrees },
+              };
+            }),
+          };
         }
+
+        const directives = supportsApl(body)
+          ? [
+              {
+                type: 'Alexa.Presentation.APL.RenderDocument',
+                token: 'vasdWeeklyToken',
+                document: buildWeeklyAplDocument(),
+                datasources: buildWeeklyAplDatasource(weekResult),
+              },
+            ]
+          : undefined;
 
         return NextResponse.json(
           buildAlexaResponse({
@@ -205,6 +262,7 @@ export async function POST(req: NextRequest) {
             shouldEndSession: true,
             sessionAttributes,
             cardTitle: `${levelConfig.name} ${cardMealTitle} (${resolvedDate.weekStr})`,
+            directives,
           })
         );
       }
@@ -215,12 +273,24 @@ export async function POST(req: NextRequest) {
       // Check cache first (for current day)
       const cached = await getCachedMenu(dateStr, schoolLevel, mealType);
       if (cached) {
+        const directives = supportsApl(body)
+          ? [
+              {
+                type: 'Alexa.Presentation.APL.RenderDocument',
+                token: 'vasdMenuToken',
+                document: buildMenuAplDocument(),
+                datasources: buildMenuAplDatasource(cached),
+              },
+            ]
+          : undefined;
+
         return NextResponse.json(
           buildAlexaResponse({
             speechText: cached.speechText,
             shouldEndSession: true,
             sessionAttributes,
             cardTitle: `${cached.levelName} ${mealType === 'breakfast' ? 'Breakfast' : mealType === 'lunch' ? 'Lunch' : 'Menu'} - ${dateStr}`,
+            directives,
           })
         );
       }
@@ -245,11 +315,15 @@ export async function POST(req: NextRequest) {
           summary,
           cached: false,
           generatedAt: new Date().toISOString(),
+          heroImage: dayData.heroImage,
+          items: dayData.itemsWithImages,
           details: {
             specialEntrees: dayData.specialEntrees,
             sides: dayData.sides,
             treats: dayData.treats,
             stapleEntrees: dayData.stapleEntrees,
+            heroImage: dayData.heroImage,
+            items: dayData.itemsWithImages,
           },
         };
       } else if (mealType === 'lunch') {
@@ -267,11 +341,15 @@ export async function POST(req: NextRequest) {
           summary,
           cached: false,
           generatedAt: new Date().toISOString(),
+          heroImage: dayData.heroImage,
+          items: dayData.itemsWithImages,
           details: {
             specialEntrees: dayData.specialEntrees,
             sides: dayData.sides,
             treats: dayData.treats,
             stapleEntrees: dayData.stapleEntrees,
+            heroImage: dayData.heroImage,
+            items: dayData.itemsWithImages,
           },
         };
       } else {
@@ -284,6 +362,8 @@ export async function POST(req: NextRequest) {
         speechText = res.speechText;
         summary = res.summary;
         cardTitle = `${lunchData.levelName} Menu - ${dateStr}`;
+        const combinedHeroImage = lunchData.heroImage || breakfastData.heroImage;
+        const combinedItems = [...(lunchData.itemsWithImages || []), ...(breakfastData.itemsWithImages || [])];
         result = {
           date: dateStr,
           level: schoolLevel,
@@ -293,23 +373,31 @@ export async function POST(req: NextRequest) {
           summary,
           cached: false,
           generatedAt: new Date().toISOString(),
+          heroImage: combinedHeroImage,
+          items: combinedItems,
           details: {
             specialEntrees: [...breakfastData.specialEntrees, ...lunchData.specialEntrees],
             sides: [...breakfastData.sides, ...lunchData.sides],
             treats: [...breakfastData.treats, ...lunchData.treats],
             stapleEntrees: [...breakfastData.stapleEntrees, ...lunchData.stapleEntrees],
+            heroImage: combinedHeroImage,
+            items: combinedItems,
           },
           breakfast: {
             specialEntrees: breakfastData.specialEntrees,
             sides: breakfastData.sides,
             treats: breakfastData.treats,
             stapleEntrees: breakfastData.stapleEntrees,
+            heroImage: breakfastData.heroImage,
+            items: breakfastData.itemsWithImages,
           },
           lunch: {
             specialEntrees: lunchData.specialEntrees,
             sides: lunchData.sides,
             treats: lunchData.treats,
             stapleEntrees: lunchData.stapleEntrees,
+            heroImage: lunchData.heroImage,
+            items: lunchData.itemsWithImages,
           },
         };
       }
@@ -317,12 +405,24 @@ export async function POST(req: NextRequest) {
       // Save to cache if today
       await setCachedMenu(dateStr, schoolLevel, mealType, result);
 
+      const directives = supportsApl(body)
+        ? [
+            {
+              type: 'Alexa.Presentation.APL.RenderDocument',
+              token: 'vasdMenuToken',
+              document: buildMenuAplDocument(),
+              datasources: buildMenuAplDatasource(result),
+            },
+          ]
+        : undefined;
+
       return NextResponse.json(
         buildAlexaResponse({
           speechText,
           shouldEndSession: true,
           sessionAttributes,
           cardTitle,
+          directives,
         })
       );
     }

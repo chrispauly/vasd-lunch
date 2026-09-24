@@ -57,21 +57,57 @@ export async function fetchMenuForDay(
   // Fetch for each relevant menu ID
   for (const menuId of menuIds) {
     try {
-      const url = `${BASE_URL}/organizations/${ORG_ID}/menus/${menuId}/year/${year}/month/${monthNum}/date_overwrites`;
-      const res = await fetch(url, {
-        headers: { 'User-Agent': 'Mozilla/5.0' },
-        next: { revalidate: 3600 }, // Cache on edge/fetch layer for 1 hour
-      });
+      const overUrl = `${BASE_URL}/organizations/${ORG_ID}/menus/${menuId}/year/${year}/month/${monthNum}/date_overwrites`;
+      const recUrl = `${BASE_URL}/organizations/${ORG_ID}/menus/${menuId}/start_date/${dateStr}/end_date/${dateStr}/recipes/`;
 
-      if (!res.ok) continue;
+      const [overRes, recRes] = await Promise.all([
+        fetch(overUrl, {
+          headers: { 'User-Agent': 'Mozilla/5.0' },
+          next: { revalidate: 3600 }, // Cache on edge/fetch layer for 1 hour
+        }),
+        fetch(recUrl, {
+          headers: { 'User-Agent': 'Mozilla/5.0' },
+          next: { revalidate: 3600 },
+        }).catch(() => null),
+      ]);
 
-      const json = await res.json();
+      if (!overRes.ok) continue;
+
+      // Build recipe metadata lookup
+      const recipeLookup = new Map<number | string, {
+        id: number;
+        name: string;
+        image_path?: string | null;
+        allergens?: string[];
+      }>();
+
+      if (recRes && recRes.ok) {
+        try {
+          const recJson = await recRes.json();
+          for (const r of recJson.data || []) {
+            const meta = {
+              id: r.id,
+              name: r.name,
+              image_path: r.image_path || null,
+              allergens: (r.allergens || []).map((a: any) => a.name),
+            };
+            recipeLookup.set(r.id, meta);
+            if (r.name) {
+              recipeLookup.set(r.name.toLowerCase().trim(), meta);
+            }
+          }
+        } catch {
+          // ignore recipe parse error
+        }
+      }
+
+      const json = await overRes.json();
       const entries: DateOverwriteEntry[] = json.data || [];
       const dayEntry = entries.find(e => e.day === dateStr);
 
       if (!dayEntry || !dayEntry.setting) continue;
 
-      let settingObj: { current_display?: Array<{ name: string; type: string }> } = {};
+      let settingObj: { current_display?: Array<{ name: string; type: string; item?: number }> } = {};
       try {
         settingObj = JSON.parse(dayEntry.setting);
       } catch {
@@ -89,11 +125,17 @@ export async function fetchMenuForDay(
           const isStaple = isStapleItem(itemName, level);
           const itemType = categorizeItem(itemName, currentCategory);
 
+          const recipeMeta = (el.item ? recipeLookup.get(el.item) : null) || recipeLookup.get(itemName.toLowerCase().trim());
+          const imageUrl = recipeMeta?.image_path || null;
+          const allergens = recipeMeta?.allergens || [];
+
           if (!rawItemsMap.has(itemName)) {
             rawItemsMap.set(itemName, {
               name: itemName,
               category: currentCategory,
               isStaple,
+              imageUrl,
+              allergens,
             });
           }
 
@@ -125,6 +167,51 @@ export async function fetchMenuForDay(
   const rawItems = Array.from(rawItemsMap.values());
   const hasSchool = rawItems.length > 0;
 
+  // Determine primary hero image
+  let heroImage: string | null = null;
+  // 1. Try first special entree with image
+  for (const name of specialEntrees) {
+    const it = rawItemsMap.get(name);
+    if (it?.imageUrl) {
+      heroImage = it.imageUrl;
+      break;
+    }
+  }
+  // 2. Fallback to any entree with image
+  if (!heroImage) {
+    for (const name of allEntrees) {
+      const it = rawItemsMap.get(name);
+      if (it?.imageUrl) {
+        heroImage = it.imageUrl;
+        break;
+      }
+    }
+  }
+  // 3. Fallback to any item with image
+  if (!heroImage) {
+    for (const it of rawItems) {
+      if (it.imageUrl) {
+        heroImage = it.imageUrl;
+        break;
+      }
+    }
+  }
+
+  // Build sorted itemsWithImages
+  const itemsWithImages = [...rawItems].sort((a, b) => {
+    const aSpecial = specialEntreesSet.has(a.name) ? 0 : 1;
+    const bSpecial = specialEntreesSet.has(b.name) ? 0 : 1;
+    if (aSpecial !== bSpecial) return aSpecial - bSpecial;
+
+    const aEntree = (specialEntreesSet.has(a.name) || stapleEntreesSet.has(a.name)) ? 0 : 1;
+    const bEntree = (specialEntreesSet.has(b.name) || stapleEntreesSet.has(b.name)) ? 0 : 1;
+    if (aEntree !== bEntree) return aEntree - bEntree;
+
+    const aHasImg = a.imageUrl ? 0 : 1;
+    const bHasImg = b.imageUrl ? 0 : 1;
+    return aHasImg - bHasImg;
+  });
+
   return {
     date: dateStr,
     level,
@@ -137,6 +224,8 @@ export async function fetchMenuForDay(
     treats,
     rawItems,
     hasSchool,
+    heroImage,
+    itemsWithImages,
   };
 }
 
@@ -212,4 +301,3 @@ export async function fetchBreakfastMenuForWeek(
 ): Promise<LunchDayData[]> {
   return fetchMenuForWeek(weekStr, level, 'breakfast');
 }
-

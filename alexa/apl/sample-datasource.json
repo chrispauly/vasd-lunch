@@ -1,0 +1,85 @@
+{
+  "menuData": {
+    "title": "Verona School Lunch",
+    "schoolLevel": "Elementary School (K-5)",
+    "mealTypeTitle": "Lunch Menu",
+    "dateText": "Thursday, September 24, 2026",
+    "logoUrl": "https://vasd-lunch.vercel.app/paw-logo.png",
+    "heroItem": {
+      "name": "Mini Corn Dogs",
+      "category": "Main Hot Entrée",
+      "imageUrl": "https://dfys7w6w6h5jg.cloudfront.net/assets/zPxwRgZMejs7SBo0Kml13mAqtNpuQhFkYPixPj2I/500w/9Ae2LgrCtachwp7qQtsAPf6jPE8gnEqnmS7AqgEk.png",
+      "allergens": "Eggs, Milk, Soy, Wheat"
+    },
+    "summarySnippet": "Today for elementary lunch, the main hot entree is golden Mini Corn Dogs, served with vegetarian baked beans, fresh garden salad, and sweet dragon punch juice.",
+    "itemCountText": "11 items on today's menu",
+    "allItems": [
+      {
+        "name": "Mini Corn Dogs",
+        "category": "Hot Entrée",
+        "imageUrl": "https://dfys7w6w6h5jg.cloudfront.net/assets/zPxwRgZMejs7SBo0Kml13mAqtNpuQhFkYPixPj2I/500w/9Ae2LgrCtachwp7qQtsAPf6jPE8gnEqnmS7AqgEk.png",
+        "allergens": "Eggs, Milk, Soy, Wheat"
+      },
+      {
+        "name": "Soy Butter Alt Entrée",
+        "category": "Alternative Entrée",
+        "imageUrl": "https://dfys7w6w6h5jg.cloudfront.net/assets/rFmW2tKfpILMkDmXuo9sHH90oVaMVtsQ8QCHfht0/500w/klFPY6I0NTzY8947f6M5t7vI12e75D35zJ4o9oJk.png",
+        "allergens": "Soy, Wheat"
+      },
+      {
+        "name": "Bagel Alt Entrée",
+        "category": "Alternative Entrée",
+        "imageUrl": "https://dfys7w6w6h5jg.cloudfront.net/assets/L46VpVlB0xYKaGxmyegnhtfmrYeIKPcLHan9Iayf/500w/r4IMeKKa2Q8v2lJ0N5F01p41wKq41rD5K6n0lK.png",
+        "allergens": "Milk, Wheat"
+      },
+      {
+        "name": "Yogurt & String Cheese Alt",
+        "category": "Alternative Entrée",
+        "imageUrl": "https://dfys7w6w6h5jg.cloudfront.net/assets/e9MFHCIo7azI8Dh9zfxgofzYBbbvcNdpMHVwgzsv/500w/9hv8klMerN8y2h4K7L51bF0l51j95h2J0r84vG.png",
+        "allergens": "Milk, Wheat"
+      },
+      {
+        "name": "Vegetarian Baked Beans",
+        "category": "Sides & Veggies",
+        "imageUrl": "https://dfys7w6w6h5jg.cloudfront.net/assets/Ld9q5QWBDnhhqUAMM8Pk7l11lSLCbaavOODwnHog/500w/7B7ASlmcO4b84K9L51b0f195v6M9l6v2K851k.png",
+        "allergens": ""
+      },
+      {
+        "name": "Dragon Punch Juice Box",
+        "category": "Fruit & Juice",
+        "imageUrl": "https://dfys7w6w6h5jg.cloudfront.net/assets/tIv8qxKykgXKKkVMc0v2XVlSu0c6RC3MIlU9jFSc/500w/0h7xVbGMS2n084fL95bF0lK18r7v019m7K.png",
+        "allergens": ""
+      },
+      {
+        "name": "Leafy Green Salad",
+        "category": "Sides & Veggies",
+        "imageUrl": "https://dfys7w6w6h5jg.cloudfront.net/assets/SrR96BSYjecAr2VfjNUWsY8onFUGbhPnlKjmjQdY/500w/i57QGeyjsjb7L49vK5b10f84K019r6M02k.png",
+        "allergens": ""
+      },
+      {
+        "name": "Fresh Vegetable Variety",
+        "category": "Sides & Veggies",
+        "imageUrl": "https://dfys7w6w6h5jg.cloudfront.net/assets/rHtaAUniwT3zGx8TJU8iNNTsZvaHTaxdG5wABnjm/500w/4y23Lfh8l7b8v091M5bF1l49r02K85v67M.png",
+        "allergens": ""
+      },
+      {
+        "name": "Fresh Fruit Variety",
+        "category": "Fruit",
+        "imageUrl": "https://vasd-lunch.vercel.app/paw-logo.png",
+        "allergens": ""
+      },
+      {
+        "name": "Skim Chocolate Milk",
+        "category": "Beverage",
+        "imageUrl": "https://vasd-lunch.vercel.app/paw-logo.png",
+        "allergens": "Milk"
+      },
+      {
+        "name": "1% White Milk",
+        "category": "Beverage",
+        "imageUrl": "https://vasd-lunch.vercel.app/paw-logo.png",
+        "allergens": "Milk"
+      }
+    ]
+  }
+}

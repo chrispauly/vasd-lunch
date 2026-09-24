@@ -21,6 +21,10 @@ import {
   Calendar,
   MessageSquare,
   CalendarDays,
+  Tv,
+  Smartphone,
+  Tablet,
+  Monitor,
 } from 'lucide-react';
 import { LunchLevel, LunchSummaryResult, MealType } from '@/lib/types';
 
@@ -87,6 +91,8 @@ export default function HomePage() {
   const [showRawJson, setShowRawJson] = useState<boolean>(false);
   const [rawData, setRawData] = useState<any>(null);
   const [loadingRaw, setLoadingRaw] = useState<boolean>(false);
+  const [showAplPreview, setShowAplPreview] = useState<boolean>(false);
+  const [selectedDeviceSize, setSelectedDeviceSize] = useState<'show5' | 'show8' | 'show15'>('show8');
 
   // Quick date shortcuts including Yesterday, Today, Tomorrow, and Next Week
   const dateShortcuts = [
@@ -514,6 +520,25 @@ export default function HomePage() {
             </a>
 
             <button
+              onClick={() => setShowAplPreview(!showAplPreview)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                padding: '5px 12px',
+                borderRadius: '20px',
+                background: showAplPreview ? 'rgba(249, 115, 22, 0.3)' : 'rgba(255, 255, 255, 0.07)',
+                border: '1px solid var(--border)',
+                color: showAplPreview ? '#fb923c' : '#e2e8f0',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+              }}
+              title="Preview Alexa Presentation Language (APL) multimodal designs for Echo Show devices"
+            >
+              <Tv size={14} color="#f97316" /> Echo Show Display {showAplPreview ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+            </button>
+
+            <button
               onClick={toggleRawData}
               style={{
                 display: 'inline-flex',
@@ -567,9 +592,274 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* Alexa Spoken Text Display */}
-        <div style={{ background: 'rgba(0, 0, 0, 0.45)', border: '1px solid rgba(249, 115, 22, 0.25)', borderRadius: '12px', padding: '20px', marginBottom: '24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+        {/* Echo Show APL Multimodal Screen Simulator */}
+        {showAplPreview && (
+          <div style={{ background: '#090d16', border: '2px solid rgba(249, 115, 22, 0.4)', borderRadius: '16px', padding: '20px', marginBottom: '28px', boxShadow: '0 8px 30px rgba(0, 0, 0, 0.6)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+              <div>
+                <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#f97316', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Tv size={16} /> Alexa Presentation Language (APL) Multimodal Simulator
+                </span>
+                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', margin: '4px 0 0 0' }}>
+                  Live visual designs rendered on screen devices using official Health-e Pro photography and responsive APL viewport models.
+                </p>
+              </div>
+
+              {/* Device Selector Buttons */}
+              <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '10px', padding: '3px', gap: '4px' }}>
+                <button
+                  onClick={() => setSelectedDeviceSize('show5')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '6px 12px',
+                    borderRadius: '8px',
+                    background: selectedDeviceSize === 'show5' ? 'var(--primary)' : 'transparent',
+                    color: selectedDeviceSize === 'show5' ? '#fff' : 'var(--text-muted)',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  <Smartphone size={14} /> Echo Show 5
+                </button>
+                <button
+                  onClick={() => setSelectedDeviceSize('show8')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '6px 12px',
+                    borderRadius: '8px',
+                    background: selectedDeviceSize === 'show8' ? 'var(--primary)' : 'transparent',
+                    color: selectedDeviceSize === 'show8' ? '#fff' : 'var(--text-muted)',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  <Tablet size={14} /> Echo Show 8
+                </button>
+                <button
+                  onClick={() => setSelectedDeviceSize('show15')}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    padding: '6px 12px',
+                    borderRadius: '8px',
+                    background: selectedDeviceSize === 'show15' ? 'var(--primary)' : 'transparent',
+                    color: selectedDeviceSize === 'show15' ? '#fff' : 'var(--text-muted)',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                  }}
+                >
+                  <Monitor size={14} /> Echo Show 15
+                </button>
+              </div>
+            </div>
+
+            {/* Simulated Device Bezel */}
+            <div
+              style={{
+                background: '#111827',
+                border: '8px solid #1f2937',
+                borderRadius: '20px',
+                padding: '16px',
+                boxShadow: 'inset 0 2px 10px rgba(0, 0, 0, 0.8), 0 10px 25px rgba(0, 0, 0, 0.5)',
+                maxWidth: selectedDeviceSize === 'show5' ? '540px' : selectedDeviceSize === 'show8' ? '740px' : '100%',
+                margin: '0 auto',
+                overflow: 'hidden',
+              }}
+            >
+              {/* Echo Show 5 Layout (Compact Hero Spotlight) */}
+              {selectedDeviceSize === 'show5' && (
+                <div style={{ display: 'flex', gap: '16px', alignItems: 'center', minHeight: '190px', background: '#0b0f19', borderRadius: '12px', padding: '16px' }}>
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
+                        <img src="/paw-logo.png" alt="VASD" style={{ width: '22px', height: '22px' }} />
+                        <span style={{ fontSize: '0.74rem', color: '#f97316', fontWeight: 700 }}>
+                          {result?.levelName || 'Elementary'} • {result?.mealType === 'breakfast' ? 'Breakfast' : 'Lunch'}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', marginBottom: '8px' }}>
+                        {result?.date || 'Today'}
+                      </div>
+                      <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#f8fafc', lineHeight: 1.2 }}>
+                        {result?.details?.specialEntrees?.[0] || 'Today\'s Menu'}
+                      </div>
+                      <div style={{ fontSize: '0.7rem', color: '#f97316', fontWeight: 600, marginTop: '4px' }}>
+                        Featured Hot Entrée
+                      </div>
+                    </div>
+                    <div style={{ marginTop: '12px' }}>
+                      <span style={{ fontSize: '0.65rem', background: '#1e293b', color: '#cbd5e1', padding: '3px 8px', borderRadius: '6px' }}>
+                        {result?.items?.length || 10} items on today's menu
+                      </span>
+                    </div>
+                  </div>
+                  <div style={{ width: '150px', height: '140px', borderRadius: '12px', overflow: 'hidden', flexShrink: 0, background: '#1e293b' }}>
+                    <img
+                      src={result?.heroImage || '/paw-logo.png'}
+                      alt="Hero entree"
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Echo Show 8 Layout (Split View with Touch Scrolling List) */}
+              {selectedDeviceSize === 'show8' && (
+                <div style={{ background: '#0b0f19', borderRadius: '14px', padding: '18px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <img src="/paw-logo.png" alt="VASD" style={{ width: '26px', height: '26px' }} />
+                      <span style={{ fontSize: '0.9rem', color: '#f8fafc', fontWeight: 700 }}>Verona Area School District</span>
+                    </div>
+                    <span style={{ fontSize: '0.75rem', background: 'rgba(249, 115, 22, 0.2)', color: '#f97316', padding: '4px 10px', borderRadius: '8px', fontWeight: 700 }}>
+                      {result?.levelName || 'Elementary K-5'} • {result?.mealType === 'breakfast' ? 'Breakfast' : 'Lunch'}
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: '16px' }}>
+                    {/* Left: Featured Entree Card */}
+                    <div style={{ background: '#1e293b', borderRadius: '14px', padding: '14px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                      <div>
+                        <div style={{ height: '150px', borderRadius: '10px', overflow: 'hidden', marginBottom: '10px', background: '#0f172a' }}>
+                          <img
+                            src={result?.heroImage || '/paw-logo.png'}
+                            alt="Featured course"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                        </div>
+                        <div style={{ fontSize: '0.68rem', color: '#f97316', fontWeight: 800, letterSpacing: '0.05em' }}>FEATURED ENTRÉE</div>
+                        <div style={{ fontSize: '1.15rem', color: '#f8fafc', fontWeight: 800, marginTop: '3px', lineHeight: 1.2 }}>
+                          {result?.details?.specialEntrees?.[0] || 'Today\'s Entrée'}
+                        </div>
+                        <p style={{ fontSize: '0.75rem', color: '#cbd5e1', marginTop: '6px', lineHeight: 1.4 }}>
+                          {result?.summary?.slice(0, 110)}...
+                        </p>
+                      </div>
+                      <div style={{ fontSize: '0.68rem', color: '#64748b', marginTop: '8px' }}>
+                        {result?.date || 'Today'}
+                      </div>
+                    </div>
+
+                    {/* Right: Touch-Scrollable Sequence */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                        <span style={{ fontSize: '0.8rem', color: '#f8fafc', fontWeight: 700 }}>Menu Items (Touch to scroll)</span>
+                        <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>{result?.items?.length || 10} items</span>
+                      </div>
+                      <div style={{ maxHeight: '255px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px', paddingRight: '4px' }}>
+                        {(result?.items || []).map((it: any) => (
+                          <div key={it.name} style={{ display: 'flex', alignItems: 'center', gap: '10px', background: '#1e293b', borderRadius: '10px', padding: '8px' }}>
+                            <img
+                              src={it.imageUrl || '/paw-logo.png'}
+                              alt={it.name}
+                              style={{ width: '42px', height: '42px', borderRadius: '8px', objectFit: 'cover', flexShrink: 0, background: '#0f172a' }}
+                            />
+                            <div style={{ minWidth: 0, flex: 1 }}>
+                              <div style={{ fontSize: '0.78rem', color: '#f8fafc', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                {it.name}
+                              </div>
+                              <div style={{ fontSize: '0.68rem', color: '#f97316', fontWeight: 600 }}>
+                                {it.category} {it.allergens?.length ? `• ${it.allergens.join(', ')}` : ''}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Echo Show 15 Layout (Widescreen Kitchen Gallery Hub) */}
+              {selectedDeviceSize === 'show15' && (
+                <div style={{ background: '#0b0f19', borderRadius: '16px', padding: '22px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <img src="/paw-logo.png" alt="VASD" style={{ width: '36px', height: '36px' }} />
+                      <div>
+                        <div style={{ fontSize: '1.1rem', color: '#f8fafc', fontWeight: 800 }}>Verona Area School District — Kitchen Hub</div>
+                        <div style={{ fontSize: '0.78rem', color: '#94a3b8' }}>{result?.date} • {result?.levelName}</div>
+                      </div>
+                    </div>
+                    <span style={{ fontSize: '0.85rem', background: 'rgba(249, 115, 22, 0.2)', border: '1px solid #ea580c', color: '#f97316', padding: '6px 14px', borderRadius: '12px', fontWeight: 800 }}>
+                      {result?.mealType === 'breakfast' ? 'Breakfast' : result?.mealType === 'both' ? 'Breakfast & Lunch' : 'Lunch'}
+                    </span>
+                  </div>
+
+                  {/* Wide Featured Banner */}
+                  <div style={{ display: 'flex', gap: '20px', background: '#1e293b', borderRadius: '16px', padding: '16px', marginBottom: '18px', alignItems: 'center' }}>
+                    <img
+                      src={result?.heroImage || '/paw-logo.png'}
+                      alt="Featured main"
+                      style={{ width: '220px', height: '140px', borderRadius: '12px', objectFit: 'cover', flexShrink: 0, background: '#0f172a' }}
+                    />
+                    <div>
+                      <span style={{ fontSize: '0.72rem', color: '#f97316', fontWeight: 800, letterSpacing: '0.05em' }}>FEATURED MAIN COURSE</span>
+                      <div style={{ fontSize: '1.45rem', color: '#f8fafc', fontWeight: 800, marginTop: '2px' }}>
+                        {result?.details?.specialEntrees?.[0] || 'Today\'s Featured Entrée'}
+                      </div>
+                      <p style={{ fontSize: '0.85rem', color: '#cbd5e1', marginTop: '6px', lineHeight: 1.5, maxWidth: '680px' }}>
+                        {result?.speechText}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Touch-Scrollable Horizontal Gallery */}
+                  <div>
+                    <div style={{ fontSize: '0.85rem', color: '#f8fafc', fontWeight: 700, marginBottom: '10px' }}>
+                      All Menu Items & Sides (Swipe or scroll horizontally)
+                    </div>
+                    <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '8px' }}>
+                      {(result?.items || []).map((it: any) => (
+                        <div
+                          key={it.name}
+                          style={{
+                            flex: '0 0 160px',
+                            background: '#1e293b',
+                            borderRadius: '12px',
+                            overflow: 'hidden',
+                            padding: '10px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          <img
+                            src={it.imageUrl || '/paw-logo.png'}
+                            alt={it.name}
+                            style={{ width: '100%', height: '100px', borderRadius: '8px', objectFit: 'cover', background: '#0f172a', marginBottom: '8px' }}
+                          />
+                          <div>
+                            <div style={{ fontSize: '0.68rem', color: '#f97316', fontWeight: 700 }}>
+                              {it.category}
+                            </div>
+                            <div style={{ fontSize: '0.82rem', color: '#f8fafc', fontWeight: 700, marginTop: '2px', lineHeight: 1.2 }}>
+                              {it.name}
+                            </div>
+                            {it.allergens?.length ? (
+                              <div style={{ fontSize: '0.65rem', color: '#94a3b8', marginTop: '4px' }}>
+                                {it.allergens.join(', ')}
+                              </div>
+                            ) : null}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Alexa Spoken Text Display with Hero Photo */}
+        <div style={{ background: 'rgba(0, 0, 0, 0.45)', border: '1px solid rgba(249, 115, 22, 0.25)', borderRadius: '16px', padding: '20px', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
             <span style={{ fontSize: '0.8rem', color: 'var(--primary)', fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
               Alexa Spoken Speech Text
             </span>
@@ -609,9 +899,25 @@ export default function HomePage() {
             </div>
           </div>
           
-          <p style={{ fontSize: '1.18rem', lineHeight: 1.6, color: '#f8fafc', fontWeight: 500 }}>
-            {loading ? 'Retrieving and summarizing menu...' : result?.speechText}
-          </p>
+          <div style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+            <div style={{ flex: '1 1 320px' }}>
+              <p style={{ fontSize: '1.18rem', lineHeight: 1.6, color: '#f8fafc', fontWeight: 500, margin: 0 }}>
+                {loading ? 'Retrieving and summarizing menu...' : result?.speechText}
+              </p>
+            </div>
+            {result?.heroImage && (
+              <div style={{ flex: '0 0 auto', width: '150px', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(249, 115, 22, 0.3)', background: 'rgba(0, 0, 0, 0.5)' }}>
+                <img
+                  src={result.heroImage}
+                  alt="Featured entree photo"
+                  style={{ width: '100%', height: '110px', objectFit: 'cover', display: 'block' }}
+                />
+                <div style={{ padding: '6px 8px', fontSize: '0.72rem', color: '#fed7aa', fontWeight: 700, textAlign: 'center', background: 'rgba(249, 115, 22, 0.15)' }}>
+                  Main Course Photo
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Weekly Day-by-Day Forecast Breakdown */}
@@ -748,6 +1054,43 @@ export default function HomePage() {
                   </span>
                 ))}
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Real Food Photos Gallery from Health-e Pro */}
+        {result?.items && result.items.filter((it: any) => it.imageUrl).length > 0 && (
+          <div style={{ marginTop: '24px', background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--border)', borderRadius: '12px', padding: '16px' }}>
+            <h4 style={{ fontSize: '0.88rem', color: '#fb923c', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Utensils size={15} /> Today's Food Photography ({result.items.filter((it: any) => it.imageUrl).length} Photos Scraped from Health-e Pro)
+            </h4>
+            <div style={{ display: 'flex', gap: '12px', overflowX: 'auto', paddingBottom: '8px' }}>
+              {result.items.filter((it: any) => it.imageUrl).map((it: any) => (
+                <div
+                  key={it.name}
+                  style={{
+                    flex: '0 0 140px',
+                    background: 'rgba(0, 0, 0, 0.4)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '10px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <img
+                    src={it.imageUrl}
+                    alt={it.name}
+                    style={{ width: '100%', height: '90px', objectFit: 'cover', display: 'block' }}
+                  />
+                  <div style={{ padding: '8px' }}>
+                    <div style={{ fontSize: '0.65rem', color: '#fb923c', fontWeight: 700, textTransform: 'uppercase' }}>
+                      {it.category}
+                    </div>
+                    <div style={{ fontSize: '0.78rem', color: '#f8fafc', fontWeight: 600, marginTop: '2px', lineHeight: 1.2 }}>
+                      {it.name}
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}

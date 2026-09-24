@@ -73,6 +73,8 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
           specialEntrees: d.specialEntrees,
           sides: d.sides,
           treats: d.treats,
+          heroImage: d.heroImage,
+          items: d.itemsWithImages,
         }));
       } else if (meal === 'lunch') {
         const weekData = await fetchLunchMenuForWeek(weekStr, level);
@@ -85,6 +87,8 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
           specialEntrees: d.specialEntrees,
           sides: d.sides,
           treats: d.treats,
+          heroImage: d.heroImage,
+          items: d.itemsWithImages,
         }));
       } else {
         const [bWeek, lWeek] = await Promise.all([
@@ -99,10 +103,11 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
           return {
             date: ld.date,
             hasSchool: ld.hasSchool || bd?.hasSchool,
+            heroImage: ld.heroImage || bd?.heroImage,
             breakfast: bd
-              ? { specialEntrees: bd.specialEntrees, sides: bd.sides, treats: bd.treats }
+              ? { specialEntrees: bd.specialEntrees, sides: bd.sides, treats: bd.treats, heroImage: bd.heroImage, items: bd.itemsWithImages }
               : null,
-            lunch: { specialEntrees: ld.specialEntrees, sides: ld.sides, treats: ld.treats },
+            lunch: { specialEntrees: ld.specialEntrees, sides: ld.sides, treats: ld.treats, heroImage: ld.heroImage, items: ld.itemsWithImages },
           };
         });
       }
@@ -152,11 +157,13 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
             levelName: dayData.levelName,
             mealType: 'breakfast',
             hasSchool: dayData.hasSchool,
+            heroImage: dayData.heroImage,
             specialEntrees: dayData.specialEntrees,
             stapleEntrees: dayData.stapleEntrees,
             sides: dayData.sides,
             treats: dayData.treats,
             rawItems: dayData.rawItems,
+            itemsWithImages: dayData.itemsWithImages,
           },
           { status: 200, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-cache' } }
         );
@@ -170,11 +177,13 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
             levelName: dayData.levelName,
             mealType: 'lunch',
             hasSchool: dayData.hasSchool,
+            heroImage: dayData.heroImage,
             specialEntrees: dayData.specialEntrees,
             stapleEntrees: dayData.stapleEntrees,
             sides: dayData.sides,
             treats: dayData.treats,
             rawItems: dayData.rawItems,
+            itemsWithImages: dayData.itemsWithImages,
           },
           { status: 200, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-cache' } }
         );
@@ -191,19 +200,24 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
             levelName: dayDataL.levelName,
             mealType: 'both',
             hasSchool: dayDataL.hasSchool || dayDataB.hasSchool,
+            heroImage: dayDataL.heroImage || dayDataB.heroImage,
             breakfast: {
+              heroImage: dayDataB.heroImage,
               specialEntrees: dayDataB.specialEntrees,
               stapleEntrees: dayDataB.stapleEntrees,
               sides: dayDataB.sides,
               treats: dayDataB.treats,
               rawItems: dayDataB.rawItems,
+              itemsWithImages: dayDataB.itemsWithImages,
             },
             lunch: {
+              heroImage: dayDataL.heroImage,
               specialEntrees: dayDataL.specialEntrees,
               stapleEntrees: dayDataL.stapleEntrees,
               sides: dayDataL.sides,
               treats: dayDataL.treats,
               rawItems: dayDataL.rawItems,
+              itemsWithImages: dayDataL.itemsWithImages,
             },
           },
           { status: 200, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-cache' } }
@@ -236,11 +250,15 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
         summary,
         cached: false,
         generatedAt: new Date().toISOString(),
+        heroImage: dayData.heroImage,
+        items: dayData.itemsWithImages,
         details: {
           specialEntrees: dayData.specialEntrees,
           sides: dayData.sides,
           treats: dayData.treats,
           stapleEntrees: dayData.stapleEntrees,
+          heroImage: dayData.heroImage,
+          items: dayData.itemsWithImages,
         },
       };
     } else if (meal === 'lunch') {
@@ -257,11 +275,15 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
         summary,
         cached: false,
         generatedAt: new Date().toISOString(),
+        heroImage: dayData.heroImage,
+        items: dayData.itemsWithImages,
         details: {
           specialEntrees: dayData.specialEntrees,
           sides: dayData.sides,
           treats: dayData.treats,
           stapleEntrees: dayData.stapleEntrees,
+          heroImage: dayData.heroImage,
+          items: dayData.itemsWithImages,
         },
       };
     } else {
@@ -272,6 +294,8 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
       const res = await generateCombinedMenuSummary(dayDataB, dayDataL);
       speechText = res.speechText;
       summary = res.summary;
+      const combinedHeroImage = dayDataL.heroImage || dayDataB.heroImage;
+      const combinedItems = [...(dayDataL.itemsWithImages || []), ...(dayDataB.itemsWithImages || [])];
       result = {
         date,
         level,
@@ -281,23 +305,31 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
         summary,
         cached: false,
         generatedAt: new Date().toISOString(),
+        heroImage: combinedHeroImage,
+        items: combinedItems,
         details: {
           specialEntrees: [...dayDataB.specialEntrees, ...dayDataL.specialEntrees],
           sides: [...dayDataB.sides, ...dayDataL.sides],
           treats: [...dayDataB.treats, ...dayDataL.treats],
           stapleEntrees: [...dayDataB.stapleEntrees, ...dayDataL.stapleEntrees],
+          heroImage: combinedHeroImage,
+          items: combinedItems,
         },
         breakfast: {
           specialEntrees: dayDataB.specialEntrees,
           sides: dayDataB.sides,
           treats: dayDataB.treats,
           stapleEntrees: dayDataB.stapleEntrees,
+          heroImage: dayDataB.heroImage,
+          items: dayDataB.itemsWithImages,
         },
         lunch: {
           specialEntrees: dayDataL.specialEntrees,
           sides: dayDataL.sides,
           treats: dayDataL.treats,
           stapleEntrees: dayDataL.stapleEntrees,
+          heroImage: dayDataL.heroImage,
+          items: dayDataL.itemsWithImages,
         },
       };
     }

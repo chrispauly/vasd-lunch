@@ -75,8 +75,15 @@ export interface AlexaResponseEnvelope {
         ssml?: string;
       };
     };
+    directives?: any[];
     shouldEndSession: boolean;
   };
+}
+
+export function supportsApl(body?: AlexaRequestEnvelope): boolean {
+  return Boolean(
+    body?.context?.System?.device?.supportedInterfaces?.['Alexa.Presentation.APL']
+  );
 }
 
 export function buildAlexaResponse(options: {
@@ -85,8 +92,9 @@ export function buildAlexaResponse(options: {
   shouldEndSession?: boolean;
   sessionAttributes?: Record<string, any>;
   cardTitle?: string;
+  directives?: any[];
 }): AlexaResponseEnvelope {
-  const { speechText, repromptText, shouldEndSession = true, sessionAttributes, cardTitle } = options;
+  const { speechText, repromptText, shouldEndSession = true, sessionAttributes, cardTitle, directives } = options;
 
   const response: AlexaResponseEnvelope['response'] = {
     outputSpeech: {
@@ -111,6 +119,10 @@ export function buildAlexaResponse(options: {
       title: cardTitle,
       content: speechText,
     };
+  }
+
+  if (directives && directives.length > 0) {
+    response.directives = directives;
   }
 
   return {

@@ -6,6 +6,8 @@ export interface LunchItem {
   name: string;
   category: string;
   isStaple?: boolean;
+  imageUrl?: string | null;
+  allergens?: string[];
 }
 
 export interface LunchDayData {
@@ -20,6 +22,8 @@ export interface LunchDayData {
   treats: string[];
   rawItems: LunchItem[];
   hasSchool: boolean;
+  heroImage?: string | null;
+  itemsWithImages?: LunchItem[];
 }
 
 export interface LunchSummaryResult {
@@ -27,28 +31,45 @@ export interface LunchSummaryResult {
   level: LunchLevel;
   levelName: string;
   mealType?: MealType;
+  type?: 'day' | 'week';
   speechText: string;
   summary: string;
   cached: boolean;
   generatedAt: string;
+  heroImage?: string | null;
+  items?: LunchItem[];
   details: {
     specialEntrees: string[];
     sides: string[];
     treats: string[];
     stapleEntrees: string[];
+    heroImage?: string | null;
+    items?: LunchItem[];
   };
   breakfast?: {
     specialEntrees: string[];
     sides: string[];
     treats: string[];
     stapleEntrees: string[];
+    heroImage?: string | null;
+    items?: LunchItem[];
   };
   lunch?: {
     specialEntrees: string[];
     sides: string[];
     treats: string[];
     stapleEntrees: string[];
+    heroImage?: string | null;
+    items?: LunchItem[];
   };
+  days?: Array<{
+    date: string;
+    dayOfWeek: string;
+    summary: string;
+    heroImage?: string | null;
+    breakfast?: { specialEntrees: string[]; heroImage?: string | null };
+    lunch?: { specialEntrees: string[]; heroImage?: string | null };
+  }>;
 }
 
 export interface AlexaFlashBriefingItem {
@@ -58,4 +79,3 @@ export interface AlexaFlashBriefingItem {
   mainText: string;
   redirectionUrl: string;
 }
-
