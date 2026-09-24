@@ -2,7 +2,18 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { LunchDayData } from './types';
 import { getTodayDateStr } from './cache';
 
-const DEFAULT_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash-lite';
+const DEFAULT_MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
+
+/**
+ * Safeguard against Alexa 8-second execution timeout.
+ * If Gemini takes longer than 3.5 seconds, immediately abort and trigger fallback.
+ */
+async function generateContentWithTimeout(model: any, prompt: string, timeoutMs: number = 3500): Promise<any> {
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error(`Gemini timed out after ${timeoutMs}ms`)), timeoutMs)
+  );
+  return Promise.race([model.generateContent(prompt), timeoutPromise]);
+}
 
 function getDateRelativeLabel(dateStr: string): { label: string; dateFormatted: string; isPast: boolean } {
   const todayStr = getTodayDateStr();
@@ -74,7 +85,7 @@ Instructions:
 6. DO NOT use markdown, bullet points, asterisks (*), hashtags, or special characters. It will be read aloud by Alexa Text-to-Speech.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await generateContentWithTimeout(model, prompt, 3500);
     let speechText = result.response.text().trim();
 
     // Clean up any stray markdown formatting that would sound weird on voice assistants
@@ -186,7 +197,7 @@ Instructions:
 6. Example phrasing: "Here is ${weekLabel}'s lunch menu for elementary school. On Monday, the main entree is Pizza Bites. Tuesday features Chicken Nuggets. Wednesday is Cheese Pizza. Thursday is Hot Dogs, and on Friday the entree is Macaroni and Cheese."
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await generateContentWithTimeout(model, prompt, 3500);
     let speechText = result.response.text().trim();
     speechText = speechText.replace(/[*_#`]/g, '').replace(/\s+/g, ' ').trim();
 
@@ -270,7 +281,7 @@ Instructions:
 6. DO NOT use markdown, bullet points, asterisks (*), hashtags, or special characters. It will be read aloud by Alexa Text-to-Speech.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await generateContentWithTimeout(model, prompt, 3500);
     let speechText = result.response.text().trim();
     speechText = speechText.replace(/[*_#`]/g, '').replace(/\s+/g, ' ').trim();
 
@@ -367,7 +378,7 @@ Instructions:
 6. Example: "Tomorrow for elementary school, breakfast features a Birthday Cake Bar with dried cranberries and juice. For lunch, the hot special is mini corn dogs served with vegetarian baked beans and a dragon punch juice box."
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await generateContentWithTimeout(model, prompt, 3500);
     let speechText = result.response.text().trim();
     speechText = speechText.replace(/[*_#`]/g, '').replace(/\s+/g, ' ').trim();
 
@@ -442,7 +453,7 @@ Instructions:
 5. DO NOT use markdown or special characters.
 `;
 
-    const result = await model.generateContent(prompt);
+    const result = await generateContentWithTimeout(model, prompt, 3500);
     let speechText = result.response.text().trim();
     speechText = speechText.replace(/[*_#`]/g, '').replace(/\s+/g, ' ').trim();
     return { speechText, summary: speechText };
