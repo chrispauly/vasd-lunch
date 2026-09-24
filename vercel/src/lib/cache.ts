@@ -26,6 +26,21 @@ function getTmpFilePath(dateStr: string, level: LunchLevel, meal: string = 'lunc
   return path.join('/tmp', `menu_${meal}_${dateStr}_${level}.json`);
 }
 
+function isValidCache(res: LunchSummaryResult | null | undefined): boolean {
+  if (!res || !res.speechText) return false;
+  // If school is closed, items can be empty
+  if (
+    res.schoolClosed ||
+    res.summary?.toLowerCase().includes('no school') ||
+    res.speechText?.toLowerCase().includes('no school')
+  ) {
+    return true;
+  }
+  // If items array is missing or empty, treat as legacy cache so real food images & details are fetched
+  if (!res.items || res.items.length === 0) return false;
+  return true;
+}
+
 export async function getCachedMenu(
   dateStr: string,
   level: LunchLevel,
@@ -41,7 +56,11 @@ export async function getCachedMenu(
   // 1. Check in-memory cache
   if (memoryCache.has(key)) {
     const cached = memoryCache.get(key)!;
-    return { ...cached, cached: true };
+    if (isValidCache(cached)) {
+      return { ...cached, cached: true };
+    } else {
+      memoryCache.delete(key);
+    }
   }
 
   // 2. Check /tmp filesystem (persisted across warm serverless requests)
@@ -50,8 +69,10 @@ export async function getCachedMenu(
     if (fs.existsSync(tmpPath)) {
       const data = fs.readFileSync(tmpPath, 'utf-8');
       const parsed = JSON.parse(data) as LunchSummaryResult;
-      memoryCache.set(key, parsed);
-      return { ...parsed, cached: true };
+      if (isValidCache(parsed)) {
+        memoryCache.set(key, parsed);
+        return { ...parsed, cached: true };
+      }
     }
   } catch (err) {
     // Ignore tmp read errors
@@ -69,8 +90,10 @@ export async function getCachedMenu(
         const json = await res.json();
         if (json.result) {
           const parsed = JSON.parse(json.result) as LunchSummaryResult;
-          memoryCache.set(key, parsed);
-          return { ...parsed, cached: true };
+          if (isValidCache(parsed)) {
+            memoryCache.set(key, parsed);
+            return { ...parsed, cached: true };
+          }
         }
       }
     } catch {

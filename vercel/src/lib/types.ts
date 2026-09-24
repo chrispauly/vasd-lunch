@@ -36,6 +36,7 @@ export interface LunchSummaryResult {
   summary: string;
   cached: boolean;
   generatedAt: string;
+  schoolClosed?: boolean;
   heroImage?: string | null;
   items?: LunchItem[];
   details: {

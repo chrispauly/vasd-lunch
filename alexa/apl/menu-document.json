@@ -38,7 +38,9 @@
     }
   },
   "mainTemplate": {
-    "parameters": ["payload"],
+    "parameters": [
+      "payload"
+    ],
     "items": [
       {
         "type": "Container",
@@ -48,18 +50,18 @@
         "items": [
           {
             "type": "Container",
-            "when": "${@viewportProfile == \"@hubSmall\" || @viewportProfile == \"@hubRound\" || viewport.pixelWidth < 1000}",
+            "when": "${@viewportProfile == \"@hubSmall\" || @viewportProfile == \"@hubRound\" || (viewport.pixelWidth < 960)}",
             "width": "100%",
             "height": "100%",
             "direction": "row",
-            "paddingLeft": "24dp",
-            "paddingRight": "24dp",
-            "paddingTop": "20dp",
-            "paddingBottom": "20dp",
+            "paddingLeft": "20dp",
+            "paddingRight": "20dp",
+            "paddingTop": "16dp",
+            "paddingBottom": "16dp",
             "items": [
               {
                 "type": "Container",
-                "width": "58%",
+                "width": "56%",
                 "height": "100%",
                 "justifyContent": "space-between",
                 "items": [
@@ -74,15 +76,16 @@
                           {
                             "type": "Image",
                             "source": "${payload.menuData.logoUrl}",
-                            "width": "28dp",
-                            "height": "28dp",
+                            "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
+                            "width": "26dp",
+                            "height": "26dp",
                             "marginRight": "8dp"
                           },
                           {
                             "type": "Text",
                             "text": "${payload.menuData.schoolLevel} • ${payload.menuData.mealTypeTitle}",
                             "style": "textSubtitle",
-                            "fontSize": "15dp",
+                            "fontSize": "14dp",
                             "maxLines": 1
                           }
                         ]
@@ -91,23 +94,23 @@
                         "type": "Text",
                         "text": "${payload.menuData.dateText}",
                         "style": "textBody",
-                        "fontSize": "13dp",
+                        "fontSize": "12dp",
                         "marginTop": "2dp"
                       },
                       {
                         "type": "Text",
                         "text": "${payload.menuData.heroItem.name}",
                         "style": "textTitle",
-                        "fontSize": "24dp",
+                        "fontSize": "22dp",
                         "maxLines": 2,
-                        "marginTop": "10dp"
+                        "marginTop": "8dp"
                       },
                       {
                         "type": "Text",
                         "when": "${payload.menuData.heroItem.category != \"\"}",
                         "text": "${payload.menuData.heroItem.category}",
                         "color": "#F97316",
-                        "fontSize": "13dp",
+                        "fontSize": "12dp",
                         "fontWeight": "600",
                         "marginTop": "4dp"
                       }
@@ -137,7 +140,7 @@
               },
               {
                 "type": "Container",
-                "width": "42%",
+                "width": "44%",
                 "height": "100%",
                 "alignItems": "center",
                 "justifyContent": "center",
@@ -145,8 +148,9 @@
                   {
                     "type": "Image",
                     "source": "${payload.menuData.heroItem.imageUrl}",
+                    "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
                     "width": "100%",
-                    "height": "85%",
+                    "height": "170dp",
                     "scale": "best-fill",
                     "borderRadius": "16dp"
                   }
@@ -156,20 +160,21 @@
           },
           {
             "type": "Container",
-            "when": "${@viewportProfile == \"@hubMedium\" || (viewport.pixelWidth >= 1000 && viewport.pixelWidth < 1600 && viewport.pixelHeight < 1000)}",
+            "when": "${@viewportProfile == \"@hubMedium\" || (viewport.pixelWidth >= 960 && viewport.pixelWidth < 1600)}",
             "width": "100%",
             "height": "100%",
-            "paddingLeft": "32dp",
-            "paddingRight": "32dp",
-            "paddingTop": "24dp",
-            "paddingBottom": "24dp",
+            "paddingLeft": "28dp",
+            "paddingRight": "28dp",
+            "paddingTop": "16dp",
+            "paddingBottom": "16dp",
+            "justifyContent": "space-between",
             "items": [
               {
                 "type": "Container",
                 "direction": "row",
                 "justifyContent": "space-between",
                 "alignItems": "center",
-                "height": "44dp",
+                "height": "46dp",
                 "items": [
                   {
                     "type": "Container",
@@ -179,35 +184,116 @@
                       {
                         "type": "Image",
                         "source": "${payload.menuData.logoUrl}",
-                        "width": "36dp",
-                        "height": "36dp",
-                        "marginRight": "12dp"
+                        "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
+                        "width": "32dp",
+                        "height": "32dp",
+                        "marginRight": "10dp"
                       },
                       {
                         "type": "Text",
                         "text": "Verona Area School District",
                         "style": "textTitle",
-                        "fontSize": "20dp"
+                        "fontSize": "18dp"
                       }
                     ]
                   },
                   {
                     "type": "Container",
                     "direction": "row",
-                    "alignItems": "center",
-                    "backgroundColor": "rgba(234, 88, 12, 0.15)",
-                    "borderRadius": "12dp",
-                    "paddingLeft": "14dp",
-                    "paddingRight": "14dp",
-                    "paddingTop": "6dp",
-                    "paddingBottom": "6dp",
+                    "gap": "8dp",
                     "items": [
                       {
-                        "type": "Text",
-                        "text": "${payload.menuData.schoolLevel} • ${payload.menuData.mealTypeTitle}",
-                        "color": "#F97316",
-                        "fontWeight": "700",
-                        "fontSize": "14dp"
+                        "type": "TouchWrapper",
+                        "onPress": {
+                          "type": "SendEvent",
+                          "arguments": [
+                            "selectLevel",
+                            "ES",
+                            "${payload.menuData.currentMealType}"
+                          ]
+                        },
+                        "items": [
+                          {
+                            "type": "Container",
+                            "backgroundColor": "${payload.menuData.currentLevel == \"ES\" ? \"#EA580C\" : \"#1E293B\"}",
+                            "borderRadius": "10dp",
+                            "paddingLeft": "12dp",
+                            "paddingRight": "12dp",
+                            "paddingTop": "6dp",
+                            "paddingBottom": "6dp",
+                            "items": [
+                              {
+                                "type": "Text",
+                                "text": "Elementary",
+                                "color": "#FFFFFF",
+                                "fontWeight": "700",
+                                "fontSize": "13dp"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "TouchWrapper",
+                        "onPress": {
+                          "type": "SendEvent",
+                          "arguments": [
+                            "selectLevel",
+                            "MS",
+                            "${payload.menuData.currentMealType}"
+                          ]
+                        },
+                        "items": [
+                          {
+                            "type": "Container",
+                            "backgroundColor": "${payload.menuData.currentLevel == \"MS\" ? \"#EA580C\" : \"#1E293B\"}",
+                            "borderRadius": "10dp",
+                            "paddingLeft": "12dp",
+                            "paddingRight": "12dp",
+                            "paddingTop": "6dp",
+                            "paddingBottom": "6dp",
+                            "items": [
+                              {
+                                "type": "Text",
+                                "text": "Middle",
+                                "color": "#FFFFFF",
+                                "fontWeight": "700",
+                                "fontSize": "13dp"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "TouchWrapper",
+                        "onPress": {
+                          "type": "SendEvent",
+                          "arguments": [
+                            "selectLevel",
+                            "HS",
+                            "${payload.menuData.currentMealType}"
+                          ]
+                        },
+                        "items": [
+                          {
+                            "type": "Container",
+                            "backgroundColor": "${payload.menuData.currentLevel == \"HS\" ? \"#EA580C\" : \"#1E293B\"}",
+                            "borderRadius": "10dp",
+                            "paddingLeft": "12dp",
+                            "paddingRight": "12dp",
+                            "paddingTop": "6dp",
+                            "paddingBottom": "6dp",
+                            "items": [
+                              {
+                                "type": "Text",
+                                "text": "High School",
+                                "color": "#FFFFFF",
+                                "fontWeight": "700",
+                                "fontSize": "13dp"
+                              }
+                            ]
+                          }
+                        ]
                       }
                     ]
                   }
@@ -217,17 +303,16 @@
                 "type": "Container",
                 "direction": "row",
                 "width": "100%",
-                "height": "calc(100% - 48dp)",
-                "marginTop": "12dp",
+                "height": "calc(100% - 56dp)",
                 "items": [
                   {
                     "type": "Container",
                     "width": "40%",
                     "height": "100%",
                     "backgroundColor": "#1E293B",
-                    "borderRadius": "20dp",
-                    "padding": "20dp",
-                    "marginRight": "20dp",
+                    "borderRadius": "18dp",
+                    "padding": "16dp",
+                    "marginRight": "16dp",
                     "justifyContent": "space-between",
                     "items": [
                       {
@@ -236,21 +321,22 @@
                           {
                             "type": "Image",
                             "source": "${payload.menuData.heroItem.imageUrl}",
+                            "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
                             "width": "100%",
-                            "height": "240dp",
+                            "height": "210dp",
                             "scale": "best-fill",
                             "borderRadius": "14dp"
                           },
                           {
                             "type": "Container",
                             "direction": "row",
-                            "marginTop": "12dp",
+                            "marginTop": "10dp",
                             "items": [
                               {
                                 "type": "Text",
                                 "text": "FEATURED ENTRÉE",
                                 "color": "#F97316",
-                                "fontSize": "12dp",
+                                "fontSize": "11dp",
                                 "fontWeight": "800",
                                 "letterSpacing": "1dp"
                               }
@@ -260,25 +346,41 @@
                             "type": "Text",
                             "text": "${payload.menuData.heroItem.name}",
                             "style": "textTitle",
-                            "fontSize": "24dp",
+                            "fontSize": "22dp",
                             "maxLines": 2,
-                            "marginTop": "4dp"
+                            "marginTop": "2dp"
                           },
                           {
                             "type": "Text",
                             "when": "${payload.menuData.heroItem.allergens != \"\"}",
                             "text": "Allergens: ${payload.menuData.heroItem.allergens}",
                             "style": "textBody",
-                            "fontSize": "13dp",
-                            "marginTop": "6dp"
+                            "fontSize": "12dp",
+                            "marginTop": "4dp"
                           }
                         ]
                       },
                       {
-                        "type": "Text",
-                        "text": "${payload.menuData.dateText}",
-                        "color": "#64748B",
-                        "fontSize": "13dp"
+                        "type": "Container",
+                        "direction": "row",
+                        "justifyContent": "space-between",
+                        "alignItems": "center",
+                        "marginTop": "6dp",
+                        "items": [
+                          {
+                            "type": "Text",
+                            "text": "${payload.menuData.dateText}",
+                            "color": "#64748B",
+                            "fontSize": "12dp"
+                          },
+                          {
+                            "type": "Text",
+                            "text": "${payload.menuData.mealTypeTitle}",
+                            "color": "#F97316",
+                            "fontWeight": "700",
+                            "fontSize": "12dp"
+                          }
+                        ]
                       }
                     ]
                   },
@@ -292,19 +394,113 @@
                         "direction": "row",
                         "justifyContent": "space-between",
                         "alignItems": "center",
-                        "marginBottom": "10dp",
+                        "marginBottom": "8dp",
                         "items": [
                           {
                             "type": "Text",
                             "text": "All Menu Items (Touch to scroll)",
                             "style": "textTitle",
-                            "fontSize": "18dp"
+                            "fontSize": "16dp"
                           },
                           {
-                            "type": "Text",
-                            "text": "${payload.menuData.itemCountText}",
-                            "style": "textBody",
-                            "fontSize": "13dp"
+                            "type": "Container",
+                            "direction": "row",
+                            "gap": "6dp",
+                            "items": [
+                              {
+                                "type": "TouchWrapper",
+                                "onPress": {
+                                  "type": "SendEvent",
+                                  "arguments": [
+                                    "selectMeal",
+                                    "${payload.menuData.currentLevel}",
+                                    "breakfast"
+                                  ]
+                                },
+                                "items": [
+                                  {
+                                    "type": "Container",
+                                    "backgroundColor": "${payload.menuData.currentMealType == \"breakfast\" ? \"#EA580C\" : \"rgba(255,255,255,0.06)\"}",
+                                    "borderRadius": "8dp",
+                                    "paddingLeft": "8dp",
+                                    "paddingRight": "8dp",
+                                    "paddingTop": "4dp",
+                                    "paddingBottom": "4dp",
+                                    "items": [
+                                      {
+                                        "type": "Text",
+                                        "text": "Breakfast",
+                                        "color": "#FFFFFF",
+                                        "fontSize": "11dp",
+                                        "fontWeight": "700"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "TouchWrapper",
+                                "onPress": {
+                                  "type": "SendEvent",
+                                  "arguments": [
+                                    "selectMeal",
+                                    "${payload.menuData.currentLevel}",
+                                    "lunch"
+                                  ]
+                                },
+                                "items": [
+                                  {
+                                    "type": "Container",
+                                    "backgroundColor": "${payload.menuData.currentMealType == \"lunch\" ? \"#EA580C\" : \"rgba(255,255,255,0.06)\"}",
+                                    "borderRadius": "8dp",
+                                    "paddingLeft": "8dp",
+                                    "paddingRight": "8dp",
+                                    "paddingTop": "4dp",
+                                    "paddingBottom": "4dp",
+                                    "items": [
+                                      {
+                                        "type": "Text",
+                                        "text": "Lunch",
+                                        "color": "#FFFFFF",
+                                        "fontSize": "11dp",
+                                        "fontWeight": "700"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "TouchWrapper",
+                                "onPress": {
+                                  "type": "SendEvent",
+                                  "arguments": [
+                                    "selectMeal",
+                                    "${payload.menuData.currentLevel}",
+                                    "both"
+                                  ]
+                                },
+                                "items": [
+                                  {
+                                    "type": "Container",
+                                    "backgroundColor": "${payload.menuData.currentMealType == \"both\" ? \"#EA580C\" : \"rgba(255,255,255,0.06)\"}",
+                                    "borderRadius": "8dp",
+                                    "paddingLeft": "8dp",
+                                    "paddingRight": "8dp",
+                                    "paddingTop": "4dp",
+                                    "paddingBottom": "4dp",
+                                    "items": [
+                                      {
+                                        "type": "Text",
+                                        "text": "Both",
+                                        "color": "#FFFFFF",
+                                        "fontSize": "11dp",
+                                        "fontWeight": "700"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
                           }
                         ]
                       },
@@ -318,47 +514,48 @@
                           {
                             "type": "TouchWrapper",
                             "width": "100%",
-                            "paddingBottom": "10dp",
+                            "paddingBottom": "8dp",
                             "items": [
                               {
                                 "type": "Container",
                                 "direction": "row",
                                 "backgroundColor": "#1E293B",
-                                "borderRadius": "14dp",
-                                "padding": "10dp",
+                                "borderRadius": "12dp",
+                                "padding": "8dp",
                                 "alignItems": "center",
                                 "items": [
                                   {
                                     "type": "Image",
                                     "source": "${data.imageUrl}",
-                                    "width": "64dp",
-                                    "height": "64dp",
+                                    "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
+                                    "width": "60dp",
+                                    "height": "60dp",
                                     "borderRadius": "10dp",
                                     "scale": "best-fill",
-                                    "marginRight": "14dp"
+                                    "marginRight": "12dp"
                                   },
                                   {
                                     "type": "Container",
-                                    "width": "calc(100% - 84dp)",
+                                    "width": "calc(100% - 78dp)",
                                     "items": [
                                       {
                                         "type": "Text",
                                         "text": "${data.name}",
                                         "style": "textTitle",
-                                        "fontSize": "16dp",
+                                        "fontSize": "15dp",
                                         "maxLines": 1
                                       },
                                       {
                                         "type": "Container",
                                         "direction": "row",
                                         "alignItems": "center",
-                                        "marginTop": "3dp",
+                                        "marginTop": "2dp",
                                         "items": [
                                           {
                                             "type": "Text",
                                             "text": "${data.category}",
                                             "color": "#F97316",
-                                            "fontSize": "12dp",
+                                            "fontSize": "11dp",
                                             "fontWeight": "600",
                                             "marginRight": "8dp"
                                           },
@@ -388,21 +585,21 @@
           },
           {
             "type": "Container",
-            "when": "${@viewportProfile == \"@hubLarge\" || @viewportProfile == \"@hubExtraLarge\" || @viewportProfile == \"@tvLandscape\" || viewport.pixelWidth >= 1600 || viewport.pixelHeight >= 1000}",
+            "when": "${@viewportProfile == \"@hubLarge\" || @viewportProfile == \"@hubExtraLarge\" || @viewportProfile == \"@tvLandscape\" || viewport.pixelWidth >= 1600}",
             "width": "100%",
             "height": "100%",
-            "paddingLeft": "48dp",
-            "paddingRight": "48dp",
-            "paddingTop": "36dp",
-            "paddingBottom": "36dp",
+            "paddingLeft": "40dp",
+            "paddingRight": "40dp",
+            "paddingTop": "28dp",
+            "paddingBottom": "28dp",
             "items": [
               {
                 "type": "Container",
                 "direction": "row",
                 "justifyContent": "space-between",
                 "alignItems": "center",
-                "height": "64dp",
-                "marginBottom": "20dp",
+                "height": "56dp",
+                "marginBottom": "16dp",
                 "items": [
                   {
                     "type": "Container",
@@ -412,9 +609,10 @@
                       {
                         "type": "Image",
                         "source": "${payload.menuData.logoUrl}",
-                        "width": "54dp",
-                        "height": "54dp",
-                        "marginRight": "16dp"
+                        "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
+                        "width": "48dp",
+                        "height": "48dp",
+                        "marginRight": "14dp"
                       },
                       {
                         "type": "Container",
@@ -423,13 +621,13 @@
                             "type": "Text",
                             "text": "Verona Area School District",
                             "style": "textTitle",
-                            "fontSize": "26dp"
+                            "fontSize": "24dp"
                           },
                           {
                             "type": "Text",
                             "text": "${payload.menuData.dateText}",
                             "style": "textBody",
-                            "fontSize": "16dp"
+                            "fontSize": "15dp"
                           }
                         ]
                       }
@@ -438,22 +636,100 @@
                   {
                     "type": "Container",
                     "direction": "row",
-                    "alignItems": "center",
-                    "backgroundColor": "rgba(234, 88, 12, 0.2)",
-                    "borderRadius": "16dp",
-                    "borderWidth": "1dp",
-                    "borderColor": "#EA580C",
-                    "paddingLeft": "20dp",
-                    "paddingRight": "20dp",
-                    "paddingTop": "8dp",
-                    "paddingBottom": "8dp",
+                    "gap": "10dp",
                     "items": [
                       {
-                        "type": "Text",
-                        "text": "${payload.menuData.schoolLevel} • ${payload.menuData.mealTypeTitle}",
-                        "color": "#F97316",
-                        "fontWeight": "800",
-                        "fontSize": "18dp"
+                        "type": "TouchWrapper",
+                        "onPress": {
+                          "type": "SendEvent",
+                          "arguments": [
+                            "selectLevel",
+                            "ES",
+                            "${payload.menuData.currentMealType}"
+                          ]
+                        },
+                        "items": [
+                          {
+                            "type": "Container",
+                            "backgroundColor": "${payload.menuData.currentLevel == \"ES\" ? \"#EA580C\" : \"#1E293B\"}",
+                            "borderRadius": "12dp",
+                            "paddingLeft": "16dp",
+                            "paddingRight": "16dp",
+                            "paddingTop": "8dp",
+                            "paddingBottom": "8dp",
+                            "items": [
+                              {
+                                "type": "Text",
+                                "text": "Elementary (K-5)",
+                                "color": "#FFFFFF",
+                                "fontWeight": "800",
+                                "fontSize": "15dp"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "TouchWrapper",
+                        "onPress": {
+                          "type": "SendEvent",
+                          "arguments": [
+                            "selectLevel",
+                            "MS",
+                            "${payload.menuData.currentMealType}"
+                          ]
+                        },
+                        "items": [
+                          {
+                            "type": "Container",
+                            "backgroundColor": "${payload.menuData.currentLevel == \"MS\" ? \"#EA580C\" : \"#1E293B\"}",
+                            "borderRadius": "12dp",
+                            "paddingLeft": "16dp",
+                            "paddingRight": "16dp",
+                            "paddingTop": "8dp",
+                            "paddingBottom": "8dp",
+                            "items": [
+                              {
+                                "type": "Text",
+                                "text": "Middle (6-8)",
+                                "color": "#FFFFFF",
+                                "fontWeight": "800",
+                                "fontSize": "15dp"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "TouchWrapper",
+                        "onPress": {
+                          "type": "SendEvent",
+                          "arguments": [
+                            "selectLevel",
+                            "HS",
+                            "${payload.menuData.currentMealType}"
+                          ]
+                        },
+                        "items": [
+                          {
+                            "type": "Container",
+                            "backgroundColor": "${payload.menuData.currentLevel == \"HS\" ? \"#EA580C\" : \"#1E293B\"}",
+                            "borderRadius": "12dp",
+                            "paddingLeft": "16dp",
+                            "paddingRight": "16dp",
+                            "paddingTop": "8dp",
+                            "paddingBottom": "8dp",
+                            "items": [
+                              {
+                                "type": "Text",
+                                "text": "High School (9-12)",
+                                "color": "#FFFFFF",
+                                "fontWeight": "800",
+                                "fontSize": "15dp"
+                              }
+                            ]
+                          }
+                        ]
                       }
                     ]
                   }
@@ -463,75 +739,62 @@
                 "type": "Container",
                 "direction": "row",
                 "width": "100%",
-                "height": "270dp",
+                "height": "250dp",
                 "backgroundColor": "#1E293B",
-                "borderRadius": "24dp",
-                "padding": "24dp",
-                "marginBottom": "24dp",
+                "borderRadius": "22dp",
+                "padding": "20dp",
+                "marginBottom": "20dp",
                 "items": [
                   {
                     "type": "Image",
                     "source": "${payload.menuData.heroItem.imageUrl}",
-                    "width": "380dp",
+                    "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
+                    "width": "340dp",
                     "height": "100%",
-                    "borderRadius": "18dp",
+                    "borderRadius": "16dp",
                     "scale": "best-fill",
-                    "marginRight": "28dp"
+                    "marginRight": "24dp"
                   },
                   {
                     "type": "Container",
-                    "width": "calc(100% - 410dp)",
+                    "width": "calc(100% - 370dp)",
                     "justifyContent": "space-between",
                     "items": [
                       {
                         "type": "Container",
                         "items": [
                           {
-                            "type": "Container",
-                            "direction": "row",
-                            "alignItems": "center",
-                            "marginBottom": "6dp",
-                            "items": [
-                              {
-                                "type": "Text",
-                                "text": "FEATURED MAIN COURSE",
-                                "color": "#F97316",
-                                "fontSize": "14dp",
-                                "fontWeight": "800",
-                                "letterSpacing": "1dp"
-                              }
-                            ]
+                            "type": "Text",
+                            "text": "FEATURED MAIN COURSE",
+                            "color": "#F97316",
+                            "fontSize": "13dp",
+                            "fontWeight": "800",
+                            "letterSpacing": "1dp",
+                            "marginBottom": "4dp"
                           },
                           {
                             "type": "Text",
                             "text": "${payload.menuData.heroItem.name}",
                             "style": "textTitle",
-                            "fontSize": "34dp",
+                            "fontSize": "30dp",
                             "maxLines": 2
                           },
                           {
                             "type": "Text",
                             "text": "${payload.menuData.summarySnippet}",
                             "color": "#CBD5E1",
-                            "fontSize": "18dp",
+                            "fontSize": "16dp",
                             "maxLines": 3,
-                            "marginTop": "10dp"
+                            "marginTop": "8dp"
                           }
                         ]
                       },
                       {
-                        "type": "Container",
-                        "direction": "row",
-                        "alignItems": "center",
-                        "items": [
-                          {
-                            "type": "Text",
-                            "when": "${payload.menuData.heroItem.allergens != \"\"}",
-                            "text": "Allergens: ${payload.menuData.heroItem.allergens}",
-                            "color": "#94A3B8",
-                            "fontSize": "14dp"
-                          }
-                        ]
+                        "type": "Text",
+                        "when": "${payload.menuData.heroItem.allergens != \"\"}",
+                        "text": "Allergens: ${payload.menuData.heroItem.allergens}",
+                        "color": "#94A3B8",
+                        "fontSize": "13dp"
                       }
                     ]
                   }
@@ -540,26 +803,26 @@
               {
                 "type": "Container",
                 "width": "100%",
-                "height": "calc(100% - 380dp)",
+                "height": "calc(100% - 350dp)",
                 "items": [
                   {
                     "type": "Container",
                     "direction": "row",
                     "justifyContent": "space-between",
                     "alignItems": "center",
-                    "marginBottom": "12dp",
+                    "marginBottom": "10dp",
                     "items": [
                       {
                         "type": "Text",
-                        "text": "Full Menu Items & Sides (Swipe or touch to explore)",
+                        "text": "All Menu Items & Sides (Swipe or touch to explore)",
                         "style": "textTitle",
-                        "fontSize": "22dp"
+                        "fontSize": "20dp"
                       },
                       {
                         "type": "Text",
                         "text": "${payload.menuData.itemCountText}",
                         "style": "textBody",
-                        "fontSize": "15dp"
+                        "fontSize": "14dp"
                       }
                     ]
                   },
@@ -567,30 +830,31 @@
                     "type": "Sequence",
                     "scrollDirection": "horizontal",
                     "width": "100%",
-                    "height": "calc(100% - 38dp)",
+                    "height": "calc(100% - 34dp)",
                     "data": "${payload.menuData.allItems}",
                     "items": [
                       {
                         "type": "TouchWrapper",
-                        "width": "260dp",
+                        "width": "240dp",
                         "height": "100%",
-                        "marginRight": "18dp",
+                        "marginRight": "16dp",
                         "items": [
                           {
                             "type": "Container",
                             "width": "100%",
                             "height": "100%",
                             "backgroundColor": "#1E293B",
-                            "borderRadius": "20dp",
-                            "padding": "14dp",
+                            "borderRadius": "18dp",
+                            "padding": "12dp",
                             "justifyContent": "space-between",
                             "items": [
                               {
                                 "type": "Image",
                                 "source": "${data.imageUrl}",
+                                "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
                                 "width": "100%",
                                 "height": "62%",
-                                "borderRadius": "14dp",
+                                "borderRadius": "12dp",
                                 "scale": "best-fill"
                               },
                               {
@@ -602,14 +866,14 @@
                                     "type": "Text",
                                     "text": "${data.category}",
                                     "color": "#F97316",
-                                    "fontSize": "12dp",
+                                    "fontSize": "11dp",
                                     "fontWeight": "700"
                                   },
                                   {
                                     "type": "Text",
                                     "text": "${data.name}",
                                     "style": "textTitle",
-                                    "fontSize": "18dp",
+                                    "fontSize": "16dp",
                                     "maxLines": 2,
                                     "marginTop": "2dp"
                                   }

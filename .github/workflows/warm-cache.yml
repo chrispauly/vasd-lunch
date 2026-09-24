@@ -1,0 +1,46 @@
+name: Prepopulate Elementary School Menu Cache
+
+on:
+  schedule:
+    # 3:00 AM Central Time (America/Chicago)
+    # Daylight Saving Time (CDT, UTC-5): 08:00 UTC
+    # Standard Time (CST, UTC-6): 09:00 UTC
+    # Running at 08:00 UTC (3:00 AM CDT / 2:00 AM CST) Monday through Friday
+    - cron: '0 8 * * 1-5'
+    # Running at 09:00 UTC (4:00 AM CDT / 3:00 AM CST) Monday through Friday
+    - cron: '0 9 * * 1-5'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions UI
+
+jobs:
+  warm-elementary-cache:
+    name: Warm Elementary Menu Cache (Breakfast, Lunch, Both)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Warm Elementary Breakfast Menu
+        run: |
+          echo "Pre-populating Elementary Breakfast..."
+          HTTP_STATUS=$(curl -s -o /tmp/breakfast.json -w "%{http_code}" "https://vasd-lunch.vercel.app/api/menu?level=ES&meal=breakfast")
+          echo "HTTP Status: $HTTP_STATUS"
+          cat /tmp/breakfast.json | grep -o '"speechText":[^}]*' || cat /tmp/breakfast.json
+
+      - name: Warm Elementary Lunch Menu
+        run: |
+          echo "Pre-populating Elementary Lunch..."
+          HTTP_STATUS=$(curl -s -o /tmp/lunch.json -w "%{http_code}" "https://vasd-lunch.vercel.app/api/menu?level=ES&meal=lunch")
+          echo "HTTP Status: $HTTP_STATUS"
+          cat /tmp/lunch.json | grep -o '"speechText":[^}]*' || cat /tmp/lunch.json
+
+      - name: Warm Elementary Combined Menu (Breakfast + Lunch)
+        run: |
+          echo "Pre-populating Elementary Combined Menu..."
+          HTTP_STATUS=$(curl -s -o /tmp/both.json -w "%{http_code}" "https://vasd-lunch.vercel.app/api/menu?level=ES&meal=both")
+          echo "HTTP Status: $HTTP_STATUS"
+          cat /tmp/both.json | grep -o '"speechText":[^}]*' || cat /tmp/both.json
+
+      - name: Verify Cache Readiness
+        run: |
+          echo "Verifying cached response speed..."
+          TIME=$(curl -s -w "%{time_total}\n" -o /dev/null "https://vasd-lunch.vercel.app/api/menu?level=ES&meal=both")
+          echo "Elementary Combined Menu cached response time: ${TIME}s"

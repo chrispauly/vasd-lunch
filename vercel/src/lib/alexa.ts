@@ -26,12 +26,20 @@ export interface AlexaIntent {
 }
 
 export interface AlexaRequest {
-  type: 'LaunchRequest' | 'IntentRequest' | 'SessionEndedRequest';
+  type:
+    | 'LaunchRequest'
+    | 'IntentRequest'
+    | 'SessionEndedRequest'
+    | 'Alexa.Presentation.APL.UserEvent'
+    | string;
   requestId: string;
   timestamp: string;
   locale?: string;
   intent?: AlexaIntent;
   reason?: string;
+  token?: string;
+  arguments?: any[];
+  source?: any;
 }
 
 export interface AlexaSession {

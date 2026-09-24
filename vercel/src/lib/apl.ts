@@ -4,11 +4,540 @@ const FALLBACK_FOOD_IMG = 'https://vasd-lunch.vercel.app/paw-logo.png';
 const VASD_PAW_LOGO = 'https://vasd-lunch.vercel.app/paw-logo.png';
 
 /**
- * Returns responsive APL Document for Day Menus
- * Adapts seamlessly across:
- * - Hub Small / Round (Echo Show 5, Echo Spot)
- * - Hub Medium (Echo Show 8)
- * - Hub Large / Extra Large / TV (Echo Show 10, Echo Show 15, Fire TV)
+ * Returns the Welcome / Interactive School Selection APL Document.
+ * Renders on LaunchRequest or whenever the user is prompted to choose a school level.
+ * Features large touchscreen cards for Elementary, Middle, and High School,
+ * plus quick touch buttons for Breakfast, Lunch, and Both.
+ */
+export function buildWelcomeAplDocument(): any {
+  return {
+    type: 'APL',
+    version: '2023.3',
+    import: [
+      {
+        name: 'alexa-layouts',
+        version: '1.7.0',
+      },
+    ],
+    theme: 'dark',
+    styles: {
+      textTitle: {
+        values: [
+          {
+            color: '#F8FAFC',
+            fontFamily: 'Amazon Ember, sans-serif',
+            fontWeight: '800',
+          },
+        ],
+      },
+      textSubtitle: {
+        values: [
+          {
+            color: '#F97316',
+            fontFamily: 'Amazon Ember, sans-serif',
+            fontWeight: '600',
+          },
+        ],
+      },
+    },
+    mainTemplate: {
+      parameters: ['payload'],
+      items: [
+        {
+          type: 'Container',
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: '#0B0F19',
+          paddingLeft: '28dp',
+          paddingRight: '28dp',
+          paddingTop: '20dp',
+          paddingBottom: '20dp',
+          justifyContent: 'space-between',
+          items: [
+            // Header Bar
+            {
+              type: 'Container',
+              direction: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              height: '48dp',
+              items: [
+                {
+                  type: 'Container',
+                  direction: 'row',
+                  alignItems: 'center',
+                  items: [
+                    {
+                      type: 'Image',
+                      source: '${payload.welcomeData.logoUrl}',
+                      width: '38dp',
+                      height: '38dp',
+                      marginRight: '12dp',
+                    },
+                    {
+                      type: 'Container',
+                      items: [
+                        {
+                          type: 'Text',
+                          text: 'Verona Area School District',
+                          style: 'textTitle',
+                          fontSize: '20dp',
+                        },
+                        {
+                          type: 'Text',
+                          text: 'Tap your school or meal to view today\'s menu',
+                          color: '#94A3B8',
+                          fontSize: '13dp',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'Container',
+                  direction: 'row',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(249, 115, 22, 0.15)',
+                  borderRadius: '10dp',
+                  paddingLeft: '12dp',
+                  paddingRight: '12dp',
+                  paddingTop: '6dp',
+                  paddingBottom: '6dp',
+                  items: [
+                    {
+                      type: 'Text',
+                      text: '${payload.welcomeData.dateText}',
+                      color: '#F97316',
+                      fontWeight: '700',
+                      fontSize: '13dp',
+                    },
+                  ],
+                },
+              ],
+            },
+
+            // 3 Interactive School Cards (Touchscreen Grid)
+            {
+              type: 'Container',
+              direction: 'row',
+              width: '100%',
+              height: 'calc(100% - 100dp)',
+              justifyContent: 'space-between',
+              items: [
+                // 1. Elementary Card
+                {
+                  type: 'TouchWrapper',
+                  width: '31.5%',
+                  height: '100%',
+                  onPress: {
+                    type: 'SendEvent',
+                    arguments: ['selectLevel', 'ES', 'both'],
+                  },
+                  items: [
+                    {
+                      type: 'Container',
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: '#1E293B',
+                      borderRadius: '18dp',
+                      padding: '16dp',
+                      borderWidth: '2dp',
+                      borderColor: 'rgba(249, 115, 22, 0.3)',
+                      justifyContent: 'space-between',
+                      items: [
+                        {
+                          type: 'Container',
+                          items: [
+                            {
+                              type: 'Container',
+                              direction: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              marginBottom: '8dp',
+                              items: [
+                                {
+                                  type: 'Text',
+                                  text: '🎒 GRADES K-5',
+                                  color: '#F97316',
+                                  fontSize: '12dp',
+                                  fontWeight: '800',
+                                  letterSpacing: '1dp',
+                                },
+                              ],
+                            },
+                            {
+                              type: 'Text',
+                              text: 'Elementary Schools',
+                              style: 'textTitle',
+                              fontSize: '22dp',
+                            },
+                            {
+                              type: 'Text',
+                              text: 'Country View • Glacier Edge • Stoner Prairie • Sugar Creek • New Century • VAIS • CKCS',
+                              color: '#94A3B8',
+                              fontSize: '12dp',
+                              lineHeight: '16dp',
+                              marginTop: '6dp',
+                              maxLines: 3,
+                            },
+                          ],
+                        },
+                        // Quick Touch Buttons Row
+                        {
+                          type: 'Container',
+                          items: [
+                            {
+                              type: 'Text',
+                              text: 'Tap to view menu:',
+                              color: '#64748B',
+                              fontSize: '11dp',
+                              marginBottom: '6dp',
+                            },
+                            {
+                              type: 'Container',
+                              direction: 'row',
+                              justifyContent: 'space-between',
+                              items: [
+                                {
+                                  type: 'TouchWrapper',
+                                  width: '48%',
+                                  onPress: {
+                                    type: 'SendEvent',
+                                    arguments: ['selectLevel', 'ES', 'lunch'],
+                                  },
+                                  items: [
+                                    {
+                                      type: 'Container',
+                                      backgroundColor: 'var(--primary, #EA580C)',
+                                      borderRadius: '10dp',
+                                      padding: '8dp',
+                                      alignItems: 'center',
+                                      items: [
+                                        {
+                                          type: 'Text',
+                                          text: '🍔 Lunch',
+                                          color: '#FFFFFF',
+                                          fontWeight: '700',
+                                          fontSize: '13dp',
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                                {
+                                  type: 'TouchWrapper',
+                                  width: '48%',
+                                  onPress: {
+                                    type: 'SendEvent',
+                                    arguments: ['selectLevel', 'ES', 'breakfast'],
+                                  },
+                                  items: [
+                                    {
+                                      type: 'Container',
+                                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                      borderRadius: '10dp',
+                                      padding: '8dp',
+                                      alignItems: 'center',
+                                      items: [
+                                        {
+                                          type: 'Text',
+                                          text: '🥐 Breakfast',
+                                          color: '#E2E8F0',
+                                          fontWeight: '700',
+                                          fontSize: '13dp',
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+
+                // 2. Middle School Card
+                {
+                  type: 'TouchWrapper',
+                  width: '31.5%',
+                  height: '100%',
+                  onPress: {
+                    type: 'SendEvent',
+                    arguments: ['selectLevel', 'MS', 'both'],
+                  },
+                  items: [
+                    {
+                      type: 'Container',
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: '#1E293B',
+                      borderRadius: '18dp',
+                      padding: '16dp',
+                      borderWidth: '2dp',
+                      borderColor: 'rgba(249, 115, 22, 0.3)',
+                      justifyContent: 'space-between',
+                      items: [
+                        {
+                          type: 'Container',
+                          items: [
+                            {
+                              type: 'Text',
+                              text: '🏫 GRADES 6-8',
+                              color: '#F97316',
+                              fontSize: '12dp',
+                              fontWeight: '800',
+                              letterSpacing: '1dp',
+                              marginBottom: '8dp',
+                            },
+                            {
+                              type: 'Text',
+                              text: 'Middle Schools',
+                              style: 'textTitle',
+                              fontSize: '22dp',
+                            },
+                            {
+                              type: 'Text',
+                              text: 'Badger Ridge Middle School • Savanna Oaks Middle School (Lines 1 & 2)',
+                              color: '#94A3B8',
+                              fontSize: '12dp',
+                              lineHeight: '16dp',
+                              marginTop: '6dp',
+                              maxLines: 3,
+                            },
+                          ],
+                        },
+                        {
+                          type: 'Container',
+                          items: [
+                            {
+                              type: 'Text',
+                              text: 'Tap to view menu:',
+                              color: '#64748B',
+                              fontSize: '11dp',
+                              marginBottom: '6dp',
+                            },
+                            {
+                              type: 'Container',
+                              direction: 'row',
+                              justifyContent: 'space-between',
+                              items: [
+                                {
+                                  type: 'TouchWrapper',
+                                  width: '48%',
+                                  onPress: {
+                                    type: 'SendEvent',
+                                    arguments: ['selectLevel', 'MS', 'lunch'],
+                                  },
+                                  items: [
+                                    {
+                                      type: 'Container',
+                                      backgroundColor: 'var(--primary, #EA580C)',
+                                      borderRadius: '10dp',
+                                      padding: '8dp',
+                                      alignItems: 'center',
+                                      items: [
+                                        {
+                                          type: 'Text',
+                                          text: '🍔 Lunch',
+                                          color: '#FFFFFF',
+                                          fontWeight: '700',
+                                          fontSize: '13dp',
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                                {
+                                  type: 'TouchWrapper',
+                                  width: '48%',
+                                  onPress: {
+                                    type: 'SendEvent',
+                                    arguments: ['selectLevel', 'MS', 'breakfast'],
+                                  },
+                                  items: [
+                                    {
+                                      type: 'Container',
+                                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                      borderRadius: '10dp',
+                                      padding: '8dp',
+                                      alignItems: 'center',
+                                      items: [
+                                        {
+                                          type: 'Text',
+                                          text: '🥐 Breakfast',
+                                          color: '#E2E8F0',
+                                          fontWeight: '700',
+                                          fontSize: '13dp',
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+
+                // 3. High School Card
+                {
+                  type: 'TouchWrapper',
+                  width: '31.5%',
+                  height: '100%',
+                  onPress: {
+                    type: 'SendEvent',
+                    arguments: ['selectLevel', 'HS', 'both'],
+                  },
+                  items: [
+                    {
+                      type: 'Container',
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: '#1E293B',
+                      borderRadius: '18dp',
+                      padding: '16dp',
+                      borderWidth: '2dp',
+                      borderColor: 'rgba(249, 115, 22, 0.3)',
+                      justifyContent: 'space-between',
+                      items: [
+                        {
+                          type: 'Container',
+                          items: [
+                            {
+                              type: 'Text',
+                              text: '🎓 GRADES 9-12',
+                              color: '#F97316',
+                              fontSize: '12dp',
+                              fontWeight: '800',
+                              letterSpacing: '1dp',
+                              marginBottom: '8dp',
+                            },
+                            {
+                              type: 'Text',
+                              text: 'High School',
+                              style: 'textTitle',
+                              fontSize: '22dp',
+                            },
+                            {
+                              type: 'Text',
+                              text: 'Verona Area High School (VAHS) • Cafe, Pizza Line, and Lines 1 & 3',
+                              color: '#94A3B8',
+                              fontSize: '12dp',
+                              lineHeight: '16dp',
+                              marginTop: '6dp',
+                              maxLines: 3,
+                            },
+                          ],
+                        },
+                        {
+                          type: 'Container',
+                          items: [
+                            {
+                              type: 'Text',
+                              text: 'Tap to view menu:',
+                              color: '#64748B',
+                              fontSize: '11dp',
+                              marginBottom: '6dp',
+                            },
+                            {
+                              type: 'Container',
+                              direction: 'row',
+                              justifyContent: 'space-between',
+                              items: [
+                                {
+                                  type: 'TouchWrapper',
+                                  width: '48%',
+                                  onPress: {
+                                    type: 'SendEvent',
+                                    arguments: ['selectLevel', 'HS', 'lunch'],
+                                  },
+                                  items: [
+                                    {
+                                      type: 'Container',
+                                      backgroundColor: 'var(--primary, #EA580C)',
+                                      borderRadius: '10dp',
+                                      padding: '8dp',
+                                      alignItems: 'center',
+                                      items: [
+                                        {
+                                          type: 'Text',
+                                          text: '🍔 Lunch',
+                                          color: '#FFFFFF',
+                                          fontWeight: '700',
+                                          fontSize: '13dp',
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                                {
+                                  type: 'TouchWrapper',
+                                  width: '48%',
+                                  onPress: {
+                                    type: 'SendEvent',
+                                    arguments: ['selectLevel', 'HS', 'breakfast'],
+                                  },
+                                  items: [
+                                    {
+                                      type: 'Container',
+                                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                                      borderRadius: '10dp',
+                                      padding: '8dp',
+                                      alignItems: 'center',
+                                      items: [
+                                        {
+                                          type: 'Text',
+                                          text: '🥐 Breakfast',
+                                          color: '#E2E8F0',
+                                          fontWeight: '700',
+                                          fontSize: '13dp',
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+
+            // Bottom Voice Hint
+            {
+              type: 'Container',
+              direction: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '32dp',
+              items: [
+                {
+                  type: 'Text',
+                  text: '💡 Or say: "What\'s for breakfast tomorrow?" or "What\'s the menu next week?"',
+                  color: '#64748B',
+                  fontSize: '13dp',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  };
+}
+
+/**
+ * Returns responsive APL Document for Day Menus with Interactive Touch Navigation
  */
 export function buildMenuAplDocument(): any {
   return {
@@ -64,19 +593,19 @@ export function buildMenuAplDocument(): any {
             // ==========================================
             {
               type: 'Container',
-              when: '${@viewportProfile == "@hubSmall" || @viewportProfile == "@hubRound" || viewport.pixelWidth < 1000}',
+              when: '${@viewportProfile == "@hubSmall" || @viewportProfile == "@hubRound" || (viewport.pixelWidth < 960)}',
               width: '100%',
               height: '100%',
               direction: 'row',
-              paddingLeft: '24dp',
-              paddingRight: '24dp',
-              paddingTop: '20dp',
-              paddingBottom: '20dp',
+              paddingLeft: '20dp',
+              paddingRight: '20dp',
+              paddingTop: '16dp',
+              paddingBottom: '16dp',
               items: [
                 // Left Column: Text & Badges
                 {
                   type: 'Container',
-                  width: '58%',
+                  width: '56%',
                   height: '100%',
                   justifyContent: 'space-between',
                   items: [
@@ -91,15 +620,16 @@ export function buildMenuAplDocument(): any {
                             {
                               type: 'Image',
                               source: '${payload.menuData.logoUrl}',
-                              width: '28dp',
-                              height: '28dp',
+                              fallbackSource: VASD_PAW_LOGO,
+                              width: '26dp',
+                              height: '26dp',
                               marginRight: '8dp',
                             },
                             {
                               type: 'Text',
                               text: '${payload.menuData.schoolLevel} • ${payload.menuData.mealTypeTitle}',
                               style: 'textSubtitle',
-                              fontSize: '15dp',
+                              fontSize: '14dp',
                               maxLines: 1,
                             },
                           ],
@@ -108,29 +638,28 @@ export function buildMenuAplDocument(): any {
                           type: 'Text',
                           text: '${payload.menuData.dateText}',
                           style: 'textBody',
-                          fontSize: '13dp',
+                          fontSize: '12dp',
                           marginTop: '2dp',
                         },
                         {
                           type: 'Text',
                           text: '${payload.menuData.heroItem.name}',
                           style: 'textTitle',
-                          fontSize: '24dp',
+                          fontSize: '22dp',
                           maxLines: 2,
-                          marginTop: '10dp',
+                          marginTop: '8dp',
                         },
                         {
                           type: 'Text',
                           when: '${payload.menuData.heroItem.category != ""}',
                           text: '${payload.menuData.heroItem.category}',
                           color: '#F97316',
-                          fontSize: '13dp',
+                          fontSize: '12dp',
                           fontWeight: '600',
                           marginTop: '4dp',
                         },
                       ],
                     },
-                    // Bottom Badge
                     {
                       type: 'Container',
                       direction: 'row',
@@ -156,7 +685,7 @@ export function buildMenuAplDocument(): any {
                 // Right Column: Hero Image
                 {
                   type: 'Container',
-                  width: '42%',
+                  width: '44%',
                   height: '100%',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -164,11 +693,11 @@ export function buildMenuAplDocument(): any {
                     {
                       type: 'Image',
                       source: '${payload.menuData.heroItem.imageUrl}',
+                      fallbackSource: VASD_PAW_LOGO,
                       width: '100%',
-                      height: '85%',
+                      height: '170dp',
                       scale: 'best-fill',
                       borderRadius: '16dp',
-                      overlayColor: 'rgba(0,0,0,0.1)',
                     },
                   ],
                 },
@@ -180,21 +709,22 @@ export function buildMenuAplDocument(): any {
             // ==========================================
             {
               type: 'Container',
-              when: '${@viewportProfile == "@hubMedium" || (viewport.pixelWidth >= 1000 && viewport.pixelWidth < 1600 && viewport.pixelHeight < 1000)}',
+              when: '${@viewportProfile == "@hubMedium" || (viewport.pixelWidth >= 960 && viewport.pixelWidth < 1600)}',
               width: '100%',
               height: '100%',
-              paddingLeft: '32dp',
-              paddingRight: '32dp',
-              paddingTop: '24dp',
-              paddingBottom: '24dp',
+              paddingLeft: '28dp',
+              paddingRight: '28dp',
+              paddingTop: '16dp',
+              paddingBottom: '16dp',
+              justifyContent: 'space-between',
               items: [
-                // Top Header
+                // Top Interactive Navigation Bar
                 {
                   type: 'Container',
                   direction: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '44dp',
+                  height: '46dp',
                   items: [
                     {
                       type: 'Container',
@@ -204,35 +734,105 @@ export function buildMenuAplDocument(): any {
                         {
                           type: 'Image',
                           source: '${payload.menuData.logoUrl}',
-                          width: '36dp',
-                          height: '36dp',
-                          marginRight: '12dp',
+                          fallbackSource: VASD_PAW_LOGO,
+                          width: '32dp',
+                          height: '32dp',
+                          marginRight: '10dp',
                         },
                         {
                           type: 'Text',
                           text: 'Verona Area School District',
                           style: 'textTitle',
-                          fontSize: '20dp',
+                          fontSize: '18dp',
                         },
                       ],
                     },
+                    // Interactive Touch School Switcher Buttons
                     {
                       type: 'Container',
                       direction: 'row',
-                      alignItems: 'center',
-                      backgroundColor: 'rgba(234, 88, 12, 0.15)',
-                      borderRadius: '12dp',
-                      paddingLeft: '14dp',
-                      paddingRight: '14dp',
-                      paddingTop: '6dp',
-                      paddingBottom: '6dp',
+                      gap: '8dp',
                       items: [
                         {
-                          type: 'Text',
-                          text: '${payload.menuData.schoolLevel} • ${payload.menuData.mealTypeTitle}',
-                          color: '#F97316',
-                          fontWeight: '700',
-                          fontSize: '14dp',
+                          type: 'TouchWrapper',
+                          onPress: {
+                            type: 'SendEvent',
+                            arguments: ['selectLevel', 'ES', '${payload.menuData.currentMealType}'],
+                          },
+                          items: [
+                            {
+                              type: 'Container',
+                              backgroundColor: '${payload.menuData.currentLevel == "ES" ? "#EA580C" : "#1E293B"}',
+                              borderRadius: '10dp',
+                              paddingLeft: '12dp',
+                              paddingRight: '12dp',
+                              paddingTop: '6dp',
+                              paddingBottom: '6dp',
+                              items: [
+                                {
+                                  type: 'Text',
+                                  text: 'Elementary',
+                                  color: '#FFFFFF',
+                                  fontWeight: '700',
+                                  fontSize: '13dp',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        {
+                          type: 'TouchWrapper',
+                          onPress: {
+                            type: 'SendEvent',
+                            arguments: ['selectLevel', 'MS', '${payload.menuData.currentMealType}'],
+                          },
+                          items: [
+                            {
+                              type: 'Container',
+                              backgroundColor: '${payload.menuData.currentLevel == "MS" ? "#EA580C" : "#1E293B"}',
+                              borderRadius: '10dp',
+                              paddingLeft: '12dp',
+                              paddingRight: '12dp',
+                              paddingTop: '6dp',
+                              paddingBottom: '6dp',
+                              items: [
+                                {
+                                  type: 'Text',
+                                  text: 'Middle',
+                                  color: '#FFFFFF',
+                                  fontWeight: '700',
+                                  fontSize: '13dp',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        {
+                          type: 'TouchWrapper',
+                          onPress: {
+                            type: 'SendEvent',
+                            arguments: ['selectLevel', 'HS', '${payload.menuData.currentMealType}'],
+                          },
+                          items: [
+                            {
+                              type: 'Container',
+                              backgroundColor: '${payload.menuData.currentLevel == "HS" ? "#EA580C" : "#1E293B"}',
+                              borderRadius: '10dp',
+                              paddingLeft: '12dp',
+                              paddingRight: '12dp',
+                              paddingTop: '6dp',
+                              paddingBottom: '6dp',
+                              items: [
+                                {
+                                  type: 'Text',
+                                  text: 'High School',
+                                  color: '#FFFFFF',
+                                  fontWeight: '700',
+                                  fontSize: '13dp',
+                                },
+                              ],
+                            },
+                          ],
                         },
                       ],
                     },
@@ -244,8 +844,7 @@ export function buildMenuAplDocument(): any {
                   type: 'Container',
                   direction: 'row',
                   width: '100%',
-                  height: 'calc(100% - 48dp)',
-                  marginTop: '12dp',
+                  height: 'calc(100% - 56dp)',
                   items: [
                     // Left Column: Featured Main Course Card
                     {
@@ -253,9 +852,9 @@ export function buildMenuAplDocument(): any {
                       width: '40%',
                       height: '100%',
                       backgroundColor: '#1E293B',
-                      borderRadius: '20dp',
-                      padding: '20dp',
-                      marginRight: '20dp',
+                      borderRadius: '18dp',
+                      padding: '16dp',
+                      marginRight: '16dp',
                       justifyContent: 'space-between',
                       items: [
                         {
@@ -264,21 +863,22 @@ export function buildMenuAplDocument(): any {
                             {
                               type: 'Image',
                               source: '${payload.menuData.heroItem.imageUrl}',
+                              fallbackSource: VASD_PAW_LOGO,
                               width: '100%',
-                              height: '240dp',
+                              height: '210dp',
                               scale: 'best-fill',
                               borderRadius: '14dp',
                             },
                             {
                               type: 'Container',
                               direction: 'row',
-                              marginTop: '12dp',
+                              marginTop: '10dp',
                               items: [
                                 {
                                   type: 'Text',
                                   text: 'FEATURED ENTRÉE',
                                   color: '#F97316',
-                                  fontSize: '12dp',
+                                  fontSize: '11dp',
                                   fontWeight: '800',
                                   letterSpacing: '1dp',
                                 },
@@ -288,25 +888,41 @@ export function buildMenuAplDocument(): any {
                               type: 'Text',
                               text: '${payload.menuData.heroItem.name}',
                               style: 'textTitle',
-                              fontSize: '24dp',
+                              fontSize: '22dp',
                               maxLines: 2,
-                              marginTop: '4dp',
+                              marginTop: '2dp',
                             },
                             {
                               type: 'Text',
                               when: '${payload.menuData.heroItem.allergens != ""}',
                               text: 'Allergens: ${payload.menuData.heroItem.allergens}',
                               style: 'textBody',
-                              fontSize: '13dp',
-                              marginTop: '6dp',
+                              fontSize: '12dp',
+                              marginTop: '4dp',
                             },
                           ],
                         },
                         {
-                          type: 'Text',
-                          text: '${payload.menuData.dateText}',
-                          color: '#64748B',
-                          fontSize: '13dp',
+                          type: 'Container',
+                          direction: 'row',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginTop: '6dp',
+                          items: [
+                            {
+                              type: 'Text',
+                              text: '${payload.menuData.dateText}',
+                              color: '#64748B',
+                              fontSize: '12dp',
+                            },
+                            {
+                              type: 'Text',
+                              text: '${payload.menuData.mealTypeTitle}',
+                              color: '#F97316',
+                              fontWeight: '700',
+                              fontSize: '12dp',
+                            },
+                          ],
                         },
                       ],
                     },
@@ -317,24 +933,108 @@ export function buildMenuAplDocument(): any {
                       width: '60%',
                       height: '100%',
                       items: [
+                        // Header with Meal Switcher Chips
                         {
                           type: 'Container',
                           direction: 'row',
                           justifyContent: 'space-between',
                           alignItems: 'center',
-                          marginBottom: '10dp',
+                          marginBottom: '8dp',
                           items: [
                             {
                               type: 'Text',
                               text: 'All Menu Items (Touch to scroll)',
                               style: 'textTitle',
-                              fontSize: '18dp',
+                              fontSize: '16dp',
                             },
+                            // Meal Switcher Chips
                             {
-                              type: 'Text',
-                              text: '${payload.menuData.itemCountText}',
-                              style: 'textBody',
-                              fontSize: '13dp',
+                              type: 'Container',
+                              direction: 'row',
+                              gap: '6dp',
+                              items: [
+                                {
+                                  type: 'TouchWrapper',
+                                  onPress: {
+                                    type: 'SendEvent',
+                                    arguments: ['selectMeal', '${payload.menuData.currentLevel}', 'breakfast'],
+                                  },
+                                  items: [
+                                    {
+                                      type: 'Container',
+                                      backgroundColor: '${payload.menuData.currentMealType == "breakfast" ? "#EA580C" : "rgba(255,255,255,0.06)"}',
+                                      borderRadius: '8dp',
+                                      paddingLeft: '8dp',
+                                      paddingRight: '8dp',
+                                      paddingTop: '4dp',
+                                      paddingBottom: '4dp',
+                                      items: [
+                                        {
+                                          type: 'Text',
+                                          text: 'Breakfast',
+                                          color: '#FFFFFF',
+                                          fontSize: '11dp',
+                                          fontWeight: '700',
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                                {
+                                  type: 'TouchWrapper',
+                                  onPress: {
+                                    type: 'SendEvent',
+                                    arguments: ['selectMeal', '${payload.menuData.currentLevel}', 'lunch'],
+                                  },
+                                  items: [
+                                    {
+                                      type: 'Container',
+                                      backgroundColor: '${payload.menuData.currentMealType == "lunch" ? "#EA580C" : "rgba(255,255,255,0.06)"}',
+                                      borderRadius: '8dp',
+                                      paddingLeft: '8dp',
+                                      paddingRight: '8dp',
+                                      paddingTop: '4dp',
+                                      paddingBottom: '4dp',
+                                      items: [
+                                        {
+                                          type: 'Text',
+                                          text: 'Lunch',
+                                          color: '#FFFFFF',
+                                          fontSize: '11dp',
+                                          fontWeight: '700',
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                                {
+                                  type: 'TouchWrapper',
+                                  onPress: {
+                                    type: 'SendEvent',
+                                    arguments: ['selectMeal', '${payload.menuData.currentLevel}', 'both'],
+                                  },
+                                  items: [
+                                    {
+                                      type: 'Container',
+                                      backgroundColor: '${payload.menuData.currentMealType == "both" ? "#EA580C" : "rgba(255,255,255,0.06)"}',
+                                      borderRadius: '8dp',
+                                      paddingLeft: '8dp',
+                                      paddingRight: '8dp',
+                                      paddingTop: '4dp',
+                                      paddingBottom: '4dp',
+                                      items: [
+                                        {
+                                          type: 'Text',
+                                          text: 'Both',
+                                          color: '#FFFFFF',
+                                          fontSize: '11dp',
+                                          fontWeight: '700',
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                              ],
                             },
                           ],
                         },
@@ -348,47 +1048,48 @@ export function buildMenuAplDocument(): any {
                             {
                               type: 'TouchWrapper',
                               width: '100%',
-                              paddingBottom: '10dp',
+                              paddingBottom: '8dp',
                               items: [
                                 {
                                   type: 'Container',
                                   direction: 'row',
                                   backgroundColor: '#1E293B',
-                                  borderRadius: '14dp',
-                                  padding: '10dp',
+                                  borderRadius: '12dp',
+                                  padding: '8dp',
                                   alignItems: 'center',
                                   items: [
                                     {
                                       type: 'Image',
                                       source: '${data.imageUrl}',
-                                      width: '64dp',
-                                      height: '64dp',
+                                      fallbackSource: VASD_PAW_LOGO,
+                                      width: '60dp',
+                                      height: '60dp',
                                       borderRadius: '10dp',
                                       scale: 'best-fill',
-                                      marginRight: '14dp',
+                                      marginRight: '12dp',
                                     },
                                     {
                                       type: 'Container',
-                                      width: 'calc(100% - 84dp)',
+                                      width: 'calc(100% - 78dp)',
                                       items: [
                                         {
                                           type: 'Text',
                                           text: '${data.name}',
                                           style: 'textTitle',
-                                          fontSize: '16dp',
+                                          fontSize: '15dp',
                                           maxLines: 1,
                                         },
                                         {
                                           type: 'Container',
                                           direction: 'row',
                                           alignItems: 'center',
-                                          marginTop: '3dp',
+                                          marginTop: '2dp',
                                           items: [
                                             {
                                               type: 'Text',
                                               text: '${data.category}',
                                               color: '#F97316',
-                                              fontSize: '12dp',
+                                              fontSize: '11dp',
                                               fontWeight: '600',
                                               marginRight: '8dp',
                                             },
@@ -422,13 +1123,13 @@ export function buildMenuAplDocument(): any {
             // ==========================================
             {
               type: 'Container',
-              when: '${@viewportProfile == "@hubLarge" || @viewportProfile == "@hubExtraLarge" || @viewportProfile == "@tvLandscape" || viewport.pixelWidth >= 1600 || viewport.pixelHeight >= 1000}',
+              when: '${@viewportProfile == "@hubLarge" || @viewportProfile == "@hubExtraLarge" || @viewportProfile == "@tvLandscape" || viewport.pixelWidth >= 1600}',
               width: '100%',
               height: '100%',
-              paddingLeft: '48dp',
-              paddingRight: '48dp',
-              paddingTop: '36dp',
-              paddingBottom: '36dp',
+              paddingLeft: '40dp',
+              paddingRight: '40dp',
+              paddingTop: '28dp',
+              paddingBottom: '28dp',
               items: [
                 // Top Header Bar
                 {
@@ -436,8 +1137,8 @@ export function buildMenuAplDocument(): any {
                   direction: 'row',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  height: '64dp',
-                  marginBottom: '20dp',
+                  height: '56dp',
+                  marginBottom: '16dp',
                   items: [
                     {
                       type: 'Container',
@@ -447,9 +1148,10 @@ export function buildMenuAplDocument(): any {
                         {
                           type: 'Image',
                           source: '${payload.menuData.logoUrl}',
-                          width: '54dp',
-                          height: '54dp',
-                          marginRight: '16dp',
+                          fallbackSource: VASD_PAW_LOGO,
+                          width: '48dp',
+                          height: '48dp',
+                          marginRight: '14dp',
                         },
                         {
                           type: 'Container',
@@ -458,13 +1160,13 @@ export function buildMenuAplDocument(): any {
                               type: 'Text',
                               text: 'Verona Area School District',
                               style: 'textTitle',
-                              fontSize: '26dp',
+                              fontSize: '24dp',
                             },
                             {
                               type: 'Text',
                               text: '${payload.menuData.dateText}',
                               style: 'textBody',
-                              fontSize: '16dp',
+                              fontSize: '15dp',
                             },
                           ],
                         },
@@ -473,22 +1175,88 @@ export function buildMenuAplDocument(): any {
                     {
                       type: 'Container',
                       direction: 'row',
-                      alignItems: 'center',
-                      backgroundColor: 'rgba(234, 88, 12, 0.2)',
-                      borderRadius: '16dp',
-                      borderWidth: '1dp',
-                      borderColor: '#EA580C',
-                      paddingLeft: '20dp',
-                      paddingRight: '20dp',
-                      paddingTop: '8dp',
-                      paddingBottom: '8dp',
+                      gap: '10dp',
                       items: [
                         {
-                          type: 'Text',
-                          text: '${payload.menuData.schoolLevel} • ${payload.menuData.mealTypeTitle}',
-                          color: '#F97316',
-                          fontWeight: '800',
-                          fontSize: '18dp',
+                          type: 'TouchWrapper',
+                          onPress: {
+                            type: 'SendEvent',
+                            arguments: ['selectLevel', 'ES', '${payload.menuData.currentMealType}'],
+                          },
+                          items: [
+                            {
+                              type: 'Container',
+                              backgroundColor: '${payload.menuData.currentLevel == "ES" ? "#EA580C" : "#1E293B"}',
+                              borderRadius: '12dp',
+                              paddingLeft: '16dp',
+                              paddingRight: '16dp',
+                              paddingTop: '8dp',
+                              paddingBottom: '8dp',
+                              items: [
+                                {
+                                  type: 'Text',
+                                  text: 'Elementary (K-5)',
+                                  color: '#FFFFFF',
+                                  fontWeight: '800',
+                                  fontSize: '15dp',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        {
+                          type: 'TouchWrapper',
+                          onPress: {
+                            type: 'SendEvent',
+                            arguments: ['selectLevel', 'MS', '${payload.menuData.currentMealType}'],
+                          },
+                          items: [
+                            {
+                              type: 'Container',
+                              backgroundColor: '${payload.menuData.currentLevel == "MS" ? "#EA580C" : "#1E293B"}',
+                              borderRadius: '12dp',
+                              paddingLeft: '16dp',
+                              paddingRight: '16dp',
+                              paddingTop: '8dp',
+                              paddingBottom: '8dp',
+                              items: [
+                                {
+                                  type: 'Text',
+                                  text: 'Middle (6-8)',
+                                  color: '#FFFFFF',
+                                  fontWeight: '800',
+                                  fontSize: '15dp',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        {
+                          type: 'TouchWrapper',
+                          onPress: {
+                            type: 'SendEvent',
+                            arguments: ['selectLevel', 'HS', '${payload.menuData.currentMealType}'],
+                          },
+                          items: [
+                            {
+                              type: 'Container',
+                              backgroundColor: '${payload.menuData.currentLevel == "HS" ? "#EA580C" : "#1E293B"}',
+                              borderRadius: '12dp',
+                              paddingLeft: '16dp',
+                              paddingRight: '16dp',
+                              paddingTop: '8dp',
+                              paddingBottom: '8dp',
+                              items: [
+                                {
+                                  type: 'Text',
+                                  text: 'High School (9-12)',
+                                  color: '#FFFFFF',
+                                  fontWeight: '800',
+                                  fontSize: '15dp',
+                                },
+                              ],
+                            },
+                          ],
                         },
                       ],
                     },
@@ -500,75 +1268,62 @@ export function buildMenuAplDocument(): any {
                   type: 'Container',
                   direction: 'row',
                   width: '100%',
-                  height: '270dp',
+                  height: '250dp',
                   backgroundColor: '#1E293B',
-                  borderRadius: '24dp',
-                  padding: '24dp',
-                  marginBottom: '24dp',
+                  borderRadius: '22dp',
+                  padding: '20dp',
+                  marginBottom: '20dp',
                   items: [
                     {
                       type: 'Image',
                       source: '${payload.menuData.heroItem.imageUrl}',
-                      width: '380dp',
+                      fallbackSource: VASD_PAW_LOGO,
+                      width: '340dp',
                       height: '100%',
-                      borderRadius: '18dp',
+                      borderRadius: '16dp',
                       scale: 'best-fill',
-                      marginRight: '28dp',
+                      marginRight: '24dp',
                     },
                     {
                       type: 'Container',
-                      width: 'calc(100% - 410dp)',
+                      width: 'calc(100% - 370dp)',
                       justifyContent: 'space-between',
                       items: [
                         {
                           type: 'Container',
                           items: [
                             {
-                              type: 'Container',
-                              direction: 'row',
-                              alignItems: 'center',
-                              marginBottom: '6dp',
-                              items: [
-                                {
-                                  type: 'Text',
-                                  text: 'FEATURED MAIN COURSE',
-                                  color: '#F97316',
-                                  fontSize: '14dp',
-                                  fontWeight: '800',
-                                  letterSpacing: '1dp',
-                                },
-                              ],
+                              type: 'Text',
+                              text: 'FEATURED MAIN COURSE',
+                              color: '#F97316',
+                              fontSize: '13dp',
+                              fontWeight: '800',
+                              letterSpacing: '1dp',
+                              marginBottom: '4dp',
                             },
                             {
                               type: 'Text',
                               text: '${payload.menuData.heroItem.name}',
                               style: 'textTitle',
-                              fontSize: '34dp',
+                              fontSize: '30dp',
                               maxLines: 2,
                             },
                             {
                               type: 'Text',
                               text: '${payload.menuData.summarySnippet}',
                               color: '#CBD5E1',
-                              fontSize: '18dp',
+                              fontSize: '16dp',
                               maxLines: 3,
-                              marginTop: '10dp',
+                              marginTop: '8dp',
                             },
                           ],
                         },
                         {
-                          type: 'Container',
-                          direction: 'row',
-                          alignItems: 'center',
-                          items: [
-                            {
-                              type: 'Text',
-                              when: '${payload.menuData.heroItem.allergens != ""}',
-                              text: 'Allergens: ${payload.menuData.heroItem.allergens}',
-                              color: '#94A3B8',
-                              fontSize: '14dp',
-                            },
-                          ],
+                          type: 'Text',
+                          when: '${payload.menuData.heroItem.allergens != ""}',
+                          text: 'Allergens: ${payload.menuData.heroItem.allergens}',
+                          color: '#94A3B8',
+                          fontSize: '13dp',
                         },
                       ],
                     },
@@ -579,26 +1334,26 @@ export function buildMenuAplDocument(): any {
                 {
                   type: 'Container',
                   width: '100%',
-                  height: 'calc(100% - 380dp)',
+                  height: 'calc(100% - 350dp)',
                   items: [
                     {
                       type: 'Container',
                       direction: 'row',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      marginBottom: '12dp',
+                      marginBottom: '10dp',
                       items: [
                         {
                           type: 'Text',
-                          text: 'Full Menu Items & Sides (Swipe or touch to explore)',
+                          text: 'All Menu Items & Sides (Swipe or touch to explore)',
                           style: 'textTitle',
-                          fontSize: '22dp',
+                          fontSize: '20dp',
                         },
                         {
                           type: 'Text',
                           text: '${payload.menuData.itemCountText}',
                           style: 'textBody',
-                          fontSize: '15dp',
+                          fontSize: '14dp',
                         },
                       ],
                     },
@@ -606,30 +1361,31 @@ export function buildMenuAplDocument(): any {
                       type: 'Sequence',
                       scrollDirection: 'horizontal',
                       width: '100%',
-                      height: 'calc(100% - 38dp)',
+                      height: 'calc(100% - 34dp)',
                       data: '${payload.menuData.allItems}',
                       items: [
                         {
                           type: 'TouchWrapper',
-                          width: '260dp',
+                          width: '240dp',
                           height: '100%',
-                          marginRight: '18dp',
+                          marginRight: '16dp',
                           items: [
                             {
                               type: 'Container',
                               width: '100%',
                               height: '100%',
                               backgroundColor: '#1E293B',
-                              borderRadius: '20dp',
-                              padding: '14dp',
+                              borderRadius: '18dp',
+                              padding: '12dp',
                               justifyContent: 'space-between',
                               items: [
                                 {
                                   type: 'Image',
                                   source: '${data.imageUrl}',
+                                  fallbackSource: VASD_PAW_LOGO,
                                   width: '100%',
                                   height: '62%',
-                                  borderRadius: '14dp',
+                                  borderRadius: '12dp',
                                   scale: 'best-fill',
                                 },
                                 {
@@ -641,14 +1397,14 @@ export function buildMenuAplDocument(): any {
                                       type: 'Text',
                                       text: '${data.category}',
                                       color: '#F97316',
-                                      fontSize: '12dp',
+                                      fontSize: '11dp',
                                       fontWeight: '700',
                                     },
                                     {
                                       type: 'Text',
                                       text: '${data.name}',
                                       style: 'textTitle',
-                                      fontSize: '18dp',
+                                      fontSize: '16dp',
                                       maxLines: 2,
                                       marginTop: '2dp',
                                     },
@@ -713,7 +1469,7 @@ export function buildWeeklyAplDocument(): any {
           width: '100vw',
           height: '100vh',
           backgroundColor: '#090D16',
-          padding: '28dp',
+          padding: '24dp',
           items: [
             // Header
             {
@@ -721,8 +1477,8 @@ export function buildWeeklyAplDocument(): any {
               direction: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              height: '52dp',
-              marginBottom: '16dp',
+              height: '48dp',
+              marginBottom: '14dp',
               items: [
                 {
                   type: 'Container',
@@ -732,15 +1488,16 @@ export function buildWeeklyAplDocument(): any {
                     {
                       type: 'Image',
                       source: '${payload.weeklyData.logoUrl}',
-                      width: '40dp',
-                      height: '40dp',
+                      fallbackSource: VASD_PAW_LOGO,
+                      width: '36dp',
+                      height: '36dp',
                       marginRight: '12dp',
                     },
                     {
                       type: 'Text',
                       text: 'Verona Area School District — Weekly Forecast',
                       style: 'textTitle',
-                      fontSize: '22dp',
+                      fontSize: '20dp',
                     },
                   ],
                 },
@@ -749,7 +1506,7 @@ export function buildWeeklyAplDocument(): any {
                   text: '${payload.weeklyData.schoolLevel} • ${payload.weeklyData.weekLabel}',
                   color: '#F97316',
                   fontWeight: '700',
-                  fontSize: '16dp',
+                  fontSize: '15dp',
                 },
               ],
             },
@@ -759,22 +1516,22 @@ export function buildWeeklyAplDocument(): any {
               type: 'Sequence',
               scrollDirection: 'horizontal',
               width: '100%',
-              height: 'calc(100% - 70dp)',
+              height: 'calc(100% - 66dp)',
               data: '${payload.weeklyData.days}',
               items: [
                 {
                   type: 'TouchWrapper',
-                  width: '270dp',
+                  width: '260dp',
                   height: '100%',
-                  marginRight: '18dp',
+                  marginRight: '16dp',
                   items: [
                     {
                       type: 'Container',
                       width: '100%',
                       height: '100%',
                       backgroundColor: '#1E293B',
-                      borderRadius: '20dp',
-                      padding: '16dp',
+                      borderRadius: '18dp',
+                      padding: '14dp',
                       justifyContent: 'space-between',
                       items: [
                         {
@@ -784,14 +1541,14 @@ export function buildWeeklyAplDocument(): any {
                               type: 'Text',
                               text: '${data.dayOfWeek}',
                               color: '#F97316',
-                              fontSize: '16dp',
+                              fontSize: '15dp',
                               fontWeight: '800',
                             },
                             {
                               type: 'Text',
                               text: '${data.dateText}',
                               color: '#94A3B8',
-                              fontSize: '13dp',
+                              fontSize: '12dp',
                               marginTop: '2dp',
                             },
                           ],
@@ -799,9 +1556,10 @@ export function buildWeeklyAplDocument(): any {
                         {
                           type: 'Image',
                           source: '${data.imageUrl}',
+                          fallbackSource: VASD_PAW_LOGO,
                           width: '100%',
                           height: '55%',
-                          borderRadius: '14dp',
+                          borderRadius: '12dp',
                           scale: 'best-fill',
                         },
                         {
@@ -811,7 +1569,7 @@ export function buildWeeklyAplDocument(): any {
                               type: 'Text',
                               text: '${data.entreeName}',
                               style: 'textTitle',
-                              fontSize: '18dp',
+                              fontSize: '16dp',
                               maxLines: 2,
                             },
                             {
@@ -819,7 +1577,7 @@ export function buildWeeklyAplDocument(): any {
                               when: '${data.secondaryText != ""}',
                               text: '${data.secondaryText}',
                               color: '#64748B',
-                              fontSize: '12dp',
+                              fontSize: '11dp',
                               maxLines: 1,
                               marginTop: '2dp',
                             },
@@ -834,6 +1592,28 @@ export function buildWeeklyAplDocument(): any {
           ],
         },
       ],
+    },
+  };
+}
+
+/**
+ * Builds APL Datasource for the Welcome / Interactive School Selection screen
+ */
+export function buildWelcomeAplDatasource(
+  baseUrl: string = 'https://vasd-lunch.vercel.app'
+): any {
+  const d = new Date();
+  const dateText = d.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  return {
+    welcomeData: {
+      title: 'Verona School Lunch',
+      dateText,
+      logoUrl: `${baseUrl}/paw-logo.png`,
     },
   };
 }
@@ -914,7 +1694,9 @@ export function buildMenuAplDatasource(
     menuData: {
       title: 'Verona School Lunch',
       schoolLevel: result.levelName,
+      currentLevel: result.level || 'ES',
       mealTypeTitle: mealTitle,
+      currentMealType: result.mealType || 'lunch',
       dateText,
       logoUrl,
       heroItem,
