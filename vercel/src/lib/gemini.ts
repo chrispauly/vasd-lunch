@@ -8,7 +8,7 @@ const DEFAULT_MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
  * Safeguard against Alexa 8-second execution timeout.
  * If Gemini takes longer than 3.5 seconds, immediately abort and trigger fallback.
  */
-async function generateContentWithTimeout(model: any, prompt: string, timeoutMs: number = 3500): Promise<any> {
+async function generateContentWithTimeout(model: any, prompt: string, timeoutMs: number = 2800): Promise<any> {
   const timeoutPromise = new Promise((_, reject) =>
     setTimeout(() => reject(new Error(`Gemini timed out after ${timeoutMs}ms`)), timeoutMs)
   );

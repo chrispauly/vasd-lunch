@@ -46,11 +46,6 @@ export async function getCachedMenu(
   level: LunchLevel,
   meal: string = 'lunch'
 ): Promise<LunchSummaryResult | null> {
-  // Caching is only active for the current day
-  if (!isToday(dateStr)) {
-    return null;
-  }
-
   const key = getCacheKey(dateStr, level, meal);
 
   // 1. Check in-memory cache
@@ -110,11 +105,6 @@ export async function setCachedMenu(
   meal: string,
   result: LunchSummaryResult
 ): Promise<void> {
-  // Only save cache if it's the current day
-  if (!isToday(dateStr)) {
-    return;
-  }
-
   const key = getCacheKey(dateStr, level, meal);
 
   // 1. Save to in-memory
