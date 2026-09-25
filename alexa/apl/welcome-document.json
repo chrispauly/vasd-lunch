@@ -26,6 +26,15 @@
           "fontWeight": "600"
         }
       ]
+    },
+    "textBody": {
+      "values": [
+        {
+          "color": "#94A3B8",
+          "fontFamily": "Amazon Ember, sans-serif",
+          "fontWeight": "400"
+        }
+      ]
     }
   },
   "mainTemplate": {
@@ -37,46 +46,95 @@
         "type": "Container",
         "width": "100vw",
         "height": "100vh",
-        "backgroundColor": "#0B0F19",
-        "paddingLeft": "28dp",
-        "paddingRight": "28dp",
-        "paddingTop": "20dp",
-        "paddingBottom": "20dp",
-        "justifyContent": "space-between",
+        "backgroundColor": "#080C14",
         "items": [
           {
-            "type": "Container",
-            "direction": "row",
-            "justifyContent": "space-between",
-            "alignItems": "center",
-            "height": "48dp",
-            "items": [
+            "type": "Pager",
+            "id": "wizardPager",
+            "width": "100%",
+            "height": "100%",
+            "navigation": "none",
+            "initialPage": "${payload.wizardData.initialPage || 0}",
+            "onMount": [
               {
-                "type": "Container",
-                "direction": "row",
-                "alignItems": "center",
-                "items": [
+                "when": "${payload.wizardData.showSplash != false}",
+                "type": "Sequential",
+                "commands": [
                   {
-                    "type": "Image",
-                    "source": "${payload.welcomeData.logoUrl}",
-                    "width": "38dp",
-                    "height": "38dp",
-                    "marginRight": "12dp"
+                    "type": "Idle",
+                    "delay": 1300
                   },
                   {
+                    "type": "SetPage",
+                    "componentId": "wizardPager",
+                    "position": "relative",
+                    "value": 1
+                  }
+                ]
+              }
+            ],
+            "items": [
+              {
+                "type": "TouchWrapper",
+                "width": "100%",
+                "height": "100%",
+                "onPress": {
+                  "type": "SetPage",
+                  "componentId": "wizardPager",
+                  "position": "relative",
+                  "value": 1
+                },
+                "items": [
+                  {
                     "type": "Container",
+                    "width": "100%",
+                    "height": "100%",
+                    "alignItems": "center",
+                    "justifyContent": "center",
+                    "backgroundColor": "#080C14",
                     "items": [
+                      {
+                        "type": "Image",
+                        "source": "${payload.wizardData.logoUrl}",
+                        "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
+                        "width": "130dp",
+                        "height": "130dp",
+                        "marginBottom": "20dp"
+                      },
                       {
                         "type": "Text",
                         "text": "Verona Area School District",
                         "style": "textTitle",
-                        "fontSize": "20dp"
+                        "fontSize": "32dp",
+                        "textAlign": "center"
                       },
                       {
                         "type": "Text",
-                        "text": "Tap your school or meal to view today's menu",
-                        "color": "#94A3B8",
-                        "fontSize": "13dp"
+                        "text": "Daily School Menus • Breakfast & Lunch",
+                        "color": "#F97316",
+                        "fontSize": "18dp",
+                        "fontWeight": "700",
+                        "marginTop": "8dp",
+                        "textAlign": "center"
+                      },
+                      {
+                        "type": "Container",
+                        "marginTop": "24dp",
+                        "backgroundColor": "rgba(249, 115, 22, 0.15)",
+                        "borderRadius": "20dp",
+                        "paddingLeft": "18dp",
+                        "paddingRight": "18dp",
+                        "paddingTop": "8dp",
+                        "paddingBottom": "8dp",
+                        "items": [
+                          {
+                            "type": "Text",
+                            "text": "Touch anywhere to start →",
+                            "color": "#FDBA74",
+                            "fontSize": "13dp",
+                            "fontWeight": "600"
+                          }
+                        ]
                       }
                     ]
                   }
@@ -84,438 +142,956 @@
               },
               {
                 "type": "Container",
-                "direction": "row",
-                "alignItems": "center",
-                "backgroundColor": "rgba(249, 115, 22, 0.15)",
-                "borderRadius": "10dp",
-                "paddingLeft": "12dp",
-                "paddingRight": "12dp",
-                "paddingTop": "6dp",
-                "paddingBottom": "6dp",
-                "items": [
-                  {
-                    "type": "Text",
-                    "text": "${payload.welcomeData.dateText}",
-                    "color": "#F97316",
-                    "fontWeight": "700",
-                    "fontSize": "13dp"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "Container",
-            "direction": "row",
-            "width": "100%",
-            "height": "calc(100% - 100dp)",
-            "justifyContent": "space-between",
-            "items": [
-              {
-                "type": "TouchWrapper",
-                "width": "31.5%",
+                "width": "100%",
                 "height": "100%",
-                "onPress": {
-                  "type": "SendEvent",
-                  "arguments": [
-                    "selectLevel",
-                    "ES",
-                    "both"
-                  ]
-                },
+                "paddingLeft": "24dp",
+                "paddingRight": "24dp",
+                "paddingTop": "16dp",
+                "paddingBottom": "16dp",
+                "justifyContent": "space-between",
                 "items": [
                   {
                     "type": "Container",
-                    "width": "100%",
-                    "height": "100%",
-                    "backgroundColor": "#1E293B",
-                    "borderRadius": "18dp",
-                    "padding": "16dp",
-                    "borderWidth": "2dp",
-                    "borderColor": "rgba(249, 115, 22, 0.3)",
+                    "direction": "row",
                     "justifyContent": "space-between",
+                    "alignItems": "center",
+                    "height": "48dp",
                     "items": [
                       {
                         "type": "Container",
+                        "direction": "row",
+                        "alignItems": "center",
                         "items": [
                           {
-                            "type": "Container",
-                            "direction": "row",
-                            "justifyContent": "space-between",
-                            "alignItems": "center",
-                            "marginBottom": "8dp",
-                            "items": [
-                              {
-                                "type": "Text",
-                                "text": "🎒 GRADES K-5",
-                                "color": "#F97316",
-                                "fontSize": "12dp",
-                                "fontWeight": "800",
-                                "letterSpacing": "1dp"
-                              }
-                            ]
+                            "type": "Image",
+                            "source": "${payload.wizardData.logoUrl}",
+                            "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
+                            "width": "32dp",
+                            "height": "32dp",
+                            "marginRight": "10dp"
                           },
                           {
                             "type": "Text",
-                            "text": "Elementary Schools",
+                            "text": "Verona Area School District",
                             "style": "textTitle",
-                            "fontSize": "22dp"
-                          },
-                          {
-                            "type": "Text",
-                            "text": "Country View • Glacier Edge • Stoner Prairie • Sugar Creek • New Century • VAIS • CKCS",
-                            "color": "#94A3B8",
-                            "fontSize": "12dp",
-                            "lineHeight": "16dp",
-                            "marginTop": "6dp",
-                            "maxLines": 3
+                            "fontSize": "18dp"
                           }
                         ]
                       },
                       {
                         "type": "Container",
+                        "backgroundColor": "rgba(249, 115, 22, 0.2)",
+                        "borderRadius": "10dp",
+                        "paddingLeft": "12dp",
+                        "paddingRight": "12dp",
+                        "paddingTop": "6dp",
+                        "paddingBottom": "6dp",
                         "items": [
                           {
                             "type": "Text",
-                            "text": "Tap to view menu:",
-                            "color": "#64748B",
-                            "fontSize": "11dp",
-                            "marginBottom": "6dp"
+                            "text": "STEP 1 OF 3 • SELECT SCHOOL",
+                            "color": "#F97316",
+                            "fontSize": "12dp",
+                            "fontWeight": "800",
+                            "letterSpacing": "1dp"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Container",
+                    "direction": "row",
+                    "width": "100%",
+                    "height": "calc(100% - 90dp)",
+                    "gap": "16dp",
+                    "items": [
+                      {
+                        "type": "TouchWrapper",
+                        "grow": 1,
+                        "height": "100%",
+                        "onPress": [
+                          {
+                            "type": "SendEvent",
+                            "arguments": [
+                              "selectLevel",
+                              "ES"
+                            ]
                           },
                           {
+                            "type": "SetPage",
+                            "componentId": "wizardPager",
+                            "value": 2
+                          }
+                        ],
+                        "items": [
+                          {
                             "type": "Container",
-                            "direction": "row",
+                            "width": "100%",
+                            "height": "100%",
+                            "backgroundColor": "#1E293B",
+                            "borderRadius": "20dp",
+                            "padding": "20dp",
+                            "borderWidth": "2dp",
+                            "borderColor": "rgba(249, 115, 22, 0.4)",
                             "justifyContent": "space-between",
                             "items": [
                               {
-                                "type": "TouchWrapper",
-                                "width": "48%",
-                                "onPress": {
-                                  "type": "SendEvent",
-                                  "arguments": [
-                                    "selectLevel",
-                                    "ES",
-                                    "lunch"
-                                  ]
-                                },
+                                "type": "Container",
                                 "items": [
                                   {
-                                    "type": "Container",
-                                    "backgroundColor": "var(--primary, #EA580C)",
-                                    "borderRadius": "10dp",
-                                    "padding": "8dp",
-                                    "alignItems": "center",
-                                    "items": [
-                                      {
-                                        "type": "Text",
-                                        "text": "🍔 Lunch",
-                                        "color": "#FFFFFF",
-                                        "fontWeight": "700",
-                                        "fontSize": "13dp"
-                                      }
-                                    ]
+                                    "type": "Text",
+                                    "text": "GRADES K-5",
+                                    "color": "#F97316",
+                                    "fontSize": "12dp",
+                                    "fontWeight": "800",
+                                    "letterSpacing": "1dp",
+                                    "marginBottom": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Elementary",
+                                    "style": "textTitle",
+                                    "fontSize": "26dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS",
+                                    "color": "#94A3B8",
+                                    "fontSize": "13dp",
+                                    "lineHeight": "18dp",
+                                    "marginTop": "8dp",
+                                    "maxLines": 4
                                   }
                                 ]
                               },
                               {
-                                "type": "TouchWrapper",
-                                "width": "48%",
-                                "onPress": {
-                                  "type": "SendEvent",
-                                  "arguments": [
-                                    "selectLevel",
-                                    "ES",
-                                    "breakfast"
-                                  ]
-                                },
+                                "type": "Container",
+                                "backgroundColor": "#EA580C",
+                                "borderRadius": "10dp",
+                                "padding": "10dp",
+                                "alignItems": "center",
                                 "items": [
                                   {
-                                    "type": "Container",
-                                    "backgroundColor": "rgba(255, 255, 255, 0.08)",
-                                    "borderRadius": "10dp",
-                                    "padding": "8dp",
-                                    "alignItems": "center",
-                                    "items": [
-                                      {
-                                        "type": "Text",
-                                        "text": "🥐 Breakfast",
-                                        "color": "#E2E8F0",
-                                        "fontWeight": "700",
-                                        "fontSize": "13dp"
-                                      }
-                                    ]
+                                    "type": "Text",
+                                    "text": "Select Elementary →",
+                                    "color": "#FFFFFF",
+                                    "fontWeight": "700",
+                                    "fontSize": "13dp"
                                   }
                                 ]
                               }
                             ]
                           }
                         ]
+                      },
+                      {
+                        "type": "TouchWrapper",
+                        "grow": 1,
+                        "height": "100%",
+                        "onPress": [
+                          {
+                            "type": "SendEvent",
+                            "arguments": [
+                              "selectLevel",
+                              "MS"
+                            ]
+                          },
+                          {
+                            "type": "SetPage",
+                            "componentId": "wizardPager",
+                            "value": 2
+                          }
+                        ],
+                        "items": [
+                          {
+                            "type": "Container",
+                            "width": "100%",
+                            "height": "100%",
+                            "backgroundColor": "#1E293B",
+                            "borderRadius": "20dp",
+                            "padding": "20dp",
+                            "borderWidth": "2dp",
+                            "borderColor": "rgba(249, 115, 22, 0.4)",
+                            "justifyContent": "space-between",
+                            "items": [
+                              {
+                                "type": "Container",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "GRADES 6-8",
+                                    "color": "#F97316",
+                                    "fontSize": "12dp",
+                                    "fontWeight": "800",
+                                    "letterSpacing": "1dp",
+                                    "marginBottom": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Middle School",
+                                    "style": "textTitle",
+                                    "fontSize": "26dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Badger Ridge Middle School • Core Knowledge Charter School (CKCS)",
+                                    "color": "#94A3B8",
+                                    "fontSize": "13dp",
+                                    "lineHeight": "18dp",
+                                    "marginTop": "8dp",
+                                    "maxLines": 4
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Container",
+                                "backgroundColor": "#EA580C",
+                                "borderRadius": "10dp",
+                                "padding": "10dp",
+                                "alignItems": "center",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "Select Middle School →",
+                                    "color": "#FFFFFF",
+                                    "fontWeight": "700",
+                                    "fontSize": "13dp"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "TouchWrapper",
+                        "grow": 1,
+                        "height": "100%",
+                        "onPress": [
+                          {
+                            "type": "SendEvent",
+                            "arguments": [
+                              "selectLevel",
+                              "HS"
+                            ]
+                          },
+                          {
+                            "type": "SetPage",
+                            "componentId": "wizardPager",
+                            "value": 2
+                          }
+                        ],
+                        "items": [
+                          {
+                            "type": "Container",
+                            "width": "100%",
+                            "height": "100%",
+                            "backgroundColor": "#1E293B",
+                            "borderRadius": "20dp",
+                            "padding": "20dp",
+                            "borderWidth": "2dp",
+                            "borderColor": "rgba(249, 115, 22, 0.4)",
+                            "justifyContent": "space-between",
+                            "items": [
+                              {
+                                "type": "Container",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "GRADES 9-12",
+                                    "color": "#F97316",
+                                    "fontSize": "12dp",
+                                    "fontWeight": "800",
+                                    "letterSpacing": "1dp",
+                                    "marginBottom": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "High School",
+                                    "style": "textTitle",
+                                    "fontSize": "26dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Verona Area High School (VAHS) • Wildcat Cafe, Pizza Line & Main Lines",
+                                    "color": "#94A3B8",
+                                    "fontSize": "13dp",
+                                    "lineHeight": "18dp",
+                                    "marginTop": "8dp",
+                                    "maxLines": 4
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Container",
+                                "backgroundColor": "#EA580C",
+                                "borderRadius": "10dp",
+                                "padding": "10dp",
+                                "alignItems": "center",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "Select High School →",
+                                    "color": "#FFFFFF",
+                                    "fontWeight": "700",
+                                    "fontSize": "13dp"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Container",
+                    "direction": "row",
+                    "justifyContent": "center",
+                    "alignItems": "center",
+                    "height": "28dp",
+                    "items": [
+                      {
+                        "type": "Text",
+                        "text": "💡 Or say: 'Elementary', 'Middle School', or 'High School'",
+                        "color": "#64748B",
+                        "fontSize": "12dp"
                       }
                     ]
                   }
                 ]
               },
               {
-                "type": "TouchWrapper",
-                "width": "31.5%",
+                "type": "Container",
+                "width": "100%",
                 "height": "100%",
-                "onPress": {
-                  "type": "SendEvent",
-                  "arguments": [
-                    "selectLevel",
-                    "MS",
-                    "both"
-                  ]
-                },
+                "paddingLeft": "24dp",
+                "paddingRight": "24dp",
+                "paddingTop": "16dp",
+                "paddingBottom": "16dp",
+                "justifyContent": "space-between",
                 "items": [
                   {
                     "type": "Container",
-                    "width": "100%",
-                    "height": "100%",
-                    "backgroundColor": "#1E293B",
-                    "borderRadius": "18dp",
-                    "padding": "16dp",
-                    "borderWidth": "2dp",
-                    "borderColor": "rgba(249, 115, 22, 0.3)",
+                    "direction": "row",
                     "justifyContent": "space-between",
+                    "alignItems": "center",
+                    "height": "48dp",
                     "items": [
                       {
                         "type": "Container",
+                        "direction": "row",
+                        "alignItems": "center",
                         "items": [
                           {
-                            "type": "Text",
-                            "text": "🏫 GRADES 6-8",
-                            "color": "#F97316",
-                            "fontSize": "12dp",
-                            "fontWeight": "800",
-                            "letterSpacing": "1dp",
-                            "marginBottom": "8dp"
+                            "type": "Image",
+                            "source": "${payload.wizardData.logoUrl}",
+                            "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
+                            "width": "32dp",
+                            "height": "32dp",
+                            "marginRight": "10dp"
                           },
                           {
                             "type": "Text",
-                            "text": "Middle Schools",
+                            "text": "${payload.wizardData.selectedLevelName || 'Verona Schools'}",
                             "style": "textTitle",
-                            "fontSize": "22dp"
-                          },
-                          {
-                            "type": "Text",
-                            "text": "Badger Ridge Middle School • Savanna Oaks Middle School (Lines 1 & 2)",
-                            "color": "#94A3B8",
-                            "fontSize": "12dp",
-                            "lineHeight": "16dp",
-                            "marginTop": "6dp",
-                            "maxLines": 3
+                            "fontSize": "18dp"
                           }
                         ]
                       },
                       {
                         "type": "Container",
+                        "backgroundColor": "rgba(249, 115, 22, 0.2)",
+                        "borderRadius": "10dp",
+                        "paddingLeft": "12dp",
+                        "paddingRight": "12dp",
+                        "paddingTop": "6dp",
+                        "paddingBottom": "6dp",
                         "items": [
                           {
                             "type": "Text",
-                            "text": "Tap to view menu:",
-                            "color": "#64748B",
-                            "fontSize": "11dp",
-                            "marginBottom": "6dp"
+                            "text": "STEP 2 OF 3 • SELECT MEAL TYPE",
+                            "color": "#F97316",
+                            "fontSize": "12dp",
+                            "fontWeight": "800",
+                            "letterSpacing": "1dp"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Container",
+                    "direction": "row",
+                    "width": "100%",
+                    "height": "calc(100% - 90dp)",
+                    "gap": "16dp",
+                    "items": [
+                      {
+                        "type": "TouchWrapper",
+                        "grow": 1,
+                        "height": "100%",
+                        "onPress": [
+                          {
+                            "type": "SendEvent",
+                            "arguments": [
+                              "selectMeal",
+                              "${payload.wizardData.selectedLevel || 'ES'}",
+                              "breakfast"
+                            ]
                           },
                           {
+                            "type": "SetPage",
+                            "componentId": "wizardPager",
+                            "value": 3
+                          }
+                        ],
+                        "items": [
+                          {
                             "type": "Container",
-                            "direction": "row",
+                            "width": "100%",
+                            "height": "100%",
+                            "backgroundColor": "#1E293B",
+                            "borderRadius": "20dp",
+                            "padding": "20dp",
+                            "borderWidth": "2dp",
+                            "borderColor": "rgba(249, 115, 22, 0.4)",
                             "justifyContent": "space-between",
                             "items": [
                               {
-                                "type": "TouchWrapper",
-                                "width": "48%",
-                                "onPress": {
-                                  "type": "SendEvent",
-                                  "arguments": [
-                                    "selectLevel",
-                                    "MS",
-                                    "lunch"
-                                  ]
-                                },
+                                "type": "Container",
                                 "items": [
                                   {
-                                    "type": "Container",
-                                    "backgroundColor": "var(--primary, #EA580C)",
-                                    "borderRadius": "10dp",
-                                    "padding": "8dp",
-                                    "alignItems": "center",
-                                    "items": [
-                                      {
-                                        "type": "Text",
-                                        "text": "🍔 Lunch",
-                                        "color": "#FFFFFF",
-                                        "fontWeight": "700",
-                                        "fontSize": "13dp"
-                                      }
-                                    ]
+                                    "type": "Text",
+                                    "text": "MORNING MENU",
+                                    "color": "#F97316",
+                                    "fontSize": "12dp",
+                                    "fontWeight": "800",
+                                    "letterSpacing": "1dp",
+                                    "marginBottom": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "🥐 Breakfast",
+                                    "style": "textTitle",
+                                    "fontSize": "26dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Warm breakfast sandwiches, fresh muffins, cereals, fruit juices, and cold 1% white milk.",
+                                    "color": "#94A3B8",
+                                    "fontSize": "13dp",
+                                    "lineHeight": "18dp",
+                                    "marginTop": "8dp",
+                                    "maxLines": 4
                                   }
                                 ]
                               },
                               {
-                                "type": "TouchWrapper",
-                                "width": "48%",
-                                "onPress": {
-                                  "type": "SendEvent",
-                                  "arguments": [
-                                    "selectLevel",
-                                    "MS",
-                                    "breakfast"
-                                  ]
-                                },
+                                "type": "Container",
+                                "backgroundColor": "#EA580C",
+                                "borderRadius": "10dp",
+                                "padding": "10dp",
+                                "alignItems": "center",
                                 "items": [
                                   {
-                                    "type": "Container",
-                                    "backgroundColor": "rgba(255, 255, 255, 0.08)",
-                                    "borderRadius": "10dp",
-                                    "padding": "8dp",
-                                    "alignItems": "center",
-                                    "items": [
-                                      {
-                                        "type": "Text",
-                                        "text": "🥐 Breakfast",
-                                        "color": "#E2E8F0",
-                                        "fontWeight": "700",
-                                        "fontSize": "13dp"
-                                      }
-                                    ]
+                                    "type": "Text",
+                                    "text": "Choose Breakfast →",
+                                    "color": "#FFFFFF",
+                                    "fontWeight": "700",
+                                    "fontSize": "13dp"
                                   }
                                 ]
                               }
                             ]
                           }
                         ]
+                      },
+                      {
+                        "type": "TouchWrapper",
+                        "grow": 1,
+                        "height": "100%",
+                        "onPress": [
+                          {
+                            "type": "SendEvent",
+                            "arguments": [
+                              "selectMeal",
+                              "${payload.wizardData.selectedLevel || 'ES'}",
+                              "lunch"
+                            ]
+                          },
+                          {
+                            "type": "SetPage",
+                            "componentId": "wizardPager",
+                            "value": 3
+                          }
+                        ],
+                        "items": [
+                          {
+                            "type": "Container",
+                            "width": "100%",
+                            "height": "100%",
+                            "backgroundColor": "#1E293B",
+                            "borderRadius": "20dp",
+                            "padding": "20dp",
+                            "borderWidth": "2dp",
+                            "borderColor": "rgba(249, 115, 22, 0.4)",
+                            "justifyContent": "space-between",
+                            "items": [
+                              {
+                                "type": "Container",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "CHEF'S LUNCH",
+                                    "color": "#F97316",
+                                    "fontSize": "12dp",
+                                    "fontWeight": "800",
+                                    "letterSpacing": "1dp",
+                                    "marginBottom": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "🍔 Lunch",
+                                    "style": "textTitle",
+                                    "fontSize": "26dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Hot daily main entrées, vegetarian alternatives, farm-fresh vegetables, fruit and milk.",
+                                    "color": "#94A3B8",
+                                    "fontSize": "13dp",
+                                    "lineHeight": "18dp",
+                                    "marginTop": "8dp",
+                                    "maxLines": 4
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Container",
+                                "backgroundColor": "#EA580C",
+                                "borderRadius": "10dp",
+                                "padding": "10dp",
+                                "alignItems": "center",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "Choose Lunch →",
+                                    "color": "#FFFFFF",
+                                    "fontWeight": "700",
+                                    "fontSize": "13dp"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "TouchWrapper",
+                        "grow": 1,
+                        "height": "100%",
+                        "onPress": [
+                          {
+                            "type": "SendEvent",
+                            "arguments": [
+                              "selectMeal",
+                              "${payload.wizardData.selectedLevel || 'ES'}",
+                              "both"
+                            ]
+                          },
+                          {
+                            "type": "SetPage",
+                            "componentId": "wizardPager",
+                            "value": 3
+                          }
+                        ],
+                        "items": [
+                          {
+                            "type": "Container",
+                            "width": "100%",
+                            "height": "100%",
+                            "backgroundColor": "#1E293B",
+                            "borderRadius": "20dp",
+                            "padding": "20dp",
+                            "borderWidth": "2dp",
+                            "borderColor": "rgba(249, 115, 22, 0.4)",
+                            "justifyContent": "space-between",
+                            "items": [
+                              {
+                                "type": "Container",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "COMPLETE DAY",
+                                    "color": "#F97316",
+                                    "fontSize": "12dp",
+                                    "fontWeight": "800",
+                                    "letterSpacing": "1dp",
+                                    "marginBottom": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "🍽️ Both Meals",
+                                    "style": "textTitle",
+                                    "fontSize": "26dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Full view of both breakfast and lunch options, sides, and nutritional details together.",
+                                    "color": "#94A3B8",
+                                    "fontSize": "13dp",
+                                    "lineHeight": "18dp",
+                                    "marginTop": "8dp",
+                                    "maxLines": 4
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Container",
+                                "backgroundColor": "#EA580C",
+                                "borderRadius": "10dp",
+                                "padding": "10dp",
+                                "alignItems": "center",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "Choose Both →",
+                                    "color": "#FFFFFF",
+                                    "fontWeight": "700",
+                                    "fontSize": "13dp"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Container",
+                    "direction": "row",
+                    "justifyContent": "center",
+                    "alignItems": "center",
+                    "height": "28dp",
+                    "items": [
+                      {
+                        "type": "Text",
+                        "text": "💡 Or say: 'Breakfast', 'Lunch', or 'Both'",
+                        "color": "#64748B",
+                        "fontSize": "12dp"
                       }
                     ]
                   }
                 ]
               },
               {
-                "type": "TouchWrapper",
-                "width": "31.5%",
+                "type": "Container",
+                "width": "100%",
                 "height": "100%",
-                "onPress": {
-                  "type": "SendEvent",
-                  "arguments": [
-                    "selectLevel",
-                    "HS",
-                    "both"
-                  ]
-                },
+                "paddingLeft": "24dp",
+                "paddingRight": "24dp",
+                "paddingTop": "16dp",
+                "paddingBottom": "16dp",
+                "justifyContent": "space-between",
                 "items": [
                   {
                     "type": "Container",
-                    "width": "100%",
-                    "height": "100%",
-                    "backgroundColor": "#1E293B",
-                    "borderRadius": "18dp",
-                    "padding": "16dp",
-                    "borderWidth": "2dp",
-                    "borderColor": "rgba(249, 115, 22, 0.3)",
+                    "direction": "row",
                     "justifyContent": "space-between",
+                    "alignItems": "center",
+                    "height": "48dp",
                     "items": [
                       {
                         "type": "Container",
+                        "direction": "row",
+                        "alignItems": "center",
                         "items": [
                           {
-                            "type": "Text",
-                            "text": "🎓 GRADES 9-12",
-                            "color": "#F97316",
-                            "fontSize": "12dp",
-                            "fontWeight": "800",
-                            "letterSpacing": "1dp",
-                            "marginBottom": "8dp"
+                            "type": "Image",
+                            "source": "${payload.wizardData.logoUrl}",
+                            "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
+                            "width": "32dp",
+                            "height": "32dp",
+                            "marginRight": "10dp"
                           },
                           {
                             "type": "Text",
-                            "text": "High School",
+                            "text": "${payload.wizardData.selectedLevelName || 'Verona Schools'} • ${payload.wizardData.selectedMealTitle || 'Menu'}",
                             "style": "textTitle",
-                            "fontSize": "22dp"
-                          },
-                          {
-                            "type": "Text",
-                            "text": "Verona Area High School (VAHS) • Cafe, Pizza Line, and Lines 1 & 3",
-                            "color": "#94A3B8",
-                            "fontSize": "12dp",
-                            "lineHeight": "16dp",
-                            "marginTop": "6dp",
-                            "maxLines": 3
+                            "fontSize": "18dp"
                           }
                         ]
                       },
                       {
                         "type": "Container",
+                        "backgroundColor": "rgba(249, 115, 22, 0.2)",
+                        "borderRadius": "10dp",
+                        "paddingLeft": "12dp",
+                        "paddingRight": "12dp",
+                        "paddingTop": "6dp",
+                        "paddingBottom": "6dp",
                         "items": [
                           {
                             "type": "Text",
-                            "text": "Tap to view menu:",
-                            "color": "#64748B",
-                            "fontSize": "11dp",
-                            "marginBottom": "6dp"
-                          },
+                            "text": "STEP 3 OF 3 • CHOOSE DATE",
+                            "color": "#F97316",
+                            "fontSize": "12dp",
+                            "fontWeight": "800",
+                            "letterSpacing": "1dp"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Container",
+                    "direction": "row",
+                    "width": "100%",
+                    "height": "calc(100% - 90dp)",
+                    "gap": "16dp",
+                    "items": [
+                      {
+                        "type": "TouchWrapper",
+                        "grow": 1,
+                        "height": "100%",
+                        "onPress": {
+                          "type": "SendEvent",
+                          "arguments": [
+                            "selectDate",
+                            "${payload.wizardData.selectedLevel || 'ES'}",
+                            "${payload.wizardData.selectedMeal || 'lunch'}",
+                            "today"
+                          ]
+                        },
+                        "items": [
                           {
                             "type": "Container",
-                            "direction": "row",
+                            "width": "100%",
+                            "height": "100%",
+                            "backgroundColor": "#1E293B",
+                            "borderRadius": "20dp",
+                            "padding": "20dp",
+                            "borderWidth": "2dp",
+                            "borderColor": "rgba(249, 115, 22, 0.4)",
                             "justifyContent": "space-between",
                             "items": [
                               {
-                                "type": "TouchWrapper",
-                                "width": "48%",
-                                "onPress": {
-                                  "type": "SendEvent",
-                                  "arguments": [
-                                    "selectLevel",
-                                    "HS",
-                                    "lunch"
-                                  ]
-                                },
+                                "type": "Container",
                                 "items": [
                                   {
-                                    "type": "Container",
-                                    "backgroundColor": "var(--primary, #EA580C)",
-                                    "borderRadius": "10dp",
-                                    "padding": "8dp",
-                                    "alignItems": "center",
-                                    "items": [
-                                      {
-                                        "type": "Text",
-                                        "text": "🍔 Lunch",
-                                        "color": "#FFFFFF",
-                                        "fontWeight": "700",
-                                        "fontSize": "13dp"
-                                      }
-                                    ]
+                                    "type": "Text",
+                                    "text": "CURRENT DAY",
+                                    "color": "#F97316",
+                                    "fontSize": "12dp",
+                                    "fontWeight": "800",
+                                    "letterSpacing": "1dp",
+                                    "marginBottom": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "📅 Today's Menu",
+                                    "style": "textTitle",
+                                    "fontSize": "26dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "${payload.wizardData.todayDateText}",
+                                    "color": "#F97316",
+                                    "fontSize": "16dp",
+                                    "fontWeight": "700",
+                                    "marginTop": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "View today's hot entrees, fresh sides, fruits, and allergens.",
+                                    "color": "#94A3B8",
+                                    "fontSize": "13dp",
+                                    "lineHeight": "18dp",
+                                    "marginTop": "8dp",
+                                    "maxLines": 3
                                   }
                                 ]
                               },
                               {
-                                "type": "TouchWrapper",
-                                "width": "48%",
-                                "onPress": {
-                                  "type": "SendEvent",
-                                  "arguments": [
-                                    "selectLevel",
-                                    "HS",
-                                    "breakfast"
-                                  ]
-                                },
+                                "type": "Container",
+                                "backgroundColor": "#EA580C",
+                                "borderRadius": "10dp",
+                                "padding": "10dp",
+                                "alignItems": "center",
                                 "items": [
                                   {
-                                    "type": "Container",
-                                    "backgroundColor": "rgba(255, 255, 255, 0.08)",
-                                    "borderRadius": "10dp",
-                                    "padding": "8dp",
-                                    "alignItems": "center",
-                                    "items": [
-                                      {
-                                        "type": "Text",
-                                        "text": "🥐 Breakfast",
-                                        "color": "#E2E8F0",
-                                        "fontWeight": "700",
-                                        "fontSize": "13dp"
-                                      }
-                                    ]
+                                    "type": "Text",
+                                    "text": "Show Today's Menu →",
+                                    "color": "#FFFFFF",
+                                    "fontWeight": "700",
+                                    "fontSize": "13dp"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "TouchWrapper",
+                        "grow": 1,
+                        "height": "100%",
+                        "onPress": {
+                          "type": "SendEvent",
+                          "arguments": [
+                            "selectDate",
+                            "${payload.wizardData.selectedLevel || 'ES'}",
+                            "${payload.wizardData.selectedMeal || 'lunch'}",
+                            "tomorrow"
+                          ]
+                        },
+                        "items": [
+                          {
+                            "type": "Container",
+                            "width": "100%",
+                            "height": "100%",
+                            "backgroundColor": "#1E293B",
+                            "borderRadius": "20dp",
+                            "padding": "20dp",
+                            "borderWidth": "2dp",
+                            "borderColor": "rgba(249, 115, 22, 0.4)",
+                            "justifyContent": "space-between",
+                            "items": [
+                              {
+                                "type": "Container",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "UPCOMING DAY",
+                                    "color": "#F97316",
+                                    "fontSize": "12dp",
+                                    "fontWeight": "800",
+                                    "letterSpacing": "1dp",
+                                    "marginBottom": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "☀️ Tomorrow",
+                                    "style": "textTitle",
+                                    "fontSize": "26dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "${payload.wizardData.tomorrowDateText}",
+                                    "color": "#F97316",
+                                    "fontSize": "16dp",
+                                    "fontWeight": "700",
+                                    "marginTop": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Preview tomorrow's upcoming dishes and prepare ahead of time.",
+                                    "color": "#94A3B8",
+                                    "fontSize": "13dp",
+                                    "lineHeight": "18dp",
+                                    "marginTop": "8dp",
+                                    "maxLines": 3
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Container",
+                                "backgroundColor": "#EA580C",
+                                "borderRadius": "10dp",
+                                "padding": "10dp",
+                                "alignItems": "center",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "Show Tomorrow's Menu →",
+                                    "color": "#FFFFFF",
+                                    "fontWeight": "700",
+                                    "fontSize": "13dp"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "TouchWrapper",
+                        "grow": 1,
+                        "height": "100%",
+                        "onPress": {
+                          "type": "SendEvent",
+                          "arguments": [
+                            "selectDate",
+                            "${payload.wizardData.selectedLevel || 'ES'}",
+                            "${payload.wizardData.selectedMeal || 'lunch'}",
+                            "next week"
+                          ]
+                        },
+                        "items": [
+                          {
+                            "type": "Container",
+                            "width": "100%",
+                            "height": "100%",
+                            "backgroundColor": "#1E293B",
+                            "borderRadius": "20dp",
+                            "padding": "20dp",
+                            "borderWidth": "2dp",
+                            "borderColor": "rgba(249, 115, 22, 0.4)",
+                            "justifyContent": "space-between",
+                            "items": [
+                              {
+                                "type": "Container",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "5-DAY OUTLOOK",
+                                    "color": "#F97316",
+                                    "fontSize": "12dp",
+                                    "fontWeight": "800",
+                                    "letterSpacing": "1dp",
+                                    "marginBottom": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "📆 Next Week",
+                                    "style": "textTitle",
+                                    "fontSize": "26dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Mon – Fri Forecast",
+                                    "color": "#F97316",
+                                    "fontSize": "16dp",
+                                    "fontWeight": "700",
+                                    "marginTop": "6dp"
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "Explore next week's full weekly meal rotation from Monday to Friday.",
+                                    "color": "#94A3B8",
+                                    "fontSize": "13dp",
+                                    "lineHeight": "18dp",
+                                    "marginTop": "8dp",
+                                    "maxLines": 3
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "Container",
+                                "backgroundColor": "#EA580C",
+                                "borderRadius": "10dp",
+                                "padding": "10dp",
+                                "alignItems": "center",
+                                "items": [
+                                  {
+                                    "type": "Text",
+                                    "text": "Show Next Week →",
+                                    "color": "#FFFFFF",
+                                    "fontWeight": "700",
+                                    "fontSize": "13dp"
                                   }
                                 ]
                               }
@@ -524,23 +1100,23 @@
                         ]
                       }
                     ]
+                  },
+                  {
+                    "type": "Container",
+                    "direction": "row",
+                    "justifyContent": "center",
+                    "alignItems": "center",
+                    "height": "28dp",
+                    "items": [
+                      {
+                        "type": "Text",
+                        "text": "💡 Or say: 'Today', 'Tomorrow', or 'Next Week'",
+                        "color": "#64748B",
+                        "fontSize": "12dp"
+                      }
+                    ]
                   }
                 ]
-              }
-            ]
-          },
-          {
-            "type": "Container",
-            "direction": "row",
-            "justifyContent": "center",
-            "alignItems": "center",
-            "height": "32dp",
-            "items": [
-              {
-                "type": "Text",
-                "text": "💡 Or say: \"What's for breakfast tomorrow?\" or \"What's the menu next week?\"",
-                "color": "#64748B",
-                "fontSize": "13dp"
               }
             ]
           }

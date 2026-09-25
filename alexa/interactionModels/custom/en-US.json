@@ -24,6 +24,59 @@
           "samples": []
         },
         {
+          "name": "AMAZON.MoreIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NextIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PreviousIntent",
+          "samples": []
+        },
+        {
+          "name": "SeeMoreIntent",
+          "samples": [
+            "see more",
+            "see more photos",
+            "see more pictures",
+            "see photos",
+            "see pictures",
+            "see images",
+            "show more",
+            "show more photos",
+            "show more pictures",
+            "show photos",
+            "show pictures",
+            "show images",
+            "show food photos",
+            "view photos",
+            "view pictures",
+            "view images",
+            "view gallery",
+            "photo gallery",
+            "image gallery",
+            "pictures",
+            "photos"
+          ]
+        },
+        {
+          "name": "BackToMenuIntent",
+          "samples": [
+            "back",
+            "go back",
+            "back to menu",
+            "back to the menu",
+            "return to menu",
+            "return to the menu",
+            "show menu",
+            "show the menu",
+            "show the dinner menu",
+            "dinner menu"
+          ]
+        },
+        {
           "name": "GetLunchIntent",
           "slots": [
             {

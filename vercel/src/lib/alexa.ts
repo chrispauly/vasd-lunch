@@ -234,6 +234,55 @@ export function resolveMealType(
   return 'both';
 }
 
+/**
+ * Returns the meal type ONLY if explicitly requested by slot or existing session attributes.
+ * Returns null if the user hasn't specified breakfast/lunch/both yet.
+ */
+export function resolveMealTypeExplicit(
+  slot?: AlexaSlot,
+  sessionAttributes?: Record<string, any>
+): MealType | null {
+  // 1. Check entity resolution from slot
+  if (slot?.resolutions?.resolutionsPerAuthority) {
+    for (const auth of slot.resolutions.resolutionsPerAuthority) {
+      if (auth.status?.code === 'ER_SUCCESS_MATCH' && auth.values && auth.values.length > 0) {
+        const id = auth.values[0].value.id.toUpperCase();
+        if (id === 'BREAKFAST') return 'breakfast';
+        if (id === 'LUNCH') return 'lunch';
+        if (id === 'BOTH') return 'both';
+      }
+    }
+  }
+
+  // 2. Check slot spoken value
+  const val = slot?.value || (slot as any)?.slotValue?.value;
+  if (val) {
+    const v = String(val).toLowerCase().trim();
+    if (v.includes('both') || v.includes('all') || v.includes('everything') || (v.includes('breakfast') && v.includes('lunch'))) {
+      return 'both';
+    }
+    if (v.includes('breakfast') || v.includes('morning')) {
+      return 'breakfast';
+    }
+    if (v.includes('lunch') || v.includes('afternoon') || v.includes('dinner')) {
+      return 'lunch';
+    }
+    if (v.includes('menu')) {
+      return 'both';
+    }
+  }
+
+  // 3. Fallback to existing session attribute if already known
+  if (sessionAttributes?.mealType) {
+    const mt = String(sessionAttributes.mealType).toLowerCase();
+    if (mt === 'breakfast' || mt === 'lunch' || mt === 'both') {
+      return mt as MealType;
+    }
+  }
+
+  return null;
+}
+
 export type ResolvedDate =
   | { type: 'day'; dateStr: string; label?: string }
   | { type: 'week'; weekStr: string; label?: string };
@@ -248,6 +297,34 @@ export function getIsoWeekString(date: Date): string {
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
   const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
   return `${d.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`;
+}
+
+/**
+ * Returns the resolved date ONLY if explicitly provided by the slot or existing session attributes.
+ * Returns null if the user hasn't specified today/tomorrow/date yet.
+ */
+export function resolveDateSlotExplicit(
+  slot?: AlexaSlot,
+  sessionAttributes?: Record<string, any>
+): ResolvedDate | null {
+  let val = slot?.value || (slot as any)?.slotValue?.value;
+  if (!val && Array.isArray((slot as any)?.slotValue?.values) && (slot as any)?.slotValue?.values.length > 0) {
+    val = (slot as any).slotValue.values[0]?.value;
+  }
+
+  if (val) {
+    return resolveDateSlot(slot);
+  }
+
+  if (sessionAttributes?.pendingDate) {
+    return resolveDateSlot({ name: 'date', value: sessionAttributes.pendingDate });
+  }
+
+  if (sessionAttributes?.dateStr) {
+    return { type: 'day', dateStr: sessionAttributes.dateStr };
+  }
+
+  return null;
 }
 
 /**

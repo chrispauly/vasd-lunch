@@ -4,8 +4,11 @@ import {
   buildAlexaResponse,
   resolveSchoolLevel,
   resolveDateSlot,
+  resolveDateSlotExplicit,
   resolveMealType,
+  resolveMealTypeExplicit,
   ResolvedDate,
+  getIsoWeekString,
   supportsApl,
 } from '@/lib/alexa';
 import {
@@ -38,9 +41,10 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   return NextResponse.json({
     status: 'online',
-    skill: 'Verona School Lunch',
+    skill: 'Verona Wisconsin School Lunch Menu',
     endpoint: '/api/alexa',
-    message: 'Alexa Custom Skill endpoint is active. Configure this URL as your HTTPS endpoint in the Amazon Alexa Developer Console.',
+    message:
+      'Alexa Custom Skill endpoint is active. Configure this URL as your HTTPS endpoint in the Amazon Alexa Developer Console.',
   });
 }
 
@@ -53,7 +57,7 @@ async function handleSingleDayMenu({
   dateStr,
   sessionAttributes,
   body,
-  shouldEndSession = true,
+  shouldEndSession,
 }: {
   schoolLevel: LunchLevel;
   mealType: MealType;
@@ -62,12 +66,20 @@ async function handleSingleDayMenu({
   body: AlexaRequestEnvelope;
   shouldEndSession?: boolean;
 }): Promise<NextResponse> {
-  const levelConfig = LEVEL_CONFIG[schoolLevel] || LEVEL_CONFIG.ES;
+  const isApl = supportsApl(body);
+  const endSession = shouldEndSession !== undefined ? shouldEndSession : !isApl;
+  const reprompt = isApl ? "Say 'see more' to view food photos, or ask for another day." : undefined;
+
+  // Preserve navigation context in session attributes
+  sessionAttributes.schoolLevel = schoolLevel;
+  sessionAttributes.mealType = mealType;
+  sessionAttributes.dateStr = dateStr;
+  sessionAttributes.screen = 'menu';
 
   // 1. Check cache first (for current day)
   const cached = await getCachedMenu(dateStr, schoolLevel, mealType);
   if (cached) {
-    const directives = supportsApl(body)
+    const directives = isApl
       ? [
           {
             type: 'Alexa.Presentation.APL.RenderDocument',
@@ -81,7 +93,8 @@ async function handleSingleDayMenu({
     return NextResponse.json(
       buildAlexaResponse({
         speechText: cached.speechText,
-        shouldEndSession,
+        repromptText: reprompt,
+        shouldEndSession: endSession,
         sessionAttributes,
         cardTitle: `${cached.levelName} ${mealType === 'breakfast' ? 'Breakfast' : mealType === 'lunch' ? 'Lunch' : 'Menu'} - ${dateStr}`,
         directives,
@@ -197,10 +210,10 @@ async function handleSingleDayMenu({
     };
   }
 
-  // 3. Save to cache if it is today
+  // 3. Save to cache
   await setCachedMenu(dateStr, schoolLevel, mealType, result);
 
-  const directives = supportsApl(body)
+  const directives = isApl
     ? [
         {
           type: 'Alexa.Presentation.APL.RenderDocument',
@@ -214,7 +227,8 @@ async function handleSingleDayMenu({
   return NextResponse.json(
     buildAlexaResponse({
       speechText,
-      shouldEndSession,
+      repromptText: reprompt,
+      shouldEndSession: endSession,
       sessionAttributes,
       cardTitle,
       directives,
@@ -223,7 +237,7 @@ async function handleSingleDayMenu({
 }
 
 /**
- * Handles weekly menu requests for voice
+ * Handles weekly menu requests for voice or screens
  */
 async function handleWeekMenu({
   schoolLevel,
@@ -302,7 +316,8 @@ async function handleWeekMenu({
     };
   }
 
-  const directives = supportsApl(body)
+  const isApl = supportsApl(body);
+  const directives = isApl
     ? [
         {
           type: 'Alexa.Presentation.APL.RenderDocument',
@@ -316,7 +331,8 @@ async function handleWeekMenu({
   return NextResponse.json(
     buildAlexaResponse({
       speechText,
-      shouldEndSession: true,
+      repromptText: isApl ? "You can ask for today's menu or choose another school." : undefined,
+      shouldEndSession: !isApl,
       sessionAttributes,
       cardTitle: `${levelConfig.name} ${cardMealTitle} (${resolvedDate.weekStr})`,
       directives,
@@ -334,11 +350,13 @@ export async function POST(req: NextRequest) {
     const sessionAttributes = session?.attributes ? { ...session.attributes } : {};
 
     // 1. Handle LaunchRequest ("Alexa, open Verona School Lunch")
-    // Renders interactive Touchscreen School Selection on Echo Show 8 / screens
+    // Renders OnMount Headline splash with VASD paw logo & title, auto-advancing to 3 equal school buttons
     if (request.type === 'LaunchRequest') {
       const speech =
-        'Welcome to Verona School Lunch! Would you like the menu for elementary, middle, or high school? You can also ask for breakfast or lunch.';
-      const reprompt = 'Which school level would you like: elementary, middle, or high school?';
+        'Welcome to Verona Wisconsin School Lunch Menu. Would you like the menu for Elementary, Middle, or High School?';
+      const reprompt = 'Which school would you like: Elementary, Middle, or High School?';
+
+      sessionAttributes.wizardStep = 'school';
 
       const directives = supportsApl(body)
         ? [
@@ -346,7 +364,7 @@ export async function POST(req: NextRequest) {
               type: 'Alexa.Presentation.APL.RenderDocument',
               token: 'vasdWelcomeToken',
               document: buildWelcomeAplDocument(),
-              datasources: buildWelcomeAplDatasource(),
+              datasources: buildWelcomeAplDatasource({ step: 'splash' }),
             },
           ]
         : undefined;
@@ -357,32 +375,220 @@ export async function POST(req: NextRequest) {
           repromptText: reprompt,
           shouldEndSession: false,
           sessionAttributes,
-          cardTitle: 'Verona School Lunch',
+          cardTitle: 'Verona Wisconsin School Lunch Menu',
           directives,
         })
       );
     }
 
-    // 2. Handle Touchscreen UserEvent (User tapped a school card or meal button on Echo Show)
+    // 2. Handle Touchscreen UserEvents from APL
     if (request.type === 'Alexa.Presentation.APL.UserEvent') {
       const args = (request as any).arguments || [];
       const action = args[0] || 'selectLevel';
-      const targetLevel = (args[1] as LunchLevel) || sessionAttributes.schoolLevel || 'ES';
-      const targetMeal = (args[2] as MealType) || sessionAttributes.mealType || 'both';
 
-      sessionAttributes.schoolLevel = targetLevel;
-      sessionAttributes.mealType = targetMeal;
+      // ==========================================
+      // A: User tapped a School Level (Page 1)
+      // ==========================================
+      if (action === 'selectLevel') {
+        const targetLevel = (args[1] as LunchLevel) || 'ES';
+        sessionAttributes.schoolLevel = targetLevel;
 
-      const dateStr = sessionAttributes.pendingDate || getTodayDateStr();
+        // If meal type is not yet known, stay on Step 2 (Meal)
+        if (!sessionAttributes.mealType) {
+          sessionAttributes.wizardStep = 'meal';
+          const levelName = LEVEL_CONFIG[targetLevel]?.name || 'Verona Schools';
+          return NextResponse.json(
+            buildAlexaResponse({
+              speechText: `${levelName}! Would you like breakfast, lunch, or both?`,
+              repromptText: 'Would you like breakfast, lunch, or both?',
+              shouldEndSession: false,
+              sessionAttributes,
+              cardTitle: `${levelName} • Select Meal`,
+            })
+          );
+        }
 
-      return await handleSingleDayMenu({
-        schoolLevel: targetLevel,
-        mealType: targetMeal,
-        dateStr,
-        sessionAttributes,
-        body,
-        shouldEndSession: true,
-      });
+        // If date is not yet known, advance to Step 3 (Date)
+        if (!sessionAttributes.pendingDate && !sessionAttributes.dateStr) {
+          sessionAttributes.wizardStep = 'date';
+          return NextResponse.json(
+            buildAlexaResponse({
+              speechText: "Would you like today's menu or tomorrow's?",
+              repromptText: 'Please choose today or tomorrow.',
+              shouldEndSession: false,
+              sessionAttributes,
+              cardTitle: 'Select Date',
+              directives: [
+                {
+                  type: 'Alexa.Presentation.APL.ExecuteCommands',
+                  token: 'vasdWelcomeToken',
+                  commands: [
+                    {
+                      type: 'SetPage',
+                      componentId: 'wizardPager',
+                      value: 3,
+                    },
+                  ],
+                },
+              ],
+            })
+          );
+        }
+
+        // Both meal and date are known: jump directly to menu!
+        const dateStr = sessionAttributes.pendingDate || sessionAttributes.dateStr || getTodayDateStr();
+        return await handleSingleDayMenu({
+          schoolLevel: targetLevel,
+          mealType: sessionAttributes.mealType,
+          dateStr,
+          sessionAttributes,
+          body,
+        });
+      }
+
+      // ==========================================
+      // B: User tapped a Meal Type (Page 2)
+      // ==========================================
+      if (action === 'selectMeal') {
+        const targetLevel = (args[1] as LunchLevel) || sessionAttributes.schoolLevel || 'ES';
+        const targetMeal = (args[2] as MealType) || 'both';
+        sessionAttributes.schoolLevel = targetLevel;
+        sessionAttributes.mealType = targetMeal;
+
+        // If date is not yet known, wait on Step 3 (Date)
+        if (!sessionAttributes.pendingDate && !sessionAttributes.dateStr) {
+          sessionAttributes.wizardStep = 'date';
+          const mealWord = targetMeal === 'breakfast' ? 'breakfast' : targetMeal === 'lunch' ? 'lunch' : 'menu';
+          return NextResponse.json(
+            buildAlexaResponse({
+              speechText: `Would you like today's ${mealWord} or tomorrow's?`,
+              repromptText: 'Please choose today or tomorrow.',
+              shouldEndSession: false,
+              sessionAttributes,
+              cardTitle: 'Select Date',
+            })
+          );
+        }
+
+        // Both school, meal, and date are known: jump directly to menu!
+        const dateStr = sessionAttributes.pendingDate || sessionAttributes.dateStr || getTodayDateStr();
+        return await handleSingleDayMenu({
+          schoolLevel: targetLevel,
+          mealType: targetMeal,
+          dateStr,
+          sessionAttributes,
+          body,
+        });
+      }
+
+      // ==========================================
+      // C: User tapped a Date (Page 3)
+      // ==========================================
+      if (action === 'selectDate') {
+        const targetLevel = (args[1] as LunchLevel) || sessionAttributes.schoolLevel || 'ES';
+        const targetMeal = (args[2] as MealType) || sessionAttributes.mealType || 'both';
+        const dateChoice = String(args[3] || 'today').toLowerCase();
+
+        sessionAttributes.schoolLevel = targetLevel;
+        sessionAttributes.mealType = targetMeal;
+
+        if (dateChoice.includes('week')) {
+          const today = new Date(getTodayDateStr() + 'T12:00:00');
+          const nextWeekDate = new Date(today.getTime() + 7 * 86400000);
+          return await handleWeekMenu({
+            schoolLevel: targetLevel,
+            mealType: targetMeal,
+            resolvedDate: { type: 'week', weekStr: getIsoWeekString(nextWeekDate), label: 'next week' },
+            sessionAttributes,
+            body,
+          });
+        }
+
+        if (dateChoice.includes('tomorrow')) {
+          const today = new Date(getTodayDateStr() + 'T12:00:00');
+          const tomorrow = new Date(today.getTime() + 86400000);
+          const dateStr = tomorrow.toISOString().split('T')[0];
+          return await handleSingleDayMenu({
+            schoolLevel: targetLevel,
+            mealType: targetMeal,
+            dateStr,
+            sessionAttributes,
+            body,
+          });
+        }
+
+        // Today or default
+        const dateStr = getTodayDateStr();
+        return await handleSingleDayMenu({
+          schoolLevel: targetLevel,
+          mealType: targetMeal,
+          dateStr,
+          sessionAttributes,
+          body,
+        });
+      }
+
+      // ==========================================
+      // D: User tapped Hero Image or "See Photos"
+      // ==========================================
+      if (action === 'showPhotos') {
+        return NextResponse.json(
+          buildAlexaResponse({
+            speechText: "Here are the photos of today's menu items. Tap any photo, or say 'back to menu' to return.",
+            repromptText: "Say 'back to menu' to return to the dinner menu.",
+            shouldEndSession: false,
+            sessionAttributes,
+            cardTitle: 'Menu Photo Gallery',
+          })
+        );
+      }
+
+      // ==========================================
+      // E: User tapped "Back to Restaurant Menu"
+      // ==========================================
+      if (action === 'showMenu') {
+        return NextResponse.json(
+          buildAlexaResponse({
+            speechText: "Returning to the restaurant dinner menu. Say 'see more' anytime to view the food photos.",
+            repromptText: "Say 'see more' to view food photos, or ask for another day.",
+            shouldEndSession: false,
+            sessionAttributes,
+            cardTitle: 'Restaurant Dinner Menu',
+          })
+        );
+      }
+
+      // ==========================================
+      // F: User tapped a School Switcher Chip on Menu Header
+      // ==========================================
+      if (action === 'switchLevel') {
+        const targetLevel = (args[1] as LunchLevel) || 'ES';
+        const targetMeal = sessionAttributes.mealType || 'lunch';
+        const dateStr = sessionAttributes.dateStr || getTodayDateStr();
+        return await handleSingleDayMenu({
+          schoolLevel: targetLevel,
+          mealType: targetMeal,
+          dateStr,
+          sessionAttributes,
+          body,
+        });
+      }
+
+      // ==========================================
+      // G: User tapped a Meal Switcher Chip on Menu Header
+      // ==========================================
+      if (action === 'switchMeal') {
+        const targetMeal = (args[1] as MealType) || 'lunch';
+        const targetLevel = sessionAttributes.schoolLevel || 'ES';
+        const dateStr = sessionAttributes.dateStr || getTodayDateStr();
+        return await handleSingleDayMenu({
+          schoolLevel: targetLevel,
+          mealType: targetMeal,
+          dateStr,
+          sessionAttributes,
+          body,
+        });
+      }
     }
 
     // 3. Handle SessionEndedRequest
@@ -400,8 +606,8 @@ export async function POST(req: NextRequest) {
       // Built-in Help Intent
       if (intentName === 'AMAZON.HelpIntent') {
         const speech =
-          "You can ask for breakfast, lunch, or the full menu for elementary, middle, or high school for today, tomorrow, or next week. For example, say: what's for breakfast tomorrow for elementary school, or what's the menu for high school? Which school would you like?";
-        const reprompt = 'Which school level would you like: elementary, middle, or high school?';
+          "You can ask for breakfast, lunch, or the full menu for elementary, middle, or high school for today, tomorrow, or next week. For example, say: what's for lunch today at elementary school, or what's the menu for high school? Which school would you like?";
+        const reprompt = 'Which school would you like: Elementary, Middle, or High School?';
         return NextResponse.json(
           buildAlexaResponse({
             speechText: speech,
@@ -426,8 +632,8 @@ export async function POST(req: NextRequest) {
       // Built-in Fallback Intent
       if (intentName === 'AMAZON.FallbackIntent') {
         const speech =
-          "Sorry, I didn't catch that. You can ask for breakfast, lunch, or the full menu for elementary, middle, or high school for today, tomorrow, or next week. Which school would you like?";
-        const reprompt = 'Which school would you like: elementary, middle, or high school?';
+          "Sorry, I didn't catch that. You can ask for breakfast, lunch, or both for elementary, middle, or high school for today, tomorrow, or next week. Which school would you like?";
+        const reprompt = 'Which school would you like: Elementary, Middle, or High School?';
         return NextResponse.json(
           buildAlexaResponse({
             speechText: speech,
@@ -439,26 +645,142 @@ export async function POST(req: NextRequest) {
         );
       }
 
-      // GetLunchIntent / GetMenuIntent or default intent handling
+      // "See More" Intent (Voice command to flip to the Food Photo Gallery)
+      if (
+        intentName === 'SeeMoreIntent' ||
+        intentName === 'AMAZON.MoreIntent' ||
+        intentName === 'AMAZON.NextIntent'
+      ) {
+        if (supportsApl(body)) {
+          return NextResponse.json(
+            buildAlexaResponse({
+              speechText: "Here are the photos of today's menu items. Say 'back to menu' to return to the dinner menu.",
+              repromptText: "Say 'back to menu' to return to the dinner menu.",
+              shouldEndSession: false,
+              sessionAttributes,
+              cardTitle: 'Food Photo Gallery',
+              directives: [
+                {
+                  type: 'Alexa.Presentation.APL.ExecuteCommands',
+                  token: 'vasdMenuToken',
+                  commands: [
+                    {
+                      type: 'SetPage',
+                      componentId: 'menuPager',
+                      value: 1,
+                    },
+                  ],
+                },
+              ],
+            })
+          );
+        } else {
+          return NextResponse.json(
+            buildAlexaResponse({
+              speechText: 'Food photos are only available on Echo devices with screens, like the Echo Show.',
+              shouldEndSession: true,
+              sessionAttributes,
+            })
+          );
+        }
+      }
+
+      // "Back to Menu" Intent (Voice command to return to Restaurant Dinner Menu)
+      if (intentName === 'BackToMenuIntent' || intentName === 'AMAZON.PreviousIntent') {
+        if (supportsApl(body)) {
+          return NextResponse.json(
+            buildAlexaResponse({
+              speechText: 'Returning to the restaurant dinner menu.',
+              repromptText: "Say 'see more' to view food photos, or ask for another day.",
+              shouldEndSession: false,
+              sessionAttributes,
+              cardTitle: 'Restaurant Dinner Menu',
+              directives: [
+                {
+                  type: 'Alexa.Presentation.APL.ExecuteCommands',
+                  token: 'vasdMenuToken',
+                  commands: [
+                    {
+                      type: 'SetPage',
+                      componentId: 'menuPager',
+                      value: 0,
+                    },
+                  ],
+                },
+              ],
+            })
+          );
+        } else {
+          return NextResponse.json(
+            buildAlexaResponse({
+              speechText: 'Returning to the main menu.',
+              shouldEndSession: true,
+              sessionAttributes,
+            })
+          );
+        }
+      }
+
+      // ==========================================
+      // General Menu Intents & Slot Resolution
+      // ==========================================
       const slots = request.intent.slots || {};
-      const schoolLevel = resolveSchoolLevel(slots.schoolLevel, sessionAttributes);
 
-      // If school level is not known yet, prompt the user with interactive touch screen cards on Echo Show
+      // 1. Resolve school level (or check session attributes)
+      const extractedLevel = resolveSchoolLevel(slots.schoolLevel);
+      const schoolLevel = extractedLevel || (sessionAttributes.schoolLevel as LunchLevel) || null;
+
+      // 2. Resolve meal type explicitly (null if user hasn't chosen yet)
+      const extractedMeal = resolveMealTypeExplicit(slots.mealType);
+      const mealType = extractedMeal || (sessionAttributes.mealType as MealType) || null;
+
+      // 3. Resolve date explicitly (null if user hasn't chosen yet)
+      const extractedDate = resolveDateSlotExplicit(slots.date);
+      let resolvedDate: ResolvedDate | null = null;
+      if (extractedDate) {
+        resolvedDate = extractedDate;
+      } else if (sessionAttributes.pendingDate) {
+        resolvedDate = resolveDateSlot({ name: 'date', value: sessionAttributes.pendingDate });
+      } else if (sessionAttributes.dateStr) {
+        resolvedDate = { type: 'day', dateStr: sessionAttributes.dateStr };
+      }
+
+      // Preserve any provided information in session attributes
+      if (schoolLevel) sessionAttributes.schoolLevel = schoolLevel;
+      if (mealType) sessionAttributes.mealType = mealType;
+      if (resolvedDate) {
+        sessionAttributes.pendingDate = resolvedDate.type === 'week' ? resolvedDate.weekStr : resolvedDate.dateStr;
+      }
+
+      // =========================================================================
+      // FAST-PATH: If all 3 parameters were specified initially, jump right to menu!
+      // =========================================================================
+      if (schoolLevel && mealType && resolvedDate) {
+        if (resolvedDate.type === 'week') {
+          return await handleWeekMenu({
+            schoolLevel,
+            mealType,
+            resolvedDate,
+            sessionAttributes,
+            body,
+          });
+        }
+        return await handleSingleDayMenu({
+          schoolLevel,
+          mealType,
+          dateStr: resolvedDate.dateStr,
+          sessionAttributes,
+          body,
+        });
+      }
+
+      // =========================================================================
+      // STEP 1: School Level missing -> 3 equally spaced buttons
+      // =========================================================================
       if (!schoolLevel) {
-        // If a date or meal was provided in this utterance, remember them for the next turn
-        const rawDateSlot = slots.date;
-        const rawDateVal = rawDateSlot?.value || (rawDateSlot as any)?.slotValue?.value;
-        if (rawDateVal) {
-          sessionAttributes.pendingDate = rawDateVal;
-        }
-        const rawMealSlot = slots.mealType;
-        const rawMealVal = rawMealSlot?.value || (rawMealSlot as any)?.slotValue?.value;
-        if (rawMealVal) {
-          sessionAttributes.pendingMealType = rawMealVal;
-        }
-
-        const speech = 'Would you like the menu for elementary, middle, or high school?';
-        const reprompt = 'Please choose elementary, middle, or high school.';
+        sessionAttributes.wizardStep = 'school';
+        const speech = 'Which school would you like: Elementary, Middle, or High School?';
+        const reprompt = 'Please choose Elementary, Middle, or High School.';
 
         const directives = supportsApl(body)
           ? [
@@ -466,7 +788,11 @@ export async function POST(req: NextRequest) {
                 type: 'Alexa.Presentation.APL.RenderDocument',
                 token: 'vasdWelcomeToken',
                 document: buildWelcomeAplDocument(),
-                datasources: buildWelcomeAplDatasource(),
+                datasources: buildWelcomeAplDatasource({
+                  step: 'school',
+                  schoolLevel: undefined,
+                  mealType: mealType || undefined,
+                }),
               },
             ]
           : undefined;
@@ -477,66 +803,90 @@ export async function POST(req: NextRequest) {
             repromptText: reprompt,
             shouldEndSession: false,
             sessionAttributes,
-            cardTitle: 'Verona School Lunch',
+            cardTitle: 'Select School Level',
             directives,
           })
         );
       }
 
-      // Remember the chosen school level in session attributes
-      sessionAttributes.schoolLevel = schoolLevel;
+      // =========================================================================
+      // STEP 2: Meal Type missing -> Breakfast, Lunch, Both
+      // =========================================================================
+      if (!mealType) {
+        sessionAttributes.wizardStep = 'meal';
+        const levelName = LEVEL_CONFIG[schoolLevel]?.name || 'Verona Schools';
+        const speech = `For ${levelName}, would you like breakfast, lunch, or both?`;
+        const reprompt = 'Would you like breakfast, lunch, or both?';
 
-      // Determine meal type (breakfast, lunch, or both)
-      let mealType: MealType;
-      if (slots.mealType?.value || (slots.mealType as any)?.slotValue?.value) {
-        mealType = resolveMealType(slots.mealType, sessionAttributes);
-      } else if (sessionAttributes.pendingMealType) {
-        mealType = resolveMealType({ name: 'mealType', value: sessionAttributes.pendingMealType }, sessionAttributes);
-        delete sessionAttributes.pendingMealType;
-      } else {
-        mealType = resolveMealType(undefined, sessionAttributes);
-      }
-      sessionAttributes.mealType = mealType;
+        const directives = supportsApl(body)
+          ? [
+              {
+                type: 'Alexa.Presentation.APL.RenderDocument',
+                token: 'vasdWelcomeToken',
+                document: buildWelcomeAplDocument(),
+                datasources: buildWelcomeAplDatasource({
+                  step: 'meal',
+                  schoolLevel,
+                  mealType: undefined,
+                }),
+              },
+            ]
+          : undefined;
 
-      // Determine date: check slot first, then check pendingDate from previous turn, else default to today
-      const dateVal = slots.date?.value || (slots.date as any)?.slotValue?.value;
-      let resolvedDate: ResolvedDate;
-      if (dateVal) {
-        resolvedDate = resolveDateSlot(slots.date);
-      } else if (sessionAttributes.pendingDate) {
-        resolvedDate = resolveDateSlot({ name: 'date', value: sessionAttributes.pendingDate });
-        delete sessionAttributes.pendingDate;
-      } else {
-        resolvedDate = resolveDateSlot(undefined);
-      }
-
-      // Case A: User asked about a week (e.g. "next week", "this week", or ISO week)
-      if (resolvedDate.type === 'week') {
-        return await handleWeekMenu({
-          schoolLevel,
-          mealType,
-          resolvedDate,
-          sessionAttributes,
-          body,
-        });
+        return NextResponse.json(
+          buildAlexaResponse({
+            speechText: speech,
+            repromptText: reprompt,
+            shouldEndSession: false,
+            sessionAttributes,
+            cardTitle: `${levelName} • Select Meal`,
+            directives,
+          })
+        );
       }
 
-      // Case B: User asked about a single day (today, tomorrow, yesterday, or specific date)
-      return await handleSingleDayMenu({
-        schoolLevel,
-        mealType,
-        dateStr: resolvedDate.dateStr,
-        sessionAttributes,
-        body,
-        shouldEndSession: true,
-      });
+      // =========================================================================
+      // STEP 3: Date missing -> Today or Tomorrow (or Next Week)
+      // =========================================================================
+      if (!resolvedDate) {
+        sessionAttributes.wizardStep = 'date';
+        const mealWord = mealType === 'breakfast' ? 'breakfast' : mealType === 'lunch' ? 'lunch' : 'menu';
+        const speech = `Would you like today's ${mealWord} or tomorrow's?`;
+        const reprompt = 'Would you like today or tomorrow? You can also say next week.';
+
+        const directives = supportsApl(body)
+          ? [
+              {
+                type: 'Alexa.Presentation.APL.RenderDocument',
+                token: 'vasdWelcomeToken',
+                document: buildWelcomeAplDocument(),
+                datasources: buildWelcomeAplDatasource({
+                  step: 'date',
+                  schoolLevel,
+                  mealType,
+                }),
+              },
+            ]
+          : undefined;
+
+        return NextResponse.json(
+          buildAlexaResponse({
+            speechText: speech,
+            repromptText: reprompt,
+            shouldEndSession: false,
+            sessionAttributes,
+            cardTitle: 'Select Date',
+            directives,
+          })
+        );
+      }
     }
 
     // Default fallback for any unrecognized request type
     return NextResponse.json(
       buildAlexaResponse({
-        speechText: 'Welcome to Verona School Lunch. Which school would you like: elementary, middle, or high school?',
-        repromptText: 'Please say elementary, middle, or high school.',
+        speechText: 'Welcome to Verona Wisconsin School Lunch Menu. Which school would you like: Elementary, Middle, or High School?',
+        repromptText: 'Please say Elementary, Middle, or High School.',
         shouldEndSession: false,
         sessionAttributes,
       })
