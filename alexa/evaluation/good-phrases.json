@@ -1,0 +1,354 @@
+[
+  {
+    "id": "good_001",
+    "description": "Standard lunch inquiry for today at elementary school",
+    "utterance": "what's for lunch today for elementary",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "lunch",
+      "date": "today",
+      "schoolLevel": "elementary"
+    }
+  },
+  {
+    "id": "good_002",
+    "description": "Full menu inquiry for tomorrow at elementary school (natural phrasing)",
+    "utterance": "what's the menu for tomorrow for elementary",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "both",
+      "date": "tomorrow",
+      "schoolLevel": "elementary"
+    }
+  },
+  {
+    "id": "good_003",
+    "description": "Breakfast inquiry for tomorrow at high school",
+    "utterance": "what's for breakfast tomorrow for high school",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "breakfast",
+      "date": "tomorrow",
+      "schoolLevel": "high school"
+    }
+  },
+  {
+    "id": "good_004",
+    "description": "Lunch inquiry for next week at middle school",
+    "utterance": "what are they having for lunch next week for middle school",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "lunch",
+      "date": "next week",
+      "schoolLevel": "middle"
+    }
+  },
+  {
+    "id": "good_005",
+    "description": "Combined menu inquiry using 'the menu' with specific day of week",
+    "utterance": "tell me the elementary school menu for Friday",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "both",
+      "date": "Friday",
+      "schoolLevel": "elementary"
+    }
+  },
+  {
+    "id": "good_006",
+    "description": "Inquiry using grade level range K-5",
+    "utterance": "what is for lunch for k through five on monday",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "lunch",
+      "date": "Monday",
+      "schoolLevel": "elementary"
+    }
+  },
+  {
+    "id": "good_007",
+    "description": "Inquiry for past date yesterday",
+    "utterance": "what was for lunch yesterday for elementary school",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "lunch",
+      "date": "yesterday",
+      "schoolLevel": "elementary"
+    }
+  },
+  {
+    "id": "good_008",
+    "description": "Specific elementary school name Sugar Creek",
+    "utterance": "tell me what's for breakfast today for sugar creek",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "breakfast",
+      "date": "today",
+      "schoolLevel": "elementary"
+    }
+  },
+  {
+    "id": "good_009",
+    "description": "High school synonym VAHS with both breakfast and lunch",
+    "utterance": "what's vahs having for breakfast and lunch tomorrow",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "both",
+      "date": "tomorrow",
+      "schoolLevel": "high school"
+    }
+  },
+  {
+    "id": "good_010",
+    "description": "Middle school grade range 6-8",
+    "utterance": "what is grades six through eight having for lunch today",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "lunch",
+      "date": "today",
+      "schoolLevel": "middle"
+    }
+  },
+  {
+    "id": "good_011",
+    "description": "High school grade range 9-12",
+    "utterance": "tell me the nine through twelve lunch menu for tomorrow",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "lunch",
+      "date": "tomorrow",
+      "schoolLevel": "high school"
+    }
+  },
+  {
+    "id": "good_012",
+    "description": "Specific calendar date inquiry",
+    "utterance": "what's for lunch on october fifth for middle school",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "lunch",
+      "date": "October 5th",
+      "schoolLevel": "middle"
+    }
+  },
+  {
+    "id": "good_013",
+    "description": "Partial query with school and meal, no date",
+    "utterance": "what's for lunch at elementary school",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "lunch",
+      "schoolLevel": "elementary"
+    }
+  },
+  {
+    "id": "good_014",
+    "description": "Partial query with high school and breakfast, no date",
+    "utterance": "what's for breakfast for high school",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "breakfast",
+      "schoolLevel": "high school"
+    }
+  },
+  {
+    "id": "good_015",
+    "description": "Partial query with middle school and the menu, no date",
+    "utterance": "tell me the middle school menu",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "both",
+      "schoolLevel": "middle"
+    }
+  },
+  {
+    "id": "good_016",
+    "description": "Partial query with meal and date, no school specified",
+    "utterance": "what's for lunch today",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "lunch",
+      "date": "today"
+    }
+  },
+  {
+    "id": "good_017",
+    "description": "Partial query with breakfast and tomorrow, no school specified",
+    "utterance": "what's for breakfast tomorrow",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "breakfast",
+      "date": "tomorrow"
+    }
+  },
+  {
+    "id": "good_018",
+    "description": "Partial query with menu and next week, no school specified",
+    "utterance": "what is the menu for next week",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "both",
+      "date": "next week"
+    }
+  },
+  {
+    "id": "good_019",
+    "description": "Open launch phrase with generic menu request",
+    "utterance": "open the menu",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "both"
+    }
+  },
+  {
+    "id": "good_020",
+    "description": "Wizard school selection single word elementary",
+    "utterance": "elementary",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "schoolLevel": "elementary"
+    }
+  },
+  {
+    "id": "good_021",
+    "description": "Wizard school selection single word middle",
+    "utterance": "middle school",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "schoolLevel": "middle"
+    }
+  },
+  {
+    "id": "good_022",
+    "description": "Wizard school selection single word high school",
+    "utterance": "high school",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "schoolLevel": "high school"
+    }
+  },
+  {
+    "id": "good_023",
+    "description": "Wizard meal selection breakfast",
+    "utterance": "breakfast",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "breakfast"
+    }
+  },
+  {
+    "id": "good_024",
+    "description": "Wizard meal selection lunch",
+    "utterance": "lunch",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "lunch"
+    }
+  },
+  {
+    "id": "good_025",
+    "description": "Wizard meal selection both",
+    "utterance": "both",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "mealType": "both"
+    }
+  },
+  {
+    "id": "good_026",
+    "description": "Wizard date selection today",
+    "utterance": "today",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "date": "today"
+    }
+  },
+  {
+    "id": "good_027",
+    "description": "Wizard date selection tomorrow",
+    "utterance": "tomorrow",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "date": "tomorrow"
+    }
+  },
+  {
+    "id": "good_028",
+    "description": "Wizard date selection next week",
+    "utterance": "next week",
+    "expectedIntent": "GetLunchIntent",
+    "expectedSlots": {
+      "date": "next week"
+    }
+  },
+  {
+    "id": "good_029",
+    "description": "Photo gallery navigation see more",
+    "utterance": "see more",
+    "expectedIntent": "SeeMoreIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "good_030",
+    "description": "Photo gallery navigation show photos",
+    "utterance": "show photos",
+    "expectedIntent": "SeeMoreIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "good_031",
+    "description": "Photo gallery navigation view pictures",
+    "utterance": "view pictures",
+    "expectedIntent": "SeeMoreIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "good_032",
+    "description": "Photo gallery navigation photo gallery",
+    "utterance": "photo gallery",
+    "expectedIntent": "SeeMoreIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "good_033",
+    "description": "Return to dinner menu back",
+    "utterance": "back",
+    "expectedIntent": "BackToMenuIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "good_034",
+    "description": "Return to dinner menu back to menu",
+    "utterance": "back to menu",
+    "expectedIntent": "BackToMenuIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "good_035",
+    "description": "Return to dinner menu show the dinner menu",
+    "utterance": "show the dinner menu",
+    "expectedIntent": "BackToMenuIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "good_036",
+    "description": "Built-in help intent",
+    "utterance": "help",
+    "expectedIntent": "AMAZON.HelpIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "good_037",
+    "description": "Built-in cancel intent",
+    "utterance": "cancel",
+    "expectedIntent": "AMAZON.CancelIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "good_038",
+    "description": "Built-in stop intent",
+    "utterance": "stop",
+    "expectedIntent": "AMAZON.StopIntent",
+    "expectedSlots": {}
+  }
+]

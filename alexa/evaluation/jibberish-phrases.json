@@ -1,0 +1,233 @@
+[
+  {
+    "id": "jibberish_001",
+    "description": "Pure keyboard mash",
+    "utterance": "asdf jkl semicolon qwerty",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_002",
+    "description": "Nonsense baby talk / babble",
+    "utterance": "flibber flabber snoo snoo bazooka",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_003",
+    "description": "Robot noises",
+    "utterance": "blip blop beep boop zorp",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_004",
+    "description": "Internet slang / meme phrase",
+    "utterance": "skibidi toilet rizz sigma",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_005",
+    "description": "Random gibberish words",
+    "utterance": "gobbledygook banana rama ding dong",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_006",
+    "description": "Single long nonsense word",
+    "utterance": "supercalifragilisticexpialidocious",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_007",
+    "description": "Magic incantation",
+    "utterance": "abracadabra hocus pocus alakazam",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_008",
+    "description": "Smart home device command: lights",
+    "utterance": "turn off the living room lights",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_009",
+    "description": "Smart speaker timer command",
+    "utterance": "set a timer for ten minutes",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_010",
+    "description": "Weather inquiry",
+    "utterance": "what's the weather in Seattle",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_011",
+    "description": "Music playback request",
+    "utterance": "play music on Spotify",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_012",
+    "description": "Alarm setting request",
+    "utterance": "set an alarm for seven a.m.",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_013",
+    "description": "Commercial fast food pizza order",
+    "utterance": "order a large pepperoni pizza from domino's",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_014",
+    "description": "Fast food burger order",
+    "utterance": "can I get a big mac and fries",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_015",
+    "description": "Sushi delivery request",
+    "utterance": "order sushi delivery right now",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_016",
+    "description": "Chipotle price question",
+    "utterance": "how much does a chipotle burrito cost",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_017",
+    "description": "High school athletics score inquiry",
+    "utterance": "who won the high school football game last night",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_018",
+    "description": "School bus transportation inquiry",
+    "utterance": "what time does the school bus arrive",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_019",
+    "description": "School administration inquiry",
+    "utterance": "when is parent teacher conference",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_020",
+    "description": "Phone call request to school office",
+    "utterance": "call the attendance office",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_021",
+    "description": "School staff question",
+    "utterance": "who is the high school principal",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_022",
+    "description": "Ambient conversational filler",
+    "utterance": "um yeah whatever you know",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_023",
+    "description": "Microphone sound check",
+    "utterance": "testing one two three is this thing on",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_024",
+    "description": "Household cross-talk / background noise",
+    "utterance": "hey mom where did you put my shoes",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_025",
+    "description": "General knowledge trivia question",
+    "utterance": "what is the capital of Nebraska",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_026",
+    "description": "Alexa joke request",
+    "utterance": "tell me a joke",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_027",
+    "description": "Sing a song request",
+    "utterance": "sing me a song",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_028",
+    "description": "Coin flip request",
+    "utterance": "flip a coin heads or tails",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_029",
+    "description": "Astrophysics query",
+    "utterance": "how old is the universe in light years",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_030",
+    "description": "App launch request",
+    "utterance": "open netflix on the tv",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_031",
+    "description": "Random numbers string",
+    "utterance": "four eight fifteen sixteen twenty three forty two",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_032",
+    "description": "Sighing / mutter",
+    "utterance": "blah blah blah whatever dude",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  },
+  {
+    "id": "jibberish_033",
+    "description": "Dismissive remark",
+    "utterance": "I didn't say anything go away",
+    "expectedIntent": "AMAZON.FallbackIntent",
+    "expectedSlots": {}
+  }
+]
