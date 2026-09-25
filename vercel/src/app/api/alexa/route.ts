@@ -753,14 +753,17 @@ export async function POST(req: NextRequest) {
         resolvedDate = { type: 'day', dateStr: sessionAttributes.dateStr };
       }
 
-      // 3. Resolve meal type explicitly (null if user hasn't chosen yet)
+      // 3. Resolve meal type explicitly
       const extractedMeal = resolveMealTypeExplicit(slots.mealType);
-      let mealType = extractedMeal || (sessionAttributes.mealType as MealType) || null;
-
-      // If school and date are both provided (e.g. "what's the menu for tomorrow for elementary"),
-      // default mealType to 'both' so it immediately fulfills the request with breakfast and lunch
-      if (!mealType && schoolLevel && resolvedDate) {
+      let mealType: MealType | null = null;
+      if (extractedMeal) {
+        mealType = extractedMeal;
+      } else if (schoolLevel && resolvedDate) {
+        // When asking for "the menu" (or if school and date are provided without specifying breakfast/lunch),
+        // always give the full menu (both breakfast and lunch) rather than an old session's meal!
         mealType = 'both';
+      } else if (sessionAttributes.mealType) {
+        mealType = sessionAttributes.mealType as MealType;
       }
 
       // Preserve any provided information in session attributes
