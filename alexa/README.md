@@ -1,6 +1,6 @@
-# 🎙️ Verona School Lunch – Alexa Custom Skill Setup Guide
+# 🎙️ Unofficial Verona Wisconsin School Lunch – Alexa Custom Skill Setup Guide
 
-This guide walks you through setting up the **"Verona School Lunch"** Alexa Custom Skill using the Amazon Developer Console so you can talk to Alexa on any Echo device or the Alexa app.
+This guide walks you through setting up the **"Unofficial Verona Wisconsin School Lunch"** Alexa Custom Skill using the Amazon Developer Console so you can talk to Alexa on any Echo device or the Alexa app.
 
 ---
 
@@ -47,7 +47,7 @@ Your Alexa custom skill endpoint is hosted directly on your Vercel deployment:
 
 1. Navigate to the [Amazon Alexa Developer Console](https://developer.amazon.com/alexa/console/ask).
 2. Sign in with the **same Amazon account** you use on your Echo devices or Alexa mobile app.
-3. Open your skill (or click **Create Skill** with name `Verona School Lunch`).
+3. Open your skill (or click **Create Skill** with name `Unofficial Verona Wisconsin School Lunch`).
 
 ---
 

@@ -43,7 +43,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   return NextResponse.json({
     status: 'online',
-    skill: 'Verona Wisconsin School Lunch Menu',
+    skill: 'Unofficial Verona Wisconsin School Lunch',
     endpoint: '/api/alexa',
     message:
       'Alexa Custom Skill endpoint is active. Configure this URL as your HTTPS endpoint in the Amazon Alexa Developer Console.',
@@ -363,7 +363,7 @@ export async function POST(req: NextRequest) {
     // Renders OnMount Headline splash with VASD paw logo & title, auto-advancing to 3 equal school buttons
     if (request.type === 'LaunchRequest') {
       const speech =
-        'Welcome to Verona Wisconsin School Lunch Menu. Would you like the menu for Elementary, Middle, or High School?';
+        'Welcome to Unofficial Verona Wisconsin School Lunch. Would you like the menu for Elementary, Middle, or High School?';
       const reprompt = 'Which school would you like: Elementary, Middle, or High School?';
 
       sessionAttributes.wizardStep = 'school';
@@ -387,7 +387,7 @@ export async function POST(req: NextRequest) {
           repromptText: reprompt,
           shouldEndSession: false,
           sessionAttributes,
-          cardTitle: 'Verona Wisconsin School Lunch Menu',
+          cardTitle: 'Unofficial Verona Wisconsin School Lunch',
           directives,
         })
       );
@@ -897,7 +897,7 @@ export async function POST(req: NextRequest) {
     // Default fallback for any unrecognized request type
     return NextResponse.json(
       buildAlexaResponse({
-        speechText: 'Welcome to Verona Wisconsin School Lunch Menu. Which school would you like: Elementary, Middle, or High School?',
+        speechText: 'Welcome to Unofficial Verona Wisconsin School Lunch. Which school would you like: Elementary, Middle, or High School?',
         repromptText: 'Please say Elementary, Middle, or High School.',
         shouldEndSession: false,
         sessionAttributes,
