@@ -94,6 +94,35 @@ export function supportsApl(body?: AlexaRequestEnvelope): boolean {
   );
 }
 
+export function supportsAplt(body?: AlexaRequestEnvelope): boolean {
+  return Boolean(
+    body?.context?.System?.device?.supportedInterfaces?.['Alexa.Presentation.APLT']
+  );
+}
+
+/**
+ * Builds an APLT directive for character displays (e.g. Echo Dot with Clock).
+ * Character displays only support alphanumeric characters and basic punctuation (no emojis).
+ */
+export function buildApltDirective(text: string = 'VASD'): any {
+  return {
+    type: 'Alexa.Presentation.APLT.RenderDocument',
+    token: 'vasdApltToken',
+    targetProfile: 'FOUR_CHARACTER_CLOCK',
+    document: {
+      type: 'APLT',
+      version: '1.0',
+      mainTemplate: {
+        item: {
+          type: 'Text',
+          text,
+          textAlign: 'center',
+        },
+      },
+    },
+  };
+}
+
 export function buildAlexaResponse(options: {
   speechText: string;
   repromptText?: string;

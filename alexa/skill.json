@@ -50,6 +50,9 @@
         "interfaces": [
           {
             "type": "ALEXA_PRESENTATION_APL"
+          },
+          {
+            "type": "ALEXA_PRESENTATION_APLT"
           }
         ]
       }

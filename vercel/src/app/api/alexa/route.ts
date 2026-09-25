@@ -10,6 +10,8 @@ import {
   ResolvedDate,
   getIsoWeekString,
   supportsApl,
+  supportsAplt,
+  buildApltDirective,
 } from '@/lib/alexa';
 import {
   buildWelcomeAplDocument,
@@ -77,6 +79,7 @@ async function handleSingleDayMenu({
   sessionAttributes.screen = 'menu';
 
   // 1. Check cache first (for current day)
+  const isAplt = supportsAplt(body);
   const cached = await getCachedMenu(dateStr, schoolLevel, mealType);
   if (cached) {
     const directives = isApl
@@ -88,6 +91,8 @@ async function handleSingleDayMenu({
             datasources: buildMenuAplDatasource(cached),
           },
         ]
+      : isAplt
+      ? [buildApltDirective(mealType === 'breakfast' ? 'BRK' : 'LNCH')]
       : undefined;
 
     return NextResponse.json(
@@ -222,6 +227,8 @@ async function handleSingleDayMenu({
           datasources: buildMenuAplDatasource(result),
         },
       ]
+    : isAplt
+    ? [buildApltDirective(mealType === 'breakfast' ? 'BRK' : 'LNCH')]
     : undefined;
 
   return NextResponse.json(
@@ -317,6 +324,7 @@ async function handleWeekMenu({
   }
 
   const isApl = supportsApl(body);
+  const isAplt = supportsAplt(body);
   const directives = isApl
     ? [
         {
@@ -326,6 +334,8 @@ async function handleWeekMenu({
           datasources: buildWeeklyAplDatasource(weekResult),
         },
       ]
+    : isAplt
+    ? [buildApltDirective('WEEK')]
     : undefined;
 
   return NextResponse.json(
@@ -367,6 +377,8 @@ export async function POST(req: NextRequest) {
               datasources: buildWelcomeAplDatasource({ step: 'splash' }),
             },
           ]
+        : supportsAplt(body)
+        ? [buildApltDirective('VASD')]
         : undefined;
 
       return NextResponse.json(
