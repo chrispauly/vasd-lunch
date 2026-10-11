@@ -510,6 +510,7 @@
                                   },
                                   {
                                     "type": "Container",
+                                    "direction": "column",
                                     "grow": 1,
                                     "shrink": 1,
                                     "justifyContent": "center",
@@ -518,11 +519,51 @@
                                     "items": [
                                       {
                                         "type": "Text",
-                                        "text": "Sugar Creek\nStoner Prairie\nGlacier Edge\nCountry View\nVAIS\nCore Knowledge (CKCS)",
+                                        "text": "Sugar Creek",
                                         "color": "#CBD5E1",
                                         "fontSize": "13dp",
                                         "fontWeight": "500",
-                                        "lineHeight": "21dp"
+                                        "lineHeight": "20dp"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "Stoner Prairie",
+                                        "color": "#CBD5E1",
+                                        "fontSize": "13dp",
+                                        "fontWeight": "500",
+                                        "lineHeight": "20dp"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "Glacier Edge",
+                                        "color": "#CBD5E1",
+                                        "fontSize": "13dp",
+                                        "fontWeight": "500",
+                                        "lineHeight": "20dp"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "Country View",
+                                        "color": "#CBD5E1",
+                                        "fontSize": "13dp",
+                                        "fontWeight": "500",
+                                        "lineHeight": "20dp"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "VAIS",
+                                        "color": "#CBD5E1",
+                                        "fontSize": "13dp",
+                                        "fontWeight": "500",
+                                        "lineHeight": "20dp"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "Core Knowledge (CKCS)",
+                                        "color": "#CBD5E1",
+                                        "fontSize": "13dp",
+                                        "fontWeight": "500",
+                                        "lineHeight": "20dp"
                                       }
                                     ]
                                   },
@@ -609,6 +650,7 @@
                                   },
                                   {
                                     "type": "Container",
+                                    "direction": "column",
                                     "grow": 1,
                                     "shrink": 1,
                                     "justifyContent": "center",
@@ -617,11 +659,19 @@
                                     "items": [
                                       {
                                         "type": "Text",
-                                        "text": "Badger Ridge Middle School\nCore Knowledge (CKCS)",
+                                        "text": "Badger Ridge Middle School",
                                         "color": "#CBD5E1",
                                         "fontSize": "13dp",
                                         "fontWeight": "500",
-                                        "lineHeight": "21dp"
+                                        "lineHeight": "20dp"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "Core Knowledge (CKCS)",
+                                        "color": "#CBD5E1",
+                                        "fontSize": "13dp",
+                                        "fontWeight": "500",
+                                        "lineHeight": "20dp"
                                       }
                                     ]
                                   },
@@ -708,6 +758,7 @@
                                   },
                                   {
                                     "type": "Container",
+                                    "direction": "column",
                                     "grow": 1,
                                     "shrink": 1,
                                     "justifyContent": "center",
@@ -720,7 +771,7 @@
                                         "color": "#CBD5E1",
                                         "fontSize": "13dp",
                                         "fontWeight": "500",
-                                        "lineHeight": "21dp"
+                                        "lineHeight": "20dp"
                                       }
                                     ]
                                   },
