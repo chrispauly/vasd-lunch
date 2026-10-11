@@ -517,166 +517,12 @@
                                     "marginBottom": "8dp",
                                     "items": [
                                       {
-                                        "type": "Container",
-                                        "direction": "row",
-                                        "alignItems": "flex-start",
-                                        "marginBottom": "5dp",
-                                        "items": [
-                                          {
-                                            "type": "Text",
-                                            "text": "•",
-                                            "color": "#F97316",
-                                            "fontSize": "13dp",
-                                            "fontWeight": "800",
-                                            "marginRight": "7dp",
-                                            "lineHeight": "18dp"
-                                          },
-                                          {
-                                            "type": "Text",
-                                            "text": "Sugar Creek",
-                                            "color": "#CBD5E1",
-                                            "fontSize": "12dp",
-                                            "fontWeight": "500",
-                                            "lineHeight": "18dp",
-                                            "grow": 1,
-                                            "shrink": 1
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "type": "Container",
-                                        "direction": "row",
-                                        "alignItems": "flex-start",
-                                        "marginBottom": "5dp",
-                                        "items": [
-                                          {
-                                            "type": "Text",
-                                            "text": "•",
-                                            "color": "#F97316",
-                                            "fontSize": "13dp",
-                                            "fontWeight": "800",
-                                            "marginRight": "7dp",
-                                            "lineHeight": "18dp"
-                                          },
-                                          {
-                                            "type": "Text",
-                                            "text": "Stoner Prairie",
-                                            "color": "#CBD5E1",
-                                            "fontSize": "12dp",
-                                            "fontWeight": "500",
-                                            "lineHeight": "18dp",
-                                            "grow": 1,
-                                            "shrink": 1
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "type": "Container",
-                                        "direction": "row",
-                                        "alignItems": "flex-start",
-                                        "marginBottom": "5dp",
-                                        "items": [
-                                          {
-                                            "type": "Text",
-                                            "text": "•",
-                                            "color": "#F97316",
-                                            "fontSize": "13dp",
-                                            "fontWeight": "800",
-                                            "marginRight": "7dp",
-                                            "lineHeight": "18dp"
-                                          },
-                                          {
-                                            "type": "Text",
-                                            "text": "Glacier Edge",
-                                            "color": "#CBD5E1",
-                                            "fontSize": "12dp",
-                                            "fontWeight": "500",
-                                            "lineHeight": "18dp",
-                                            "grow": 1,
-                                            "shrink": 1
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "type": "Container",
-                                        "direction": "row",
-                                        "alignItems": "flex-start",
-                                        "marginBottom": "5dp",
-                                        "items": [
-                                          {
-                                            "type": "Text",
-                                            "text": "•",
-                                            "color": "#F97316",
-                                            "fontSize": "13dp",
-                                            "fontWeight": "800",
-                                            "marginRight": "7dp",
-                                            "lineHeight": "18dp"
-                                          },
-                                          {
-                                            "type": "Text",
-                                            "text": "Country View",
-                                            "color": "#CBD5E1",
-                                            "fontSize": "12dp",
-                                            "fontWeight": "500",
-                                            "lineHeight": "18dp",
-                                            "grow": 1,
-                                            "shrink": 1
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "type": "Container",
-                                        "direction": "row",
-                                        "alignItems": "flex-start",
-                                        "marginBottom": "5dp",
-                                        "items": [
-                                          {
-                                            "type": "Text",
-                                            "text": "•",
-                                            "color": "#F97316",
-                                            "fontSize": "13dp",
-                                            "fontWeight": "800",
-                                            "marginRight": "7dp",
-                                            "lineHeight": "18dp"
-                                          },
-                                          {
-                                            "type": "Text",
-                                            "text": "VAIS",
-                                            "color": "#CBD5E1",
-                                            "fontSize": "12dp",
-                                            "fontWeight": "500",
-                                            "lineHeight": "18dp",
-                                            "grow": 1,
-                                            "shrink": 1
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "type": "Container",
-                                        "direction": "row",
-                                        "alignItems": "flex-start",
-                                        "marginBottom": "5dp",
-                                        "items": [
-                                          {
-                                            "type": "Text",
-                                            "text": "•",
-                                            "color": "#F97316",
-                                            "fontSize": "13dp",
-                                            "fontWeight": "800",
-                                            "marginRight": "7dp",
-                                            "lineHeight": "18dp"
-                                          },
-                                          {
-                                            "type": "Text",
-                                            "text": "Core Knowledge (CKCS)",
-                                            "color": "#CBD5E1",
-                                            "fontSize": "12dp",
-                                            "fontWeight": "500",
-                                            "lineHeight": "18dp",
-                                            "grow": 1,
-                                            "shrink": 1
-                                          }
-                                        ]
+                                        "type": "Text",
+                                        "text": "Sugar Creek\nStoner Prairie\nGlacier Edge\nCountry View\nVAIS\nCore Knowledge (CKCS)",
+                                        "color": "#CBD5E1",
+                                        "fontSize": "13dp",
+                                        "fontWeight": "500",
+                                        "lineHeight": "21dp"
                                       }
                                     ]
                                   },
@@ -770,58 +616,12 @@
                                     "marginBottom": "8dp",
                                     "items": [
                                       {
-                                        "type": "Container",
-                                        "direction": "row",
-                                        "alignItems": "flex-start",
-                                        "marginBottom": "5dp",
-                                        "items": [
-                                          {
-                                            "type": "Text",
-                                            "text": "•",
-                                            "color": "#F97316",
-                                            "fontSize": "13dp",
-                                            "fontWeight": "800",
-                                            "marginRight": "7dp",
-                                            "lineHeight": "18dp"
-                                          },
-                                          {
-                                            "type": "Text",
-                                            "text": "Badger Ridge Middle School",
-                                            "color": "#CBD5E1",
-                                            "fontSize": "12dp",
-                                            "fontWeight": "500",
-                                            "lineHeight": "18dp",
-                                            "grow": 1,
-                                            "shrink": 1
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "type": "Container",
-                                        "direction": "row",
-                                        "alignItems": "flex-start",
-                                        "marginBottom": "5dp",
-                                        "items": [
-                                          {
-                                            "type": "Text",
-                                            "text": "•",
-                                            "color": "#F97316",
-                                            "fontSize": "13dp",
-                                            "fontWeight": "800",
-                                            "marginRight": "7dp",
-                                            "lineHeight": "18dp"
-                                          },
-                                          {
-                                            "type": "Text",
-                                            "text": "Core Knowledge (CKCS)",
-                                            "color": "#CBD5E1",
-                                            "fontSize": "12dp",
-                                            "fontWeight": "500",
-                                            "lineHeight": "18dp",
-                                            "grow": 1,
-                                            "shrink": 1
-                                          }
-                                        ]
+                                        "type": "Text",
+                                        "text": "Badger Ridge Middle School\nCore Knowledge (CKCS)",
+                                        "color": "#CBD5E1",
+                                        "fontSize": "13dp",
+                                        "fontWeight": "500",
+                                        "lineHeight": "21dp"
                                       }
                                     ]
                                   },
@@ -915,31 +715,12 @@
                                     "marginBottom": "8dp",
                                     "items": [
                                       {
-                                        "type": "Container",
-                                        "direction": "row",
-                                        "alignItems": "flex-start",
-                                        "marginBottom": "5dp",
-                                        "items": [
-                                          {
-                                            "type": "Text",
-                                            "text": "•",
-                                            "color": "#F97316",
-                                            "fontSize": "13dp",
-                                            "fontWeight": "800",
-                                            "marginRight": "7dp",
-                                            "lineHeight": "18dp"
-                                          },
-                                          {
-                                            "type": "Text",
-                                            "text": "Verona Area High School (VAHS)",
-                                            "color": "#CBD5E1",
-                                            "fontSize": "12dp",
-                                            "fontWeight": "500",
-                                            "lineHeight": "18dp",
-                                            "grow": 1,
-                                            "shrink": 1
-                                          }
-                                        ]
+                                        "type": "Text",
+                                        "text": "Verona Area High School (VAHS)",
+                                        "color": "#CBD5E1",
+                                        "fontSize": "13dp",
+                                        "fontWeight": "500",
+                                        "lineHeight": "21dp"
                                       }
                                     ]
                                   },

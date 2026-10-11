@@ -73,7 +73,7 @@ function createLandscapeSchoolCard({
             ],
           },
 
-          // Middle: Bulleted School List (in the middle of the box, vertically centered)
+          // Middle: School List (tightly grouped together, no bullets, vertically centered)
           {
             type: 'Container',
             grow: 1,
@@ -81,33 +81,16 @@ function createLandscapeSchoolCard({
             justifyContent: 'center',
             marginTop: '8dp',
             marginBottom: '8dp',
-            items: schools.map((school) => ({
-              type: 'Container',
-              direction: 'row',
-              alignItems: 'flex-start',
-              marginBottom: '5dp',
-              items: [
-                {
-                  type: 'Text',
-                  text: '•',
-                  color: APL_COLORS.orangeAccent,
-                  fontSize: '13dp',
-                  fontWeight: '800',
-                  marginRight: '7dp',
-                  lineHeight: '18dp',
-                },
-                {
-                  type: 'Text',
-                  text: school,
-                  color: '#CBD5E1',
-                  fontSize: '12dp',
-                  fontWeight: '500',
-                  lineHeight: '18dp',
-                  grow: 1,
-                  shrink: 1,
-                },
-              ],
-            })),
+            items: [
+              {
+                type: 'Text',
+                text: schools.join('\n'),
+                color: '#CBD5E1',
+                fontSize: '13dp',
+                fontWeight: '500',
+                lineHeight: '21dp',
+              },
+            ],
           },
 
           // Bottom: Action Button
