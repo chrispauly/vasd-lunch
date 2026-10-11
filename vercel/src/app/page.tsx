@@ -1141,7 +1141,7 @@ export default function HomePage() {
               Morning rotating entrees (muffins, pancake bars, etc.) and fruit sides.
             </p>
             <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '8px 10px', borderRadius: '8px', fontSize: '0.8rem', color: '#fdba74', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <MessageSquare size={13} /> "Alexa, ask Verona School Lunch what's for breakfast tomorrow"
+              <MessageSquare size={13} /> "Alexa, ask Wildcat Lunch what's for breakfast tomorrow"
             </div>
           </div>
 
@@ -1171,7 +1171,7 @@ export default function HomePage() {
               Hot lunch specials, vegetables, and treats with daily staples filtered out.
             </p>
             <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '8px 10px', borderRadius: '8px', fontSize: '0.8rem', color: '#fde68a', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <MessageSquare size={13} /> "Alexa, ask Verona School Lunch what's for lunch today"
+              <MessageSquare size={13} /> "Alexa, ask Wildcat Lunch what's for lunch today"
             </div>
           </div>
 
@@ -1201,7 +1201,7 @@ export default function HomePage() {
               Full day readout starting with breakfast followed by lunch.
             </p>
             <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '8px 10px', borderRadius: '8px', fontSize: '0.8rem', color: '#fed7aa', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <MessageSquare size={13} /> "Alexa, ask Verona School Lunch what's the menu"
+              <MessageSquare size={13} /> "Alexa, ask Wildcat Lunch what's the menu"
             </div>
           </div>
 
@@ -1231,7 +1231,7 @@ export default function HomePage() {
               Full Monday–Friday preview with day-by-day menu highlights.
             </p>
             <div style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '8px 10px', borderRadius: '8px', fontSize: '0.8rem', color: '#a7f3d0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <MessageSquare size={13} /> "Alexa, ask Verona School Lunch what's the menu next week"
+              <MessageSquare size={13} /> "Alexa, ask Wildcat Lunch what's the menu next week"
             </div>
           </div>
         </div>

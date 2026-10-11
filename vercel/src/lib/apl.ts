@@ -1,5 +1,5 @@
 /**
- * Alexa Presentation Language (APL) Documents & Datasources for Verona School Lunch
+ * Alexa Presentation Language (APL) Documents & Datasources for Wildcat Lunch
  * 
  * Modular component definitions are now organized into individual template files under:
  * - styles: ./apl/styles

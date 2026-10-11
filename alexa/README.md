@@ -1,22 +1,22 @@
-# 🎙️ Unofficial Verona Wisconsin School Lunch – Alexa Custom Skill Setup Guide
+# 🎙️ Wildcat Lunch – Alexa Custom Skill Setup Guide
 
-This guide walks you through setting up the **"Unofficial Verona Wisconsin School Lunch"** Alexa Custom Skill using the Amazon Developer Console so you can talk to Alexa on any Echo device or the Alexa app.
+This guide walks you through setting up the **"Wildcat Lunch"** Alexa Custom Skill using the Amazon Developer Console so you can talk to Alexa on any Echo device or the Alexa app.
 
 ---
 
 ## 📋 Features
 
-- **Invocation Name:** `verona school lunch` (natural, crystal-clear spoken words).
+- **Invocation Name:** `wildcat lunch` (natural, crystal-clear spoken words).
 - **Conversational Launch:**
-  - *"Alexa, open Verona School Lunch"*
-  - Alexa asks: *"Welcome to Verona School Lunch! Would you like the menu for elementary, middle, or high school? You can also ask for breakfast or lunch."*
+  - *"Alexa, open Wildcat Lunch"*
+  - Alexa asks: *"Welcome to Wildcat Lunch! Would you like the menu for elementary, middle, or high school? You can also ask for breakfast or lunch."*
   - You answer: *"Elementary"* (or *"Breakfast for high school"*, etc.)
 - **One-Shot Direct Invocations:**
-  - **Breakfast**: *"Alexa, ask Verona School Lunch what's for breakfast tomorrow for elementary school"*
-  - **Lunch**: *"Alexa, ask Verona School Lunch what's for lunch today for middle school"*
-  - **Combined Menu**: *"Alexa, ask Verona School Lunch what's the menu for high school"*
-  - **Weekly Forecast**: *"Alexa, ask Verona School Lunch what's the menu next week for elementary school"*
-  - **Past Days**: *"Alexa, ask Verona School Lunch what was for lunch yesterday for elementary school"*
+  - **Breakfast**: *"Alexa, ask Wildcat Lunch what's for breakfast tomorrow for elementary school"*
+  - **Lunch**: *"Alexa, ask Wildcat Lunch what's for lunch today for middle school"*
+  - **Combined Menu**: *"Alexa, ask Wildcat Lunch what's the menu for high school"*
+  - **Weekly Forecast**: *"Alexa, ask Wildcat Lunch what's the menu next week for elementary school"*
+  - **Past Days**: *"Alexa, ask Wildcat Lunch what was for lunch yesterday for elementary school"*
 - **Timeframes Supported:**
   - `today`
   - `tomorrow`
@@ -47,7 +47,7 @@ Your Alexa custom skill endpoint is hosted directly on your Vercel deployment:
 
 1. Navigate to the [Amazon Alexa Developer Console](https://developer.amazon.com/alexa/console/ask).
 2. Sign in with the **same Amazon account** you use on your Echo devices or Alexa mobile app.
-3. Open your skill (or click **Create Skill** with name `Unofficial Verona Wisconsin School Lunch`).
+3. Open your skill (or click **Create Skill** with name `Wildcat Lunch`).
 
 ---
 
@@ -55,7 +55,7 @@ Your Alexa custom skill endpoint is hosted directly on your Vercel deployment:
 
 1. In the skill editor, on the left navigation under **Interaction Model**, click **JSON Editor**.
 2. Open the file [`alexa/interactionModels/custom/en-US.json`](interactionModels/custom/en-US.json) from this repository.
-3. Copy its entire JSON contents and paste it into the JSON Editor in the Alexa Developer Console (notice `"invocationName": "verona school lunch"`).
+3. Copy its entire JSON contents and paste it into the JSON Editor in the Alexa Developer Console (notice `"invocationName": "wildcat lunch"`).
 4. Click **Save Model** at the top.
 5. Click **Build Model**. Wait 15–30 seconds until the build completes with a green success notification.
 
@@ -93,32 +93,32 @@ To enable visual displays on Echo Show (5, 8, 10, 15) and Fire TV:
 2. In the top-left dropdown where it says *"Skill testing is enabled in:"*, change it from **Off** to **Development**.
 3. In the input box, type:
    ```text
-   open verona school lunch
+   open wildcat lunch
    ```
 
 #### Test Scenarios:
 
 **Scenario A: Interactive Invocation**
-> **You:** `open verona school lunch`
+> **You:** `open wildcat lunch`
 >
-> **Alexa:** `Welcome to Verona School Lunch! Would you like the lunch menu for elementary, middle, or high school?`
+> **Alexa:** `Welcome to Wildcat Lunch! Would you like the lunch menu for elementary, middle, or high school?`
 >
 > **You:** `elementary`
 >
 > **Alexa:** `Today for elementary lunch, the main hot entree is...`
 
 **Scenario B: Tomorrow's Middle School Lunch**
-> **You:** `ask verona school lunch what's for lunch tomorrow for middle school`
+> **You:** `ask wildcat lunch what's for lunch tomorrow for middle school`
 >
 > **Alexa:** `Tomorrow for Middle School (6-8) lunch, ...`
 
 **Scenario C: Next Week's High School Lunch**
-> **You:** `ask verona school lunch what's for lunch next week for high school`
+> **You:** `ask wildcat lunch what's for lunch next week for high school`
 >
 > **Alexa:** `Here is the lunch menu for High School (9-12): on Monday, ...; on Tuesday, ...; on Wednesday, ...; on Thursday, ...; on Friday, ...`
 
 **Scenario D: Yesterday's Lunch**
-> **You:** `ask verona school lunch what was for lunch yesterday for elementary school`
+> **You:** `ask wildcat lunch what was for lunch yesterday for elementary school`
 >
 > **Alexa:** `Yesterday for Elementary School (K-5) lunch, ...`
 
@@ -127,4 +127,4 @@ To enable visual displays on Echo Show (5, 8, 10, 15) and Fire TV:
 ## 📱 Using on your Physical Echo Devices
 
 Because you created the skill with the same Amazon account registered to your Echo / Alexa devices, the skill is **automatically available in Development mode on your physical Echo speakers**:
-- Just say: **"Alexa, open Verona School Lunch"** to your Echo speaker!
+- Just say: **"Alexa, open Wildcat Lunch"** to your Echo speaker!

@@ -1,6 +1,6 @@
-# Alexa Presentation Language (APL) Models for Verona School Lunch
+# Alexa Presentation Language (APL) Models for Wildcat Lunch
 
-This folder contains the complete, responsive multimodal Alexa Presentation Language (APL) documents and sample datasources for the **Verona School Lunch** skill.
+This folder contains the complete, responsive multimodal Alexa Presentation Language (APL) documents and sample datasources for the **Wildcat Lunch** skill.
 
 The skill detects when an Echo Show or Fire TV device is in use (`context.System.device.supportedInterfaces['Alexa.Presentation.APL']`) and automatically renders tailored visual layouts with high-resolution food photography pulled directly from the Verona Area School District's Health-e Pro platform.
 
@@ -36,7 +36,7 @@ The single APL document (`menu-document.json`) dynamically adapts to all Amazon 
   - **Full Touch Interactivity**: Designed for wall-mounted kitchen hubs where parents and students can browse the daily menu at their own pace.
 
 ### 4. 5-Day Weekly Forecast View (`buildWeeklyAplDocument()`)
-- Displayed when a user asks for weekly menus (e.g., *"Alexa, ask Verona School Lunch what's the menu next week"*).
+- Displayed when a user asks for weekly menus (e.g., *"Alexa, ask Wildcat Lunch what's the menu next week"*).
 - Presents a 5-day horizontal card sequence (Monday through Friday) showing each day's date, featured entree, and photo.
 
 ---
@@ -57,7 +57,7 @@ The single APL document (`menu-document.json`) dynamically adapts to all Amazon 
 
 ### 1. Testing the Welcome Wizard & Step 1 School Selection
 1. Open the [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask).
-2. Select your **Verona School Lunch** skill.
+2. Select your **Wildcat Lunch** skill.
 3. Click on the **Multimodal** tab (or **APL** in the left sidebar) $\rightarrow$ **Authoring Tool**.
 4. Click **Create Document** $\rightarrow$ **Start from scratch**.
 5. Paste the contents of [`welcome-document.json`](welcome-document.json) into the document editor.

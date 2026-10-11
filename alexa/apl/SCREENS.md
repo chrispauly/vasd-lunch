@@ -1,6 +1,6 @@
 # Alexa Presentation Language (APL) Screens Architecture & Current State
 
-This document provides a complete technical analysis of the multimodal Alexa Presentation Language (APL) screens in the **Verona School Lunch** skill, explains what each screen is currently doing, documents the root cause of the Step 1 display defect, and specifies the new templated component architecture.
+This document provides a complete technical analysis of the multimodal Alexa Presentation Language (APL) screens in the **Wildcat Lunch** skill, explains what each screen is currently doing, documents the root cause of the Step 1 display defect, and specifies the new templated component architecture.
 
 ---
 
@@ -27,7 +27,7 @@ This document provides a complete technical analysis of the multimodal Alexa Pre
 
 ## 🌐 Overview & Multimodal Strategy
 
-The Verona School Lunch Alexa skill provides a **voice-first, multimodal-enhanced** experience:
+The Wildcat Lunch Alexa skill provides a **voice-first, multimodal-enhanced** experience:
 - When a voice-only Echo device (e.g., Echo Dot) is used, Alexa responds with concise voice summaries synthesized by Google Gemini 2.5 Flash.
 - When an Echo Show, Echo Spot, or Fire TV is detected (`supportedInterfaces['Alexa.Presentation.APL']`), the skill renders rich visual screens with real food photos, allergen information, district branding, and touch interaction.
 - The user can interact with the skill either **by voice** (*"Elementary"*, *"Lunch"*, *"Today"*), **by touch** (tapping buttons or scrolling galleries), or a mix of both.
@@ -40,7 +40,7 @@ The Verona School Lunch Alexa skill provides a **voice-first, multimodal-enhance
 - **Document Source:** `alexa/apl/welcome-document.json` & `vercel/src/lib/apl.ts` (`buildWelcomeAplDocument()`)
 - **Datasource:** `buildWelcomeAplDatasource()` (`wizardData`)
 - **Triggered When:**
-  - The skill is launched with no specific query (*"Alexa, open Verona School Lunch"*).
+  - The skill is launched with no specific query (*"Alexa, open Wildcat Lunch"*).
   - A user asks a question missing a school level (*"What's for lunch?"*).
   - A user asks for a school but misses the meal type (*"What's on the menu at Glacier Edge?"*).
 - **Core Mechanism:**
@@ -67,7 +67,7 @@ stateDiagram-v2
   1. **Elementary** (Grades K-5: Sugar Creek, Stoner Prairie, Glacier Edge, Country View, VAIS, Core Knowledge (CKCS))
   2. **Middle School** (Grades 6-8: Badger Ridge Middle School, Core Knowledge (CKCS))
   3. **High School** (Grades 9-12: Verona Area High School)
-- **Voice Prompt:** *"Welcome to Unofficial Verona Wisconsin School Lunch. Would you like the menu for Elementary, Middle, or High School?"*
+- **Voice Prompt:** *"Welcome to Wildcat Lunch. Would you like the menu for Elementary, Middle, or High School?"*
 - **Touch Event:** Sends an `Alexa.Presentation.APL.UserEvent` with `arguments: ["selectLevel", "ES" | "MS" | "HS"]` and executes `SetPage` to Page 2.
 
 #### Page 2: Step 2 • Meal Type Selection

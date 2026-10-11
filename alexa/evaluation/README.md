@@ -1,6 +1,6 @@
 # Alexa NLU Evaluation & Annotation Sets
 
-This directory contains test suites (annotation sets) for evaluating the Natural Language Understanding (NLU) model of the **Unofficial Verona Wisconsin School Lunch** skill.
+This directory contains test suites (annotation sets) for evaluating the Natural Language Understanding (NLU) model of the **Wildcat Lunch** skill.
 
 Both **JSON** and **CSV** formats are provided for direct import into the **Alexa Developer Console NLU Evaluation** tool or third-party automated testing pipelines.
 
@@ -54,7 +54,7 @@ Ensures off-topic speech is safely ignored or caught by `AMAZON.FallbackIntent`:
 
 ### Step 1: Open the Console
 1. Navigate to the [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask).
-2. Click on **Unofficial Verona Wisconsin School Lunch**.
+2. Click on **Wildcat Lunch**.
 3. Go to the **Build** tab at the top.
 
 ### Step 2: Upload the Annotation Set

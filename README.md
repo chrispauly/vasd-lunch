@@ -12,7 +12,7 @@ An intelligent, voice-optimized service that scrapes daily and weekly **breakfas
 
 ## 🌟 Features
 
-* **🎙️ Amazon Alexa Custom Skill (`"verona school lunch"`)**: Interactive voice skill supporting single-day inquiries, multi-turn level prompting, and weekly forecasts.
+* **🎙️ Amazon Alexa Custom Skill (`"wildcat lunch"`)**: Interactive voice skill supporting single-day inquiries, multi-turn level prompting, and weekly forecasts.
 * **🖼️ Multimodal Alexa APL Screen Support**: Tailored visual interfaces for Echo Show 5, 8, 10, 15, and Fire TV with real food photography pulled directly from Health-e Pro CDN.
 * **🥐 Breakfast, Lunch, and Combined Menus**: Ask for just breakfast, just lunch, or the full daily/weekly menu.
 * **📅 Flexible Date Resolution**: Supports *"today"*, *"tomorrow"*, *"yesterday"*, specific calendar dates (`YYYY-MM-DD`), and full weekly forecasts (`YYYY-Www` e.g., *"this week"*, *"next week"*).
@@ -69,22 +69,22 @@ An intelligent, voice-optimized service that scrapes daily and weekly **breakfas
 
 ## 🗣️ Alexa Voice Commands
 
-The skill invocation name is **`verona school lunch`**.
+The skill invocation name is **`wildcat lunch`**.
 
 ### 1. Breakfast Inquiries
-* *"Alexa, ask Verona School Lunch what's for **breakfast**"*
-* *"Alexa, ask Verona School Lunch what's for **breakfast tomorrow** for **elementary school**"*
-* *"Alexa, ask Verona School Lunch what's for **breakfast next week** for **high school**"*
+* *"Alexa, ask Wildcat Lunch what's for **breakfast**"*
+* *"Alexa, ask Wildcat Lunch what's for **breakfast tomorrow** for **elementary school**"*
+* *"Alexa, ask Wildcat Lunch what's for **breakfast next week** for **high school**"*
 
 ### 2. Lunch Inquiries
-* *"Alexa, ask Verona School Lunch what's for **lunch**"*
-* *"Alexa, ask Verona School Lunch what's for **lunch today** for **middle school**"*
-* *"Alexa, ask Verona School Lunch what's for **lunch tomorrow** for **high school**"*
+* *"Alexa, ask Wildcat Lunch what's for **lunch**"*
+* *"Alexa, ask Wildcat Lunch what's for **lunch today** for **middle school**"*
+* *"Alexa, ask Wildcat Lunch what's for **lunch tomorrow** for **high school**"*
 
 ### 3. Combined Menu (Breakfast + Lunch)
-* *"Alexa, ask Verona School Lunch what's **the menu**"*
-* *"Alexa, ask Verona School Lunch what's the **menu tomorrow** for **elementary school**"*
-* *"Alexa, ask Verona School Lunch what's the **menu next week** for **high school**"*
+* *"Alexa, ask Wildcat Lunch what's **the menu**"*
+* *"Alexa, ask Wildcat Lunch what's the **menu tomorrow** for **elementary school**"*
+* *"Alexa, ask Wildcat Lunch what's the **menu next week** for **high school**"*
 
 ### 4. Multi-Turn Interactive Flow
 If you don't mention a school level, Alexa remembers your date and meal preference and asks:
@@ -194,7 +194,7 @@ Make sure to add `GEMINI_API_KEY` and `GEMINI_MODEL` to your Vercel Project Envi
 
 ### 5. Setup Amazon Alexa Skill
 1. Log into the [Amazon Alexa Developer Console](https://developer.amazon.com/alexa/console/ask).
-2. Create a **Custom Skill** named `Verona School Lunch` (Model: Custom, Hosting: Provision your own).
+2. Create a **Custom Skill** named `Wildcat Lunch` (Model: Custom, Hosting: Provision your own).
 3. Navigate to **Interaction Model -> JSON Editor**, paste the contents of [`alexa/interactionModels/custom/en-US.json`](alexa/interactionModels/custom/en-US.json), and click **Save** then **Build skill**.
 4. In **Endpoint**, select **HTTPS** and enter your Vercel deployment URL:
    `https://<your-vercel-domain>.vercel.app/api/alexa`

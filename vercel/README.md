@@ -1,4 +1,4 @@
-# Verona School Lunch & Breakfast Summarizer (Vercel & Alexa)
+# Wildcat Lunch & Breakfast Summarizer (Vercel & Alexa)
 
 An AI-powered serverless webservice deployable to Vercel that fetches daily and weekly breakfast and lunch menus from Health-e Pro for the Verona Area School District (VASD), filters out repetitive staples, uses Google Gemini to generate natural voice-optimized spoken summaries, and caches results to minimize AI usage and costs.
 
@@ -113,9 +113,9 @@ curl "https://your-domain.vercel.app/api/lunch?level=ES&format=text"
 
 ### 2. Amazon Alexa Custom Skill Endpoint (`/api/alexa`)
 - **URL:** `POST /api/alexa`
-- **Invocation Name:** `verona school lunch`
+- **Invocation Name:** `wildcat lunch`
 - **Features:** Full two-way voice skill allowing users to:
-  - Say *"Alexa, open Verona School Lunch"* (prompts for elementary, middle, or high school).
+  - Say *"Alexa, open Wildcat Lunch"* (prompts for elementary, middle, or high school).
   - Ask for breakfast, lunch, or both: *"What's for breakfast tomorrow?"*, *"What's for lunch?"*, *"What's the menu next week?"*
   - Full multi-turn session memory remembering school level.
 - See full setup instructions in [`alexa/README.md`](../alexa/README.md).

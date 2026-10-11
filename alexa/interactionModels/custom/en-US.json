@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "verona school lunch",
+      "invocationName": "wildcat lunch",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
