@@ -45,23 +45,30 @@ The single APL document (`menu-document.json`) dynamically adapts to all Amazon 
 
 | File | Purpose |
 | :--- | :--- |
-| [`menu-document.json`](menu-document.json) | The standalone APL document JSON for daily menus. Compatible with APL 1.6+ and 2023.3. |
-| [`sample-datasource.json`](sample-datasource.json) | Sample datasource containing real Health-e Pro CloudFront image URLs for local testing and simulator preview. |
+| [`SCREENS.md`](SCREENS.md) | Comprehensive architecture document explaining what each screen does, touch events, and responsive behaviors. |
+| [`welcome-document.json`](welcome-document.json) | The standalone APL document JSON for the 4-page Setup Wizard (Splash, School, Meal, Date). |
+| [`sample-welcome-datasource.json`](sample-welcome-datasource.json) | Sample datasource for testing the Welcome Wizard and Step 1 School Selection in the APL simulator. |
+| [`menu-document.json`](menu-document.json) | The standalone APL document JSON for daily menus and photo gallery. Compatible with APL 1.6+ and 2023.3. |
+| [`sample-datasource.json`](sample-datasource.json) | Sample datasource containing real Health-e Pro CloudFront image URLs for daily menu testing. |
 
 ---
 
 ## 🧪 Testing in the Alexa Developer Console
 
+### 1. Testing the Welcome Wizard & Step 1 School Selection
 1. Open the [Alexa Developer Console](https://developer.amazon.com/alexa/console/ask).
 2. Select your **Verona School Lunch** skill.
 3. Click on the **Multimodal** tab (or **APL** in the left sidebar) $\rightarrow$ **Authoring Tool**.
 4. Click **Create Document** $\rightarrow$ **Start from scratch**.
-5. Paste the contents of [`menu-document.json`](menu-document.json) into the document editor.
-6. In the **Data** pane (bottom-left), paste the contents of [`sample-datasource.json`](sample-datasource.json).
-7. Use the device selector dropdown in the top bar to switch between:
-   - **Echo Show 5** (Small Landscape)
-   - **Echo Show 8** (Medium Landscape)
-   - **Echo Show 10** (Large Landscape)
-   - **Echo Show 15** (Extra Large Landscape)
-   - **Fire TV 1080p** (TV Landscape)
-8. Verify the responsive layouts and touch scrolling in the simulator!
+5. Paste the contents of [`welcome-document.json`](welcome-document.json) into the document editor.
+6. In the **Data** pane (bottom-left), paste the contents of [`sample-welcome-datasource.json`](sample-welcome-datasource.json).
+7. Test across viewports:
+   - **Echo Show 8 / 10 / 15**: Verify 3 large clickable card boxes in the center of the screen with prominent orange action buttons.
+   - **Echo Spot (Round Hub)**: Verify the layout automatically renders as a centered vertical text list with large touch targets.
+   - **Echo Show 5**: Verify compact responsive scaling and touch responsiveness.
+
+### 2. Testing the Daily Restaurant Menu & Photo Gallery
+1. In the Authoring Tool editor, paste [`menu-document.json`](menu-document.json).
+2. In the **Data** pane, paste [`sample-datasource.json`](sample-datasource.json).
+3. Test tapping the hero photo or *"See Photos"* button to switch to Page 1 gallery.
+
