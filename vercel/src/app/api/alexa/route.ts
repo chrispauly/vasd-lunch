@@ -448,11 +448,25 @@ export async function POST(req: NextRequest) {
         }
 
         // Both meal and date are known: jump directly to menu!
-        const dateStr = sessionAttributes.pendingDate || sessionAttributes.dateStr || getTodayDateStr();
+        const rawDate = sessionAttributes.pendingDate || sessionAttributes.dateStr || getTodayDateStr();
+        if (/^\d{4}-W\d{2}$/i.test(rawDate) || sessionAttributes.pendingDateType === 'week') {
+          return await handleWeekMenu({
+            schoolLevel: targetLevel,
+            mealType: sessionAttributes.mealType,
+            resolvedDate: {
+              type: 'week',
+              weekStr: rawDate,
+              label: sessionAttributes.pendingDateLabel || 'next week',
+            },
+            sessionAttributes,
+            body,
+          });
+        }
+
         return await handleSingleDayMenu({
           schoolLevel: targetLevel,
           mealType: sessionAttributes.mealType,
-          dateStr,
+          dateStr: rawDate,
           sessionAttributes,
           body,
         });
@@ -483,11 +497,25 @@ export async function POST(req: NextRequest) {
         }
 
         // Both school, meal, and date are known: jump directly to menu!
-        const dateStr = sessionAttributes.pendingDate || sessionAttributes.dateStr || getTodayDateStr();
+        const rawDate = sessionAttributes.pendingDate || sessionAttributes.dateStr || getTodayDateStr();
+        if (/^\d{4}-W\d{2}$/i.test(rawDate) || sessionAttributes.pendingDateType === 'week') {
+          return await handleWeekMenu({
+            schoolLevel: targetLevel,
+            mealType: targetMeal,
+            resolvedDate: {
+              type: 'week',
+              weekStr: rawDate,
+              label: sessionAttributes.pendingDateLabel || 'next week',
+            },
+            sessionAttributes,
+            body,
+          });
+        }
+
         return await handleSingleDayMenu({
           schoolLevel: targetLevel,
           mealType: targetMeal,
-          dateStr,
+          dateStr: rawDate,
           sessionAttributes,
           body,
         });
@@ -758,12 +786,13 @@ export async function POST(req: NextRequest) {
       let mealType: MealType | null = null;
       if (extractedMeal) {
         mealType = extractedMeal;
+      } else if (sessionAttributes.mealType) {
+        // Retain meal type previously requested in the multi-turn session (e.g. "lunch" from turn 1)
+        mealType = sessionAttributes.mealType as MealType;
       } else if (schoolLevel && resolvedDate) {
         // When asking for "the menu" (or if school and date are provided without specifying breakfast/lunch),
-        // always give the full menu (both breakfast and lunch) rather than an old session's meal!
+        // default to the full menu (both breakfast and lunch)
         mealType = 'both';
-      } else if (sessionAttributes.mealType) {
-        mealType = sessionAttributes.mealType as MealType;
       }
 
       // Preserve any provided information in session attributes
@@ -771,6 +800,10 @@ export async function POST(req: NextRequest) {
       if (mealType) sessionAttributes.mealType = mealType;
       if (resolvedDate) {
         sessionAttributes.pendingDate = resolvedDate.type === 'week' ? resolvedDate.weekStr : resolvedDate.dateStr;
+        sessionAttributes.pendingDateType = resolvedDate.type;
+        if (resolvedDate.label) {
+          sessionAttributes.pendingDateLabel = resolvedDate.label;
+        }
       }
 
       // =========================================================================
