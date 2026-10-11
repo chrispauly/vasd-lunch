@@ -605,11 +605,11 @@ export function buildMenuAplDocument(): any {
                     ],
                   },
 
-                    // Bottom School Names Footer Bar
+                    // Bottom School Names & Attribution Footer Bar
                     {
                       type: 'Frame',
                       width: '100%',
-                      height: '24dp',
+                      height: "${viewport.width >= 1600 ? '28dp' : '24dp'}",
                       shrink: 0,
                       backgroundColor: 'rgba(255, 255, 255, 0.04)',
                       borderRadius: '6dp',
@@ -620,7 +620,7 @@ export function buildMenuAplDocument(): any {
                       item: {
                         type: 'Container',
                         direction: 'row',
-                        justifyContent: 'center',
+                        justifyContent: 'spaceBetween',
                         alignItems: 'center',
                         width: '100%',
                         height: '100%',
@@ -629,9 +629,27 @@ export function buildMenuAplDocument(): any {
                             type: 'Text',
                             text: '🏫 ${payload.menuData.schoolsFooterText || payload.menuData.schoolsListText}',
                             color: '#CBD5E1',
-                            fontSize: '11dp',
+                            fontSize: "${viewport.width >= 1600 ? '13dp' : '11dp'}",
                             fontWeight: '600',
                             maxLines: 1,
+                            shrink: 1,
+                          },
+                          {
+                            type: 'Container',
+                            direction: 'row',
+                            alignItems: 'center',
+                            shrink: 0,
+                            spacing: '6dp',
+                            items: [
+                              {
+                                type: 'Text',
+                                text: 'Data: ${payload.menuData.attributionText || "Health-e Pro 🍏"}',
+                                color: '#94A3B8',
+                                fontSize: "${viewport.width >= 1600 ? '13dp' : '11dp'}",
+                                fontWeight: '600',
+                                maxLines: 1,
+                              },
+                            ],
                           },
                         ],
                       },
@@ -790,11 +808,12 @@ export function buildMenuAplDocument(): any {
                     {
                       type: 'Container',
                       direction: 'row',
-                      justifyContent: 'center',
+                      justifyContent: 'spaceBetween',
                       alignItems: 'center',
                       height: '32dp',
                       shrink: 0,
-                      spacing: '10dp',
+                      paddingLeft: '8dp',
+                      paddingRight: '8dp',
                       items: [
                         {
                           type: 'TouchWrapper',
@@ -810,9 +829,16 @@ export function buildMenuAplDocument(): any {
                               type: 'Text',
                               text: '← Tap here or say "back" to return to School Menu',
                               color: '#64748B',
-                              fontSize: '12dp',
+                              fontSize: "${viewport.width >= 1600 ? '14dp' : '12dp'}",
                             },
                           ],
+                        },
+                        {
+                          type: 'Text',
+                          text: 'Data: ${payload.menuData.attributionText || "Health-e Pro 🍏"}',
+                          color: '#64748B',
+                          fontSize: "${viewport.width >= 1600 ? '13dp' : '11dp'}",
+                          fontWeight: '600',
                         },
                       ],
                     },

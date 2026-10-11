@@ -164,6 +164,31 @@
                   ]
                 }
               ]
+            },
+            {
+              "type": "Container",
+              "direction": "row",
+              "justifyContent": "spaceBetween",
+              "alignItems": "center",
+              "height": "24dp",
+              "shrink": 0,
+              "spacing": "10dp",
+              "paddingTop": "6dp",
+              "items": [
+                {
+                  "type": "Text",
+                  "text": "Swipe horizontally to explore each school day",
+                  "color": "#64748B",
+                  "fontSize": "${viewport.width >= 1600 ? '13dp' : '11dp'}"
+                },
+                {
+                  "type": "Text",
+                  "text": "Data: ${payload.weeklyData.attributionText || \"Health-e Pro 🍏\"}",
+                  "color": "#94A3B8",
+                  "fontSize": "${viewport.width >= 1600 ? '13dp' : '11dp'}",
+                  "fontWeight": "600"
+                }
+              ]
             }
           ]
         }

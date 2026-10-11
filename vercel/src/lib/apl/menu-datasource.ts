@@ -166,6 +166,8 @@ export function buildMenuAplDatasource(
       allItems,
       itemCountText: `${allItems.length} items on today's menu`,
       summarySnippet: result.summary,
+      attributionText: 'Health-e Pro 🍏',
+      attributionLogoUrl: 'https://menus.healthepro.com/build/assets/health-e-pro-logo-BhLpsEAS.png',
     },
   };
 }

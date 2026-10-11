@@ -48,6 +48,8 @@ export function buildWeeklyAplDatasource(
       schoolLevel: weekResult.levelName || 'Verona Area Schools',
       weekLabel,
       days,
+      attributionText: 'Health-e Pro 🍏',
+      attributionLogoUrl: 'https://menus.healthepro.com/build/assets/health-e-pro-logo-BhLpsEAS.png',
     },
   };
 }
