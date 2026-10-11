@@ -1,8 +1,29 @@
-import { LunchSummaryResult } from '../types';
+import { LunchLevel, LunchSummaryResult } from '../types';
 import { VASD_PAW_LOGO } from './styles';
 
 /**
- * Builds APL Datasource for the Restaurant Dinner Menu & Image Gallery.
+ * Mapping of schools for each school level in Verona Area School District.
+ */
+export const LEVEL_SCHOOLS: Record<LunchLevel, { title: string; schools: string; footerText: string }> = {
+  ES: {
+    title: 'Elementary Schools',
+    schools: 'Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS',
+    footerText: 'Elementary Schools (K-5): Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS',
+  },
+  MS: {
+    title: 'Middle Schools',
+    schools: 'Badger Ridge Middle School • Core Knowledge Charter School (CKCS)',
+    footerText: 'Middle Schools (6-8): Badger Ridge Middle School • Core Knowledge Charter School (CKCS)',
+  },
+  HS: {
+    title: 'High School',
+    schools: 'Verona Area High School (VAHS)',
+    footerText: 'High School (9-12): Verona Area High School (VAHS)',
+  },
+};
+
+/**
+ * Builds APL Datasource for the School Menu & Image Gallery.
  */
 export function buildMenuAplDatasource(
   result: LunchSummaryResult,
@@ -60,7 +81,7 @@ export function buildMenuAplDatasource(
     }
   }
 
-  // Group items into restaurant courses
+  // Group items into courses
   const entrees: Array<{ name: string; category: string; allergens: string }> = [];
   const sides: Array<{ name: string; category: string; allergens: string }> = [];
   const fruits: Array<{ name: string; category: string; allergens: string }> = [];
@@ -122,11 +143,15 @@ export function buildMenuAplDatasource(
     // keep raw date
   }
 
+  const schoolConfig = LEVEL_SCHOOLS[result.level || 'ES'] || LEVEL_SCHOOLS.ES;
+
   return {
     menuData: {
       title: 'Verona Area School District',
       schoolLevel: result.levelName,
       currentLevel: result.level || 'ES',
+      schoolsListText: schoolConfig.schools,
+      schoolsFooterText: schoolConfig.footerText,
       mealTypeTitle: mealTitle,
       currentMealType: result.mealType || 'lunch',
       dateText,

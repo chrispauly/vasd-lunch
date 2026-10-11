@@ -87,22 +87,23 @@ stateDiagram-v2
 
 ---
 
-### Screen 2: Restaurant-Style Daily Menu & Gallery
-- **Document Source:** `alexa/apl/menu-document.json` & `vercel/src/lib/apl.ts` (`buildMenuAplDocument()`)
+### Screen 2: School Daily Menu & Gallery
+- **Document Source:** `alexa/apl/menu-document.json` & `vercel/src/lib/apl/menu-document.ts` (`buildMenuAplDocument()`)
 - **Datasource:** `buildMenuAplDatasource()` (`menuData`)
 - **Triggered When:** The user requests a menu for a specific date (*"What's for lunch today at the high school?"* or completing the 3-step wizard).
 - **Core Mechanism:** A 2-page `Pager` (`id: "menuPager"`):
-  - **Page 0 (Restaurant Menu View):**
-    - **Header Bar:** Paw logo, school district banner, active school level badge, active date.
-    - **Left Hero Card:** High-resolution food photograph of today's primary entrée, food category badge, title, allergen pills (e.g., Milk, Wheat, Soy, Eggs), and button *"📸 View Food Photos →"*.
-    - **Right Course Sequence:** Touch-scrollable list categorized into restaurant courses:
-      - *Entrées* (Daily featured main course + staple alternatives like Soy Butter & Jelly, Turkey Deli Wrap)
-      - *Fresh Vegetables & Sides* (Baked Beans, Garden Salad, Steamed Broccoli)
+  - **Page 0 (School Menu View):**
+    - **Header Bar:** Paw logo, school district banner, active school level badge, active date, quick school level switcher pills (Elementary, Middle, High School), and *"📷 See Photos"*.
+    - **Left Hero Card:** High-resolution food photograph of today's primary entrée, food category badge, title, allergen pills (e.g., Milk, Wheat, Soy, Eggs), and button *"📷 View Full Food Photo Gallery →"*.
+    - **Right Course Sequence:** Touch-scrollable list categorized into menu courses:
+      - *Main Hot Entrées* (Daily featured main course + staple alternatives like Soy Butter & Jelly, Turkey Deli Wrap)
+      - *Sides & Vegetables* (Baked Beans, Garden Salad, Steamed Broccoli)
       - *Fresh Fruits & Juices* (Cantaloupe Wedges, 100% Orange Juice)
-      - *Beverages & Dairy* (1% White Milk, Fat-Free Chocolate Milk)
+      - *Milk & Beverages* (1% White Milk, Fat-Free Chocolate Milk)
+    - **Bottom School Names Footer Bar:** Displays the exact school names included with the active school level (e.g., *Elementary Schools (K-5): Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS*).
   - **Page 1 (Food Photo Gallery View):**
-    - Large 280dp wide horizontal gallery cards showcasing real CloudFront photographs for every single item on the menu.
-    - Touch-scrollable with instant *"← Back to Menu"* button.
+    - Large 250dp wide horizontal gallery cards showcasing real CloudFront photographs for every single item on the menu.
+    - Touch-scrollable sequence with standardized *"← Back to School Menu"* header button and *"← Tap here or say 'back' to return to School Menu"* bottom prompt.
 
 ---
 
@@ -202,7 +203,7 @@ vercel/src/lib/apl/
 │   └── step3-date.ts            # Page 3: Step 3 Date Selection
 ├── welcome-document.ts          # Assembles the 4-page wizard APL document
 ├── welcome-datasource.ts        # Builds wizard payload/datasource
-├── menu-document.ts             # Assembles restaurant dinner menu document
+├── menu-document.ts             # Assembles school daily menu document
 ├── menu-datasource.ts           # Builds menu payload/datasource
 ├── weekly-document.ts           # Assembles weekly forecast document
 └── weekly-datasource.ts         # Builds weekly payload/datasource

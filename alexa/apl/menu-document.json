@@ -62,8 +62,8 @@
                 "height": "100%",
                 "paddingLeft": "24dp",
                 "paddingRight": "24dp",
-                "paddingTop": "14dp",
-                "paddingBottom": "14dp",
+                "paddingTop": "12dp",
+                "paddingBottom": "10dp",
                 "direction": "column",
                 "justifyContent": "space-between",
                 "items": [
@@ -266,7 +266,7 @@
                               {
                                 "type": "TouchWrapper",
                                 "width": "100%",
-                                "height": "190dp",
+                                "height": "180dp",
                                 "onPress": {
                                   "type": "SetPage",
                                   "componentId": "menuPager",
@@ -403,7 +403,7 @@
                             "items": [
                               {
                                 "type": "Text",
-                                "text": "TODAY'S DINNER MENU SELECTIONS",
+                                "text": "TODAY'S SCHOOL MENU SELECTIONS",
                                 "color": "#F97316",
                                 "fontWeight": "800",
                                 "fontSize": "13dp",
@@ -594,6 +594,32 @@
                         ]
                       }
                     ]
+                  },
+                  {
+                    "type": "Container",
+                    "direction": "row",
+                    "justifyContent": "center",
+                    "alignItems": "center",
+                    "width": "100%",
+                    "height": "24dp",
+                    "shrink": 0,
+                    "marginTop": "6dp",
+                    "paddingLeft": "12dp",
+                    "paddingRight": "12dp",
+                    "backgroundColor": "rgba(255, 255, 255, 0.04)",
+                    "borderRadius": "6dp",
+                    "borderWidth": "1dp",
+                    "borderColor": "rgba(255, 255, 255, 0.07)",
+                    "items": [
+                      {
+                        "type": "Text",
+                        "text": "🏫 ${payload.menuData.schoolsFooterText || payload.menuData.schoolsListText}",
+                        "color": "#CBD5E1",
+                        "fontSize": "11dp",
+                        "fontWeight": "600",
+                        "maxLines": 1
+                      }
+                    ]
                   }
                 ]
               },
@@ -639,7 +665,7 @@
                             "items": [
                               {
                                 "type": "Text",
-                                "text": "← Back to Restaurant Menu",
+                                "text": "← Back to School Menu",
                                 "color": "#FDBA74",
                                 "fontWeight": "800",
                                 "fontSize": "13dp"
@@ -754,7 +780,7 @@
                         "items": [
                           {
                             "type": "Text",
-                            "text": "← Tap here or say \"back\" to return to Dinner Menu",
+                            "text": "← Tap here or say \"back\" to return to School Menu",
                             "color": "#64748B",
                             "fontSize": "12dp"
                           }

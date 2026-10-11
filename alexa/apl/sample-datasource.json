@@ -2,7 +2,11 @@
   "menuData": {
     "title": "Verona School Lunch",
     "schoolLevel": "Elementary School (K-5)",
+    "currentLevel": "ES",
+    "schoolsListText": "Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS",
+    "schoolsFooterText": "Elementary Schools (K-5): Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS",
     "mealTypeTitle": "Lunch Menu",
+    "currentMealType": "lunch",
     "dateText": "Thursday, September 24, 2026",
     "logoUrl": "https://vasd-lunch.vercel.app/paw-logo.png",
     "heroItem": {

@@ -1,9 +1,9 @@
 import { VASD_PAW_LOGO } from './styles';
 
 /**
- * Returns the Restaurant-Style Dinner Menu & Image Gallery APL Document.
+ * Returns the School Menu & Image Gallery APL Document.
  * Features:
- *  - Page 0: High-end restaurant dinner menu with chef's hero photo, course headers (Entrées, Sides, Fruits, Beverages)
+ *  - Page 0: School daily menu with chef's hero photo, course headers (Entrées, Sides, Fruits, Beverages), and included school names footer
  *  - Page 1: Complete Food Photo Gallery sequence of large cards with real photos
  *  - Supports instant client-side SetPage switching upon tapping the hero photo or 'See Photos' button,
  *    and supports voice navigation ('see more' / 'back to menu').
@@ -66,7 +66,7 @@ export function buildMenuAplDocument(): any {
               initialPage: 0,
               items: [
                 // ==========================================
-                // PAGE 0: RESTAURANT DINNER MENU
+                // PAGE 0: SCHOOL MENU
                 // ==========================================
                 {
                   type: 'Container',
@@ -74,8 +74,8 @@ export function buildMenuAplDocument(): any {
                   height: '100%',
                   paddingLeft: '24dp',
                   paddingRight: '24dp',
-                  paddingTop: '14dp',
-                  paddingBottom: '14dp',
+                  paddingTop: '12dp',
+                  paddingBottom: '10dp',
                   direction: 'column',
                   justifyContent: 'space-between',
                   items: [
@@ -270,7 +270,7 @@ export function buildMenuAplDocument(): any {
                                 {
                                   type: 'TouchWrapper',
                                   width: '100%',
-                                  height: '190dp',
+                                  height: '180dp',
                                   onPress: {
                                     type: 'SetPage',
                                     componentId: 'menuPager',
@@ -409,7 +409,7 @@ export function buildMenuAplDocument(): any {
                               items: [
                                 {
                                   type: 'Text',
-                                  text: "TODAY'S DINNER MENU SELECTIONS",
+                                  text: "TODAY'S SCHOOL MENU SELECTIONS",
                                   color: '#F97316',
                                   fontWeight: '800',
                                   fontSize: '13dp',
@@ -608,6 +608,34 @@ export function buildMenuAplDocument(): any {
                         },
                       ],
                     },
+
+                    // Bottom School Names Footer Bar
+                    {
+                      type: 'Container',
+                      direction: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%',
+                      height: '24dp',
+                      shrink: 0,
+                      marginTop: '6dp',
+                      paddingLeft: '12dp',
+                      paddingRight: '12dp',
+                      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                      borderRadius: '6dp',
+                      borderWidth: '1dp',
+                      borderColor: 'rgba(255, 255, 255, 0.07)',
+                      items: [
+                        {
+                          type: 'Text',
+                          text: '🏫 ${payload.menuData.schoolsFooterText || payload.menuData.schoolsListText}',
+                          color: '#CBD5E1',
+                          fontSize: '11dp',
+                          fontWeight: '600',
+                          maxLines: 1,
+                        },
+                      ],
+                    },
                   ],
                 },
 
@@ -657,7 +685,7 @@ export function buildMenuAplDocument(): any {
                               items: [
                                 {
                                   type: 'Text',
-                                  text: '← Back to Restaurant Menu',
+                                  text: '← Back to School Menu',
                                   color: '#FDBA74',
                                   fontWeight: '800',
                                   fontSize: '13dp',
@@ -776,7 +804,7 @@ export function buildMenuAplDocument(): any {
                           items: [
                             {
                               type: 'Text',
-                              text: '← Tap here or say "back" to return to Dinner Menu',
+                              text: '← Tap here or say "back" to return to School Menu',
                               color: '#64748B',
                               fontSize: '12dp',
                             },

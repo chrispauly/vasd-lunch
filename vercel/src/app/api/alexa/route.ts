@@ -575,7 +575,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(
           buildAlexaResponse({
             speechText: "Here are the photos of today's menu items. Tap any photo, or say 'back to menu' to return.",
-            repromptText: "Say 'back to menu' to return to the dinner menu.",
+            repromptText: "Say 'back to menu' to return to the school menu.",
             shouldEndSession: false,
             sessionAttributes,
             cardTitle: 'Menu Photo Gallery',
@@ -584,16 +584,16 @@ export async function POST(req: NextRequest) {
       }
 
       // ==========================================
-      // E: User tapped "Back to Restaurant Menu"
+      // E: User tapped "Back to School Menu"
       // ==========================================
       if (action === 'showMenu') {
         return NextResponse.json(
           buildAlexaResponse({
-            speechText: "Returning to the restaurant dinner menu. Say 'see more' anytime to view the food photos.",
+            speechText: "Returning to the school menu. Say 'see more' anytime to view the food photos.",
             repromptText: "Say 'see more' to view food photos, or ask for another day.",
             shouldEndSession: false,
             sessionAttributes,
-            cardTitle: 'Restaurant Dinner Menu',
+            cardTitle: 'School Menu',
           })
         );
       }
@@ -694,8 +694,8 @@ export async function POST(req: NextRequest) {
         if (supportsApl(body)) {
           return NextResponse.json(
             buildAlexaResponse({
-              speechText: "Here are the photos of today's menu items. Say 'back to menu' to return to the dinner menu.",
-              repromptText: "Say 'back to menu' to return to the dinner menu.",
+              speechText: "Here are the photos of today's menu items. Say 'back to menu' to return to the school menu.",
+              repromptText: "Say 'back to menu' to return to the school menu.",
               shouldEndSession: false,
               sessionAttributes,
               cardTitle: 'Food Photo Gallery',
@@ -725,16 +725,16 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // "Back to Menu" Intent (Voice command to return to Restaurant Dinner Menu)
+      // "Back to Menu" Intent (Voice command to return to School Menu)
       if (intentName === 'BackToMenuIntent' || intentName === 'AMAZON.PreviousIntent') {
         if (supportsApl(body)) {
           return NextResponse.json(
             buildAlexaResponse({
-              speechText: 'Returning to the restaurant dinner menu.',
+              speechText: 'Returning to the school menu.',
               repromptText: "Say 'see more' to view food photos, or ask for another day.",
               shouldEndSession: false,
               sessionAttributes,
-              cardTitle: 'Restaurant Dinner Menu',
+              cardTitle: 'School Menu',
               directives: [
                 {
                   type: 'Alexa.Presentation.APL.ExecuteCommands',
