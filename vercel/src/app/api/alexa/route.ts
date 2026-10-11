@@ -28,6 +28,7 @@ import {
   fetchLunchMenuForWeek,
   fetchBreakfastMenuForWeek,
   LEVEL_CONFIG,
+  formatWeekDateRange,
 } from '@/lib/healthepro';
 import {
   generateLunchSummary,
@@ -261,6 +262,7 @@ async function handleWeekMenu({
 }): Promise<NextResponse> {
   const levelConfig = LEVEL_CONFIG[schoolLevel] || LEVEL_CONFIG.ES;
   const weekLabel = resolvedDate.label || 'this week';
+  const weekDateRange = formatWeekDateRange(resolvedDate.weekStr);
   let speechText = '';
   let cardMealTitle = 'Menu';
   let weekResult: any;
@@ -272,7 +274,7 @@ async function handleWeekMenu({
     speechText = res.speechText;
     weekResult = {
       levelName: levelConfig.name,
-      week: `${resolvedDate.weekStr} (${weekLabel})`,
+      week: weekDateRange,
       days: weekData.map((d) => ({
         date: d.date,
         hasSchool: d.hasSchool,
@@ -289,7 +291,7 @@ async function handleWeekMenu({
     speechText = res.speechText;
     weekResult = {
       levelName: levelConfig.name,
-      week: `${resolvedDate.weekStr} (${weekLabel})`,
+      week: weekDateRange,
       days: weekData.map((d) => ({
         date: d.date,
         hasSchool: d.hasSchool,
@@ -309,7 +311,7 @@ async function handleWeekMenu({
     speechText = res.speechText;
     weekResult = {
       levelName: levelConfig.name,
-      week: `${resolvedDate.weekStr} (${weekLabel})`,
+      week: weekDateRange,
       days: lWeek.map((ld, i) => {
         const bd = bWeek[i];
         return {
@@ -344,7 +346,7 @@ async function handleWeekMenu({
       repromptText: isApl ? "You can ask for today's menu or choose another school." : undefined,
       shouldEndSession: !isApl,
       sessionAttributes,
-      cardTitle: `${levelConfig.name} ${cardMealTitle} (${resolvedDate.weekStr})`,
+      cardTitle: `${levelConfig.name} ${cardMealTitle} (${weekDateRange})`,
       directives,
     })
   );
@@ -534,11 +536,16 @@ export async function POST(req: NextRequest) {
 
         if (dateChoice.includes('week')) {
           const today = new Date(getTodayDateStr() + 'T12:00:00');
-          const nextWeekDate = new Date(today.getTime() + 7 * 86400000);
+          const isSunday = today.getDay() === 0;
+          const targetDate = isSunday ? new Date(today.getTime() + 86400000) : new Date(today.getTime() + 7 * 86400000);
           return await handleWeekMenu({
             schoolLevel: targetLevel,
             mealType: targetMeal,
-            resolvedDate: { type: 'week', weekStr: getIsoWeekString(nextWeekDate), label: 'next week' },
+            resolvedDate: {
+              type: 'week',
+              weekStr: getIsoWeekString(targetDate),
+              label: isSunday ? 'this week' : 'next week',
+            },
             sessionAttributes,
             body,
           });

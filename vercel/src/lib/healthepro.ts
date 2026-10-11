@@ -272,6 +272,29 @@ export function getDatesForIsoWeek(isoWeek: string): string[] {
 }
 
 /**
+ * Formats an ISO week string (e.g. "2026-W42") into a friendly date range (e.g. "Oct 12-16" or "Sep 28 – Oct 2").
+ */
+export function formatWeekDateRange(isoWeek: string): string {
+  const dates = getDatesForIsoWeek(isoWeek);
+  if (!dates || dates.length < 5) return isoWeek;
+  const start = new Date(dates[0] + 'T12:00:00');
+  const end = new Date(dates[4] + 'T12:00:00');
+
+  const startMonth = start.toLocaleDateString('en-US', { month: 'short' });
+  const startDay = start.getDate();
+  const endMonth = end.toLocaleDateString('en-US', { month: 'short' });
+  const endDay = end.getDate();
+
+  if (start.getFullYear() !== end.getFullYear()) {
+    return `${startMonth} ${startDay}, ${start.getFullYear()} – ${endMonth} ${endDay}, ${end.getFullYear()}`;
+  }
+  if (startMonth === endMonth) {
+    return `${startMonth} ${startDay}-${endDay}`;
+  }
+  return `${startMonth} ${startDay} – ${endMonth} ${endDay}`;
+}
+
+/**
  * Fetch menus for all weekdays of an ISO week for a specific meal
  */
 export async function fetchMenuForWeek(

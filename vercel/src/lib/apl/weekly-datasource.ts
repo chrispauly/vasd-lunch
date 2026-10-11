@@ -1,3 +1,5 @@
+import { formatWeekDateRange } from '../healthepro';
+
 /**
  * Builds APL Datasource for a weekly menu.
  */
@@ -5,6 +7,11 @@ export function buildWeeklyAplDatasource(
   weekResult: any,
   baseUrl: string = 'https://vasd-lunch.vercel.app'
 ): any {
+  let weekLabel = weekResult.week || 'Weekly Forecast';
+  const match = weekLabel.match(/(\d{4}-W\d{2})/i);
+  if (match) {
+    weekLabel = formatWeekDateRange(match[1]);
+  }
   const days = (weekResult.days || []).map((d: any) => {
     let dayOfWeek = 'Weekday';
     let dateText = d.date;
@@ -39,7 +46,7 @@ export function buildWeeklyAplDatasource(
     weeklyData: {
       logoUrl: `${baseUrl}/paw-logo.png`,
       schoolLevel: weekResult.levelName || 'Verona Area Schools',
-      weekLabel: weekResult.week || 'Weekly Forecast',
+      weekLabel,
       days,
     },
   };

@@ -6,6 +6,7 @@ import {
   fetchLunchMenuForWeek,
   fetchBreakfastMenuForWeek,
   LEVEL_CONFIG,
+  formatWeekDateRange,
 } from '@/lib/healthepro';
 import {
   generateLunchSummary,
@@ -125,7 +126,7 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
       return NextResponse.json(
         {
           type: 'week',
-          week: weekStr,
+          week: formatWeekDateRange(weekStr),
           mealType: meal,
           level,
           levelName: levelConfig.name,

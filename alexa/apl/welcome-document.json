@@ -401,10 +401,10 @@
                   "when": "${viewport.shape != 'round' && @viewportProfile != '@hubRound'}",
                   "width": "100%",
                   "height": "100%",
-                  "paddingLeft": "24dp",
-                  "paddingRight": "24dp",
-                  "paddingTop": "16dp",
-                  "paddingBottom": "16dp",
+                  "paddingLeft": "${viewport.width >= 1600 ? '36dp' : (viewport.width >= 1100 ? '28dp' : '20dp')}",
+                  "paddingRight": "${viewport.width >= 1600 ? '36dp' : (viewport.width >= 1100 ? '28dp' : '20dp')}",
+                  "paddingTop": "${viewport.width >= 1600 ? '24dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                  "paddingBottom": "${viewport.width >= 1600 ? '20dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
                   "direction": "column",
                   "justifyContent": "spaceBetween",
                   "items": [
@@ -413,7 +413,7 @@
                       "direction": "row",
                       "justifyContent": "spaceBetween",
                       "alignItems": "center",
-                      "height": "48dp",
+                      "height": "${viewport.width >= 1600 ? '58dp' : (viewport.width >= 1100 ? '50dp' : '44dp')}",
                       "width": "100%",
                       "shrink": 0,
                       "items": [
@@ -425,31 +425,31 @@
                             {
                               "type": "Image",
                               "source": "${payload.wizardData.logoUrl || 'https://vasd-lunch.vercel.app/paw-logo.png'}",
-                              "width": "32dp",
-                              "height": "32dp"
+                              "width": "${viewport.width >= 1600 ? '40dp' : (viewport.width >= 1100 ? '34dp' : '28dp')}",
+                              "height": "${viewport.width >= 1600 ? '40dp' : (viewport.width >= 1100 ? '34dp' : '28dp')}"
                             },
                             {
                               "type": "Text",
                               "text": "Verona Area School District",
                               "style": "textTitle",
-                              "fontSize": "18dp",
-                              "spacing": "10dp"
+                              "fontSize": "${viewport.width >= 1600 ? '24dp' : (viewport.width >= 1100 ? '20dp' : '17dp')}",
+                              "spacing": "${viewport.width >= 1600 ? '14dp' : '10dp'}"
                             }
                           ]
                         },
                         {
                           "type": "Frame",
                           "backgroundColor": "rgba(249, 115, 22, 0.2)",
-                          "borderRadius": "10dp",
-                          "paddingLeft": "12dp",
-                          "paddingRight": "12dp",
-                          "paddingTop": "6dp",
-                          "paddingBottom": "6dp",
+                          "borderRadius": "${viewport.width >= 1600 ? '12dp' : '10dp'}",
+                          "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '14dp' : '10dp')}",
+                          "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '14dp' : '10dp')}",
+                          "paddingTop": "${viewport.width >= 1600 ? '8dp' : (viewport.width >= 1100 ? '6dp' : '5dp')}",
+                          "paddingBottom": "${viewport.width >= 1600 ? '8dp' : (viewport.width >= 1100 ? '6dp' : '5dp')}",
                           "item": {
                             "type": "Text",
                             "text": "STEP 1 OF 3 • SELECT SCHOOL",
                             "color": "#F97316",
-                            "fontSize": "12dp",
+                            "fontSize": "${viewport.width >= 1600 ? '14dp' : (viewport.width >= 1100 ? '12.5dp' : '11dp')}",
                             "fontWeight": "800",
                             "letterSpacing": "1dp"
                           }
@@ -463,7 +463,7 @@
                       "grow": 1,
                       "shrink": 1,
                       "justifyContent": "spaceBetween",
-                      "spacing": "12dp",
+                      "spacing": "${viewport.width >= 1600 ? '20dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
                       "items": [
                         {
                           "type": "TouchWrapper",
@@ -490,13 +490,13 @@
                               "width": "100%",
                               "height": "100%",
                               "backgroundColor": "#1E293B",
-                              "borderRadius": "20dp",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
                               "borderWidth": "2dp",
                               "borderColor": "#EA580C",
-                              "paddingLeft": "16dp",
-                              "paddingRight": "16dp",
-                              "paddingTop": "16dp",
-                              "paddingBottom": "16dp",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
                               "item": {
                                 "type": "Container",
                                 "width": "100%",
@@ -512,16 +512,16 @@
                                         "type": "Text",
                                         "text": "GRADES K-5",
                                         "color": "#F97316",
-                                        "fontSize": "11dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp"
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Elementary",
                                         "style": "textTitle",
-                                        "fontSize": "24dp",
-                                        "spacing": "4dp"
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       }
                                     ]
                                   },
@@ -540,62 +540,67 @@
                                             "type": "Text",
                                             "text": "Sugar Creek",
                                             "color": "#CBD5E1",
-                                            "fontSize": "12.5dp",
+                                            "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '12dp')}",
                                             "fontWeight": "500"
                                           },
                                           {
                                             "type": "Text",
                                             "text": "Stoner Prairie",
                                             "color": "#CBD5E1",
-                                            "fontSize": "12.5dp",
-                                            "fontWeight": "500"
+                                            "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '12dp')}",
+                                            "fontWeight": "500",
+                                            "spacing": "${viewport.width >= 1600 ? '6dp' : (viewport.width >= 1100 ? '3.5dp' : '1dp')}"
                                           },
                                           {
                                             "type": "Text",
                                             "text": "Glacier Edge",
                                             "color": "#CBD5E1",
-                                            "fontSize": "12.5dp",
-                                            "fontWeight": "500"
+                                            "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '12dp')}",
+                                            "fontWeight": "500",
+                                            "spacing": "${viewport.width >= 1600 ? '6dp' : (viewport.width >= 1100 ? '3.5dp' : '1dp')}"
                                           },
                                           {
                                             "type": "Text",
                                             "text": "Country View",
                                             "color": "#CBD5E1",
-                                            "fontSize": "12.5dp",
-                                            "fontWeight": "500"
+                                            "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '12dp')}",
+                                            "fontWeight": "500",
+                                            "spacing": "${viewport.width >= 1600 ? '6dp' : (viewport.width >= 1100 ? '3.5dp' : '1dp')}"
                                           },
                                           {
                                             "type": "Text",
                                             "text": "VAIS",
                                             "color": "#CBD5E1",
-                                            "fontSize": "12.5dp",
-                                            "fontWeight": "500"
+                                            "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '12dp')}",
+                                            "fontWeight": "500",
+                                            "spacing": "${viewport.width >= 1600 ? '6dp' : (viewport.width >= 1100 ? '3.5dp' : '1dp')}"
                                           },
                                           {
                                             "type": "Text",
                                             "text": "Core Knowledge (CKCS)",
                                             "color": "#CBD5E1",
-                                            "fontSize": "12.5dp",
-                                            "fontWeight": "500"
+                                            "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '12dp')}",
+                                            "fontWeight": "500",
+                                            "spacing": "${viewport.width >= 1600 ? '6dp' : (viewport.width >= 1100 ? '3.5dp' : '1dp')}"
                                           }
                                         ]
                                       },
                                       {
                                         "type": "Frame",
-                                        "spacing": "14dp",
+                                        "spacing": "${viewport.width >= 1600 ? '24dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
                                         "backgroundColor": "#EA580C",
-                                        "borderRadius": "10dp",
-                                        "paddingTop": "9dp",
-                                        "paddingBottom": "9dp",
-                                        "paddingLeft": "12dp",
-                                        "paddingRight": "12dp",
+                                        "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                        "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                        "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                        "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                        "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
                                         "width": "100%",
                                         "item": {
                                           "type": "Text",
                                           "text": "Select Elementary →",
                                           "color": "#FFFFFF",
                                           "fontWeight": "700",
-                                          "fontSize": "13dp",
+                                          "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
                                           "textAlign": "center"
                                         }
                                       }
@@ -631,13 +636,13 @@
                               "width": "100%",
                               "height": "100%",
                               "backgroundColor": "#1E293B",
-                              "borderRadius": "20dp",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
                               "borderWidth": "2dp",
                               "borderColor": "#EA580C",
-                              "paddingLeft": "16dp",
-                              "paddingRight": "16dp",
-                              "paddingTop": "16dp",
-                              "paddingBottom": "16dp",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
                               "item": {
                                 "type": "Container",
                                 "width": "100%",
@@ -653,16 +658,16 @@
                                         "type": "Text",
                                         "text": "GRADES 6-8",
                                         "color": "#F97316",
-                                        "fontSize": "11dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp"
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Middle School",
                                         "style": "textTitle",
-                                        "fontSize": "24dp",
-                                        "spacing": "4dp"
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       }
                                     ]
                                   },
@@ -681,34 +686,35 @@
                                             "type": "Text",
                                             "text": "Badger Ridge Middle School",
                                             "color": "#CBD5E1",
-                                            "fontSize": "12.5dp",
+                                            "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '12dp')}",
                                             "fontWeight": "500"
                                           },
                                           {
                                             "type": "Text",
                                             "text": "Core Knowledge (CKCS)",
                                             "color": "#CBD5E1",
-                                            "fontSize": "12.5dp",
-                                            "fontWeight": "500"
+                                            "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '12dp')}",
+                                            "fontWeight": "500",
+                                            "spacing": "${viewport.width >= 1600 ? '6dp' : (viewport.width >= 1100 ? '3.5dp' : '1dp')}"
                                           }
                                         ]
                                       },
                                       {
                                         "type": "Frame",
-                                        "spacing": "14dp",
+                                        "spacing": "${viewport.width >= 1600 ? '24dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
                                         "backgroundColor": "#EA580C",
-                                        "borderRadius": "10dp",
-                                        "paddingTop": "9dp",
-                                        "paddingBottom": "9dp",
-                                        "paddingLeft": "12dp",
-                                        "paddingRight": "12dp",
+                                        "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                        "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                        "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                        "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                        "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
                                         "width": "100%",
                                         "item": {
                                           "type": "Text",
                                           "text": "Select Middle School →",
                                           "color": "#FFFFFF",
                                           "fontWeight": "700",
-                                          "fontSize": "13dp",
+                                          "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
                                           "textAlign": "center"
                                         }
                                       }
@@ -744,13 +750,13 @@
                               "width": "100%",
                               "height": "100%",
                               "backgroundColor": "#1E293B",
-                              "borderRadius": "20dp",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
                               "borderWidth": "2dp",
                               "borderColor": "#EA580C",
-                              "paddingLeft": "16dp",
-                              "paddingRight": "16dp",
-                              "paddingTop": "16dp",
-                              "paddingBottom": "16dp",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
                               "item": {
                                 "type": "Container",
                                 "width": "100%",
@@ -766,16 +772,16 @@
                                         "type": "Text",
                                         "text": "GRADES 9-12",
                                         "color": "#F97316",
-                                        "fontSize": "11dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp"
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "High School",
                                         "style": "textTitle",
-                                        "fontSize": "24dp",
-                                        "spacing": "4dp"
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       }
                                     ]
                                   },
@@ -794,27 +800,27 @@
                                             "type": "Text",
                                             "text": "Verona Area High School (VAHS)",
                                             "color": "#CBD5E1",
-                                            "fontSize": "12.5dp",
+                                            "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '12dp')}",
                                             "fontWeight": "500"
                                           }
                                         ]
                                       },
                                       {
                                         "type": "Frame",
-                                        "spacing": "14dp",
+                                        "spacing": "${viewport.width >= 1600 ? '24dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
                                         "backgroundColor": "#EA580C",
-                                        "borderRadius": "10dp",
-                                        "paddingTop": "9dp",
-                                        "paddingBottom": "9dp",
-                                        "paddingLeft": "12dp",
-                                        "paddingRight": "12dp",
+                                        "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                        "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                        "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                        "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                        "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
                                         "width": "100%",
                                         "item": {
                                           "type": "Text",
                                           "text": "Select High School →",
                                           "color": "#FFFFFF",
                                           "fontWeight": "700",
-                                          "fontSize": "13dp",
+                                          "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
                                           "textAlign": "center"
                                         }
                                       }
@@ -832,7 +838,7 @@
                       "direction": "row",
                       "justifyContent": "center",
                       "alignItems": "center",
-                      "height": "28dp",
+                      "height": "${viewport.width >= 1600 ? '36dp' : (viewport.width >= 1100 ? '30dp' : '26dp')}",
                       "width": "100%",
                       "shrink": 0,
                       "spacing": "10dp",
@@ -841,7 +847,7 @@
                           "type": "Text",
                           "text": "💡 Or say: 'Elementary', 'Middle School', or 'High School'",
                           "color": "#64748B",
-                          "fontSize": "12dp"
+                          "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '12dp')}"
                         }
                       ]
                     }
@@ -1105,10 +1111,10 @@
                   "when": "${viewport.shape != 'round' && @viewportProfile != '@hubRound'}",
                   "width": "100%",
                   "height": "100%",
-                  "paddingLeft": "24dp",
-                  "paddingRight": "24dp",
-                  "paddingTop": "16dp",
-                  "paddingBottom": "16dp",
+                  "paddingLeft": "${viewport.width >= 1600 ? '36dp' : (viewport.width >= 1100 ? '28dp' : '20dp')}",
+                  "paddingRight": "${viewport.width >= 1600 ? '36dp' : (viewport.width >= 1100 ? '28dp' : '20dp')}",
+                  "paddingTop": "${viewport.width >= 1600 ? '24dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                  "paddingBottom": "${viewport.width >= 1600 ? '20dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
                   "direction": "column",
                   "justifyContent": "spaceBetween",
                   "items": [
@@ -1117,7 +1123,7 @@
                       "direction": "row",
                       "justifyContent": "spaceBetween",
                       "alignItems": "center",
-                      "height": "48dp",
+                      "height": "${viewport.width >= 1600 ? '58dp' : (viewport.width >= 1100 ? '50dp' : '44dp')}",
                       "width": "100%",
                       "shrink": 0,
                       "items": [
@@ -1129,31 +1135,31 @@
                             {
                               "type": "Image",
                               "source": "${payload.wizardData.logoUrl || 'https://vasd-lunch.vercel.app/paw-logo.png'}",
-                              "width": "32dp",
-                              "height": "32dp"
+                              "width": "${viewport.width >= 1600 ? '40dp' : (viewport.width >= 1100 ? '34dp' : '28dp')}",
+                              "height": "${viewport.width >= 1600 ? '40dp' : (viewport.width >= 1100 ? '34dp' : '28dp')}"
                             },
                             {
                               "type": "Text",
                               "text": "${payload.wizardData.selectedLevelName || 'Verona Schools'}",
                               "style": "textTitle",
-                              "fontSize": "18dp",
-                              "spacing": "10dp"
+                              "fontSize": "${viewport.width >= 1600 ? '24dp' : (viewport.width >= 1100 ? '20dp' : '17dp')}",
+                              "spacing": "${viewport.width >= 1600 ? '14dp' : '10dp'}"
                             }
                           ]
                         },
                         {
                           "type": "Frame",
                           "backgroundColor": "rgba(249, 115, 22, 0.2)",
-                          "borderRadius": "10dp",
-                          "paddingLeft": "12dp",
-                          "paddingRight": "12dp",
-                          "paddingTop": "6dp",
-                          "paddingBottom": "6dp",
+                          "borderRadius": "${viewport.width >= 1600 ? '12dp' : '10dp'}",
+                          "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '14dp' : '10dp')}",
+                          "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '14dp' : '10dp')}",
+                          "paddingTop": "${viewport.width >= 1600 ? '8dp' : (viewport.width >= 1100 ? '6dp' : '5dp')}",
+                          "paddingBottom": "${viewport.width >= 1600 ? '8dp' : (viewport.width >= 1100 ? '6dp' : '5dp')}",
                           "item": {
                             "type": "Text",
                             "text": "STEP 2 OF 3 • SELECT MEAL TYPE",
                             "color": "#F97316",
-                            "fontSize": "12dp",
+                            "fontSize": "${viewport.width >= 1600 ? '14dp' : (viewport.width >= 1100 ? '12.5dp' : '11dp')}",
                             "fontWeight": "800",
                             "letterSpacing": "1dp"
                           }
@@ -1167,7 +1173,7 @@
                       "grow": 1,
                       "shrink": 1,
                       "justifyContent": "spaceBetween",
-                      "spacing": "12dp",
+                      "spacing": "${viewport.width >= 1600 ? '20dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
                       "items": [
                         {
                           "type": "TouchWrapper",
@@ -1194,10 +1200,13 @@
                               "width": "100%",
                               "height": "100%",
                               "backgroundColor": "#1E293B",
-                              "borderRadius": "20dp",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
                               "borderWidth": "2dp",
                               "borderColor": "#EA580C",
-                              "padding": "20dp",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
                               "item": {
                                 "type": "Container",
                                 "width": "100%",
@@ -1212,31 +1221,31 @@
                                         "type": "Text",
                                         "text": "MORNING FUEL",
                                         "color": "#F97316",
-                                        "fontSize": "12dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp"
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "🥞 Breakfast",
                                         "style": "textTitle",
-                                        "fontSize": "26dp",
-                                        "spacing": "6dp"
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Hot Breakfast & Fruits",
                                         "color": "#F97316",
-                                        "fontSize": "16dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '22dp' : (viewport.width >= 1100 ? '18dp' : '15dp')}",
                                         "fontWeight": "700",
-                                        "spacing": "6dp"
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Featured daily pastries, whole grains, 100% fruit juices, and milk.",
                                         "color": "#94A3B8",
-                                        "fontSize": "13dp",
-                                        "spacing": "8dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '17dp' : (viewport.width >= 1100 ? '14.5dp' : '12dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '12dp' : '8dp'}",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1244,15 +1253,18 @@
                                   {
                                     "type": "Frame",
                                     "backgroundColor": "#EA580C",
-                                    "borderRadius": "10dp",
-                                    "padding": "10dp",
+                                    "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                    "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                    "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
                                     "width": "100%",
                                     "item": {
                                       "type": "Text",
                                       "text": "Choose Breakfast →",
                                       "color": "#FFFFFF",
                                       "fontWeight": "700",
-                                      "fontSize": "13dp",
+                                      "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
                                       "textAlign": "center"
                                     }
                                   }
@@ -1286,10 +1298,13 @@
                               "width": "100%",
                               "height": "100%",
                               "backgroundColor": "#1E293B",
-                              "borderRadius": "20dp",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
                               "borderWidth": "2dp",
                               "borderColor": "#EA580C",
-                              "padding": "20dp",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
                               "item": {
                                 "type": "Container",
                                 "width": "100%",
@@ -1304,31 +1319,31 @@
                                         "type": "Text",
                                         "text": "POPULAR CHOICE",
                                         "color": "#F97316",
-                                        "fontSize": "12dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp"
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "🍱 Lunch",
                                         "style": "textTitle",
-                                        "fontSize": "26dp",
-                                        "spacing": "6dp"
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Hot Entrées & Sides",
                                         "color": "#F97316",
-                                        "fontSize": "16dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '22dp' : (viewport.width >= 1100 ? '18dp' : '15dp')}",
                                         "fontWeight": "700",
-                                        "spacing": "6dp"
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Main rotating course, daily vegetarian alternates, side veggies & fresh fruit.",
                                         "color": "#94A3B8",
-                                        "fontSize": "13dp",
-                                        "spacing": "8dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '17dp' : (viewport.width >= 1100 ? '14.5dp' : '12dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '12dp' : '8dp'}",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1336,15 +1351,18 @@
                                   {
                                     "type": "Frame",
                                     "backgroundColor": "#EA580C",
-                                    "borderRadius": "10dp",
-                                    "padding": "10dp",
+                                    "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                    "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                    "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
                                     "width": "100%",
                                     "item": {
                                       "type": "Text",
                                       "text": "Choose Lunch →",
                                       "color": "#FFFFFF",
                                       "fontWeight": "700",
-                                      "fontSize": "13dp",
+                                      "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
                                       "textAlign": "center"
                                     }
                                   }
@@ -1378,10 +1396,13 @@
                               "width": "100%",
                               "height": "100%",
                               "backgroundColor": "#1E293B",
-                              "borderRadius": "20dp",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
                               "borderWidth": "2dp",
                               "borderColor": "#EA580C",
-                              "padding": "20dp",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
                               "item": {
                                 "type": "Container",
                                 "width": "100%",
@@ -1396,31 +1417,31 @@
                                         "type": "Text",
                                         "text": "ALL-DAY SUMMARY",
                                         "color": "#F97316",
-                                        "fontSize": "12dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp"
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "🌟 Both Meals",
                                         "style": "textTitle",
-                                        "fontSize": "26dp",
-                                        "spacing": "6dp"
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Breakfast + Lunch",
                                         "color": "#F97316",
-                                        "fontSize": "16dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '22dp' : (viewport.width >= 1100 ? '18dp' : '15dp')}",
                                         "fontWeight": "700",
-                                        "spacing": "6dp"
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "See the complete breakfast and lunch selections for your student.",
                                         "color": "#94A3B8",
-                                        "fontSize": "13dp",
-                                        "spacing": "8dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '17dp' : (viewport.width >= 1100 ? '14.5dp' : '12dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '12dp' : '8dp'}",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1428,15 +1449,18 @@
                                   {
                                     "type": "Frame",
                                     "backgroundColor": "#EA580C",
-                                    "borderRadius": "10dp",
-                                    "padding": "10dp",
+                                    "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                    "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                    "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
                                     "width": "100%",
                                     "item": {
                                       "type": "Text",
                                       "text": "Choose Both →",
                                       "color": "#FFFFFF",
                                       "fontWeight": "700",
-                                      "fontSize": "13dp",
+                                      "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
                                       "textAlign": "center"
                                     }
                                   }
@@ -1452,7 +1476,7 @@
                       "direction": "row",
                       "justifyContent": "center",
                       "alignItems": "center",
-                      "height": "28dp",
+                      "height": "${viewport.width >= 1600 ? '36dp' : (viewport.width >= 1100 ? '30dp' : '26dp')}",
                       "width": "100%",
                       "shrink": 0,
                       "spacing": "10dp",
@@ -1461,7 +1485,7 @@
                           "type": "Text",
                           "text": "💡 Or say: 'Breakfast', 'Lunch', or 'Both'",
                           "color": "#64748B",
-                          "fontSize": "12dp"
+                          "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '12dp')}"
                         }
                       ]
                     }
@@ -1710,10 +1734,10 @@
                   "when": "${viewport.shape != 'round' && @viewportProfile != '@hubRound'}",
                   "width": "100%",
                   "height": "100%",
-                  "paddingLeft": "24dp",
-                  "paddingRight": "24dp",
-                  "paddingTop": "16dp",
-                  "paddingBottom": "16dp",
+                  "paddingLeft": "${viewport.width >= 1600 ? '36dp' : (viewport.width >= 1100 ? '28dp' : '20dp')}",
+                  "paddingRight": "${viewport.width >= 1600 ? '36dp' : (viewport.width >= 1100 ? '28dp' : '20dp')}",
+                  "paddingTop": "${viewport.width >= 1600 ? '24dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                  "paddingBottom": "${viewport.width >= 1600 ? '20dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
                   "direction": "column",
                   "justifyContent": "spaceBetween",
                   "items": [
@@ -1722,7 +1746,7 @@
                       "direction": "row",
                       "justifyContent": "spaceBetween",
                       "alignItems": "center",
-                      "height": "48dp",
+                      "height": "${viewport.width >= 1600 ? '58dp' : (viewport.width >= 1100 ? '50dp' : '44dp')}",
                       "width": "100%",
                       "shrink": 0,
                       "items": [
@@ -1734,31 +1758,31 @@
                             {
                               "type": "Image",
                               "source": "${payload.wizardData.logoUrl || 'https://vasd-lunch.vercel.app/paw-logo.png'}",
-                              "width": "32dp",
-                              "height": "32dp"
+                              "width": "${viewport.width >= 1600 ? '40dp' : (viewport.width >= 1100 ? '34dp' : '28dp')}",
+                              "height": "${viewport.width >= 1600 ? '40dp' : (viewport.width >= 1100 ? '34dp' : '28dp')}"
                             },
                             {
                               "type": "Text",
                               "text": "${payload.wizardData.selectedLevelName || 'Verona Schools'} • ${payload.wizardData.selectedMealTitle || 'Menu'}",
                               "style": "textTitle",
-                              "fontSize": "18dp",
-                              "spacing": "10dp"
+                              "fontSize": "${viewport.width >= 1600 ? '24dp' : (viewport.width >= 1100 ? '20dp' : '17dp')}",
+                              "spacing": "${viewport.width >= 1600 ? '14dp' : '10dp'}"
                             }
                           ]
                         },
                         {
                           "type": "Frame",
                           "backgroundColor": "rgba(249, 115, 22, 0.2)",
-                          "borderRadius": "10dp",
-                          "paddingLeft": "12dp",
-                          "paddingRight": "12dp",
-                          "paddingTop": "6dp",
-                          "paddingBottom": "6dp",
+                          "borderRadius": "${viewport.width >= 1600 ? '12dp' : '10dp'}",
+                          "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '14dp' : '10dp')}",
+                          "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '14dp' : '10dp')}",
+                          "paddingTop": "${viewport.width >= 1600 ? '8dp' : (viewport.width >= 1100 ? '6dp' : '5dp')}",
+                          "paddingBottom": "${viewport.width >= 1600 ? '8dp' : (viewport.width >= 1100 ? '6dp' : '5dp')}",
                           "item": {
                             "type": "Text",
                             "text": "STEP 3 OF 3 • CHOOSE DATE",
                             "color": "#F97316",
-                            "fontSize": "12dp",
+                            "fontSize": "${viewport.width >= 1600 ? '14dp' : (viewport.width >= 1100 ? '12.5dp' : '11dp')}",
                             "fontWeight": "800",
                             "letterSpacing": "1dp"
                           }
@@ -1772,7 +1796,7 @@
                       "grow": 1,
                       "shrink": 1,
                       "justifyContent": "spaceBetween",
-                      "spacing": "12dp",
+                      "spacing": "${viewport.width >= 1600 ? '20dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
                       "items": [
                         {
                           "type": "TouchWrapper",
@@ -1794,10 +1818,13 @@
                               "width": "100%",
                               "height": "100%",
                               "backgroundColor": "#1E293B",
-                              "borderRadius": "20dp",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
                               "borderWidth": "2dp",
                               "borderColor": "#EA580C",
-                              "padding": "20dp",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
                               "item": {
                                 "type": "Container",
                                 "width": "100%",
@@ -1812,31 +1839,31 @@
                                         "type": "Text",
                                         "text": "TODAY'S MENU",
                                         "color": "#F97316",
-                                        "fontSize": "12dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp"
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "📅 Today",
                                         "style": "textTitle",
-                                        "fontSize": "26dp",
-                                        "spacing": "6dp"
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "${payload.wizardData.todayDateText}",
                                         "color": "#F97316",
-                                        "fontSize": "16dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '22dp' : (viewport.width >= 1100 ? '18dp' : '15dp')}",
                                         "fontWeight": "700",
-                                        "spacing": "6dp"
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Instant overview of meals, fresh sides, fruits, and milks served today.",
                                         "color": "#94A3B8",
-                                        "fontSize": "13dp",
-                                        "spacing": "8dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '17dp' : (viewport.width >= 1100 ? '14.5dp' : '12dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '12dp' : '8dp'}",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1844,15 +1871,18 @@
                                   {
                                     "type": "Frame",
                                     "backgroundColor": "#EA580C",
-                                    "borderRadius": "10dp",
-                                    "padding": "10dp",
+                                    "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                    "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                    "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
                                     "width": "100%",
                                     "item": {
                                       "type": "Text",
                                       "text": "Show Today →",
                                       "color": "#FFFFFF",
                                       "fontWeight": "700",
-                                      "fontSize": "13dp",
+                                      "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
                                       "textAlign": "center"
                                     }
                                   }
@@ -1881,10 +1911,13 @@
                               "width": "100%",
                               "height": "100%",
                               "backgroundColor": "#1E293B",
-                              "borderRadius": "20dp",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
                               "borderWidth": "2dp",
                               "borderColor": "#EA580C",
-                              "padding": "20dp",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
                               "item": {
                                 "type": "Container",
                                 "width": "100%",
@@ -1899,31 +1932,31 @@
                                         "type": "Text",
                                         "text": "NEXT SCHOOL DAY",
                                         "color": "#F97316",
-                                        "fontSize": "12dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp"
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "🌅 Tomorrow",
                                         "style": "textTitle",
-                                        "fontSize": "26dp",
-                                        "spacing": "6dp"
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "${payload.wizardData.tomorrowDateText}",
                                         "color": "#F97316",
-                                        "fontSize": "16dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '22dp' : (viewport.width >= 1100 ? '18dp' : '15dp')}",
                                         "fontWeight": "700",
-                                        "spacing": "6dp"
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Plan ahead with tomorrow’s scheduled hot lunch, breakfast, and sides.",
                                         "color": "#94A3B8",
-                                        "fontSize": "13dp",
-                                        "spacing": "8dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '17dp' : (viewport.width >= 1100 ? '14.5dp' : '12dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '12dp' : '8dp'}",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1931,15 +1964,18 @@
                                   {
                                     "type": "Frame",
                                     "backgroundColor": "#EA580C",
-                                    "borderRadius": "10dp",
-                                    "padding": "10dp",
+                                    "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                    "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                    "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
                                     "width": "100%",
                                     "item": {
                                       "type": "Text",
                                       "text": "Show Tomorrow →",
                                       "color": "#FFFFFF",
                                       "fontWeight": "700",
-                                      "fontSize": "13dp",
+                                      "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
                                       "textAlign": "center"
                                     }
                                   }
@@ -1968,10 +2004,13 @@
                               "width": "100%",
                               "height": "100%",
                               "backgroundColor": "#1E293B",
-                              "borderRadius": "20dp",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
                               "borderWidth": "2dp",
                               "borderColor": "#EA580C",
-                              "padding": "20dp",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
                               "item": {
                                 "type": "Container",
                                 "width": "100%",
@@ -1986,31 +2025,31 @@
                                         "type": "Text",
                                         "text": "5-DAY OUTLOOK",
                                         "color": "#F97316",
-                                        "fontSize": "12dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp"
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "📆 Next Week",
                                         "style": "textTitle",
-                                        "fontSize": "26dp",
-                                        "spacing": "6dp"
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Mon – Fri Forecast",
                                         "color": "#F97316",
-                                        "fontSize": "16dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '22dp' : (viewport.width >= 1100 ? '18dp' : '15dp')}",
                                         "fontWeight": "700",
-                                        "spacing": "6dp"
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Explore next week’s full weekly meal rotation from Monday to Friday.",
                                         "color": "#94A3B8",
-                                        "fontSize": "13dp",
-                                        "spacing": "8dp",
+                                        "fontSize": "${viewport.width >= 1600 ? '17dp' : (viewport.width >= 1100 ? '14.5dp' : '12dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '12dp' : '8dp'}",
                                         "maxLines": 3
                                       }
                                     ]
@@ -2018,15 +2057,18 @@
                                   {
                                     "type": "Frame",
                                     "backgroundColor": "#EA580C",
-                                    "borderRadius": "10dp",
-                                    "padding": "10dp",
+                                    "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                    "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                    "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
                                     "width": "100%",
                                     "item": {
                                       "type": "Text",
                                       "text": "Show Next Week →",
                                       "color": "#FFFFFF",
                                       "fontWeight": "700",
-                                      "fontSize": "13dp",
+                                      "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
                                       "textAlign": "center"
                                     }
                                   }
@@ -2042,7 +2084,7 @@
                       "direction": "row",
                       "justifyContent": "center",
                       "alignItems": "center",
-                      "height": "28dp",
+                      "height": "${viewport.width >= 1600 ? '36dp' : (viewport.width >= 1100 ? '30dp' : '26dp')}",
                       "width": "100%",
                       "shrink": 0,
                       "spacing": "10dp",
@@ -2051,7 +2093,7 @@
                           "type": "Text",
                           "text": "💡 Or say: 'Today', 'Tomorrow', or 'Next Week'",
                           "color": "#64748B",
-                          "fontSize": "12dp"
+                          "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '12dp')}"
                         }
                       ]
                     }

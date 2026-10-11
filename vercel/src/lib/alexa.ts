@@ -383,17 +383,29 @@ export function resolveDateSlot(slot?: AlexaSlot): ResolvedDate {
   }
 
   // Check if it's an ISO week format (e.g. "2026-W40")
+  const today = new Date(todayStr + 'T12:00:00');
+  const isSunday = today.getDay() === 0;
+  // Starting on Sunday, "this week" refers to the school week starting on the following Monday
+  const currentWeekMonday = isSunday
+    ? new Date(today.getTime() + 86400000)
+    : today;
+  const thisWeekStr = getIsoWeekString(currentWeekMonday);
+  const nextWeekDate = isSunday
+    ? new Date(today.getTime() + 8 * 86400000)
+    : new Date(today.getTime() + 7 * 86400000);
+  const nextWeekStr = getIsoWeekString(nextWeekDate);
+
   if (/^\d{4}-W\d{2}$/.test(raw)) {
-    const today = new Date(todayStr + 'T12:00:00');
-    const thisWeek = getIsoWeekString(today);
+    // If it's Sunday, Alexa's AMAZON.DATE slot maps "this week" to the ISO week ending today (e.g. 2026-W41).
+    // In that case, map it to the upcoming school week starting on the following Monday!
+    if (isSunday && raw === getIsoWeekString(today)) {
+      return { type: 'week', weekStr: thisWeekStr, label: 'this week' };
+    }
     let label = 'that week';
-    if (raw === thisWeek) {
+    if (raw === thisWeekStr) {
       label = 'this week';
-    } else {
-      const nextWeekDate = new Date(today.getTime() + 7 * 86400000);
-      if (raw === getIsoWeekString(nextWeekDate)) {
-        label = 'next week';
-      }
+    } else if (raw === nextWeekStr) {
+      label = 'next week';
     }
     return { type: 'week', weekStr: raw, label };
   }
@@ -406,23 +418,18 @@ export function resolveDateSlot(slot?: AlexaSlot): ResolvedDate {
   // Handle human words if passed in slot
   const lower = raw.toLowerCase();
   if (lower.includes('tomorrow')) {
-    const today = new Date(todayStr + 'T12:00:00');
     const tomorrow = new Date(today.getTime() + 86400000);
     return { type: 'day', dateStr: tomorrow.toISOString().split('T')[0], label: 'tomorrow' };
   }
   if (lower.includes('yesterday')) {
-    const today = new Date(todayStr + 'T12:00:00');
     const yesterday = new Date(today.getTime() - 86400000);
     return { type: 'day', dateStr: yesterday.toISOString().split('T')[0], label: 'yesterday' };
   }
   if (lower.includes('next week')) {
-    const today = new Date(todayStr + 'T12:00:00');
-    const nextWeekDate = new Date(today.getTime() + 7 * 86400000);
-    return { type: 'week', weekStr: getIsoWeekString(nextWeekDate), label: 'next week' };
+    return { type: 'week', weekStr: nextWeekStr, label: 'next week' };
   }
   if (lower.includes('this week') || lower.includes('week')) {
-    const today = new Date(todayStr + 'T12:00:00');
-    return { type: 'week', weekStr: getIsoWeekString(today), label: 'this week' };
+    return { type: 'week', weekStr: thisWeekStr, label: 'this week' };
   }
 
   // Default to today
