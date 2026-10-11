@@ -31,13 +31,12 @@ export function buildWelcomeAplDocument(): any {
       parameters: ['payload'],
       items: [
         {
-          type: 'Container',
+          type: 'Frame',
           width: '100vw',
           height: '100vh',
           backgroundColor: '#080C14',
-          items: [
-            {
-              type: 'Pager',
+          item: {
+            type: 'Pager',
               id: 'wizardPager',
               width: '100%',
               height: '100%',
@@ -75,9 +74,8 @@ export function buildWelcomeAplDocument(): any {
                 createStep3DateScreen(),
               ],
             },
-          ],
-        },
-      ],
-    },
+          },
+        ],
+      },
   };
 }

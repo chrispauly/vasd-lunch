@@ -31,8 +31,7 @@ export function createHeaderBar({
         items: [
           {
             type: 'Image',
-            source: logoUrlBinding,
-            fallbackSource: VASD_PAW_LOGO,
+            source: logoUrlBinding.includes('||') ? logoUrlBinding : `\${${logoUrlBinding.replace(/^\$\{/, '').replace(/\}$/, '')} || '${VASD_PAW_LOGO}'}`,
             width: '32dp',
             height: '32dp',
           },
@@ -46,23 +45,21 @@ export function createHeaderBar({
         ],
       },
       {
-        type: 'Container',
+        type: 'Frame',
         backgroundColor: APL_COLORS.orangePillBg,
         borderRadius: '10dp',
         paddingLeft: '12dp',
         paddingRight: '12dp',
         paddingTop: '6dp',
         paddingBottom: '6dp',
-        items: [
-          {
-            type: 'Text',
-            text: badgeText,
-            color: APL_COLORS.orangeAccent,
-            fontSize: '12dp',
-            fontWeight: '800',
-            letterSpacing: '1dp',
-          },
-        ],
+        item: {
+          type: 'Text',
+          text: badgeText,
+          color: APL_COLORS.orangeAccent,
+          fontSize: '12dp',
+          fontWeight: '800',
+          letterSpacing: '1dp',
+        },
       },
     ],
   };

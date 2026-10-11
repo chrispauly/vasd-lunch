@@ -36,90 +36,92 @@ function createLandscapeSchoolCard({
     ],
     items: [
       {
-        type: 'Container',
+        type: 'Frame',
         width: '100%',
         height: '100%',
         backgroundColor: APL_COLORS.cardBg,
         borderRadius: '20dp',
+        borderWidth: '2dp',
+        borderColor: APL_COLORS.orangeBorder,
         paddingLeft: '16dp',
         paddingRight: '16dp',
         paddingTop: '16dp',
         paddingBottom: '16dp',
-        borderWidth: '2dp',
-        borderColor: APL_COLORS.orangeBorder,
-        direction: 'column',
-        justifyContent: 'spaceBetween',
-        items: [
-          // Top: Grade Badge & Title
-          {
-            type: 'Container',
-            shrink: 0,
-            items: [
-              {
-                type: 'Text',
-                text: gradeBadge,
-                color: APL_COLORS.orangeAccent,
-                fontSize: '11dp',
-                fontWeight: '800',
-                letterSpacing: '1dp',
-              },
-              {
-                type: 'Text',
-                text: title,
-                style: 'textTitle',
-                fontSize: '24dp',
-                spacing: '4dp',
-              },
-            ],
-          },
-
-          // Bottom Area: School List directly above Action Button
-          {
-            type: 'Container',
-            direction: 'column',
-            width: '100%',
-            shrink: 0,
-            items: [
-              // School List: tightly grouped together without extra spacing
-              {
-                type: 'Container',
-                direction: 'column',
-                width: '100%',
-                items: schools.map((school) => ({
+        item: {
+          type: 'Container',
+          width: '100%',
+          height: '100%',
+          direction: 'column',
+          justifyContent: 'spaceBetween',
+          items: [
+            // Top: Grade Badge & Title
+            {
+              type: 'Container',
+              shrink: 0,
+              items: [
+                {
                   type: 'Text',
-                  text: school,
-                  color: '#CBD5E1',
-                  fontSize: '12.5dp',
-                  fontWeight: '500',
-                  lineHeight: '18dp',
-                })),
-              },
+                  text: gradeBadge,
+                  color: APL_COLORS.orangeAccent,
+                  fontSize: '11dp',
+                  fontWeight: '800',
+                  letterSpacing: '1dp',
+                },
+                {
+                  type: 'Text',
+                  text: title,
+                  style: 'textTitle',
+                  fontSize: '24dp',
+                  spacing: '4dp',
+                },
+              ],
+            },
 
-              // Action Button
-              {
-                type: 'Container',
-                spacing: '14dp',
-                backgroundColor: APL_COLORS.orangeBtn,
-                borderRadius: '10dp',
-                paddingTop: '9dp',
-                paddingBottom: '9dp',
-                paddingLeft: '12dp',
-                paddingRight: '12dp',
-                alignItems: 'center',
-                width: '100%',
-                items: [
-                  {
+            // Bottom Area: School List directly above Action Button
+            {
+              type: 'Container',
+              direction: 'column',
+              width: '100%',
+              shrink: 0,
+              items: [
+                // School List: tightly grouped together without extra spacing
+                {
+                  type: 'Container',
+                  direction: 'column',
+                  width: '100%',
+                  items: schools.map((school) => ({
+                    type: 'Text',
+                    text: school,
+                    color: '#CBD5E1',
+                    fontSize: '12.5dp',
+                    fontWeight: '500',
+                  })),
+                },
+
+                // Action Button
+                {
+                  type: 'Frame',
+                  spacing: '14dp',
+                  backgroundColor: APL_COLORS.orangeBtn,
+                  borderRadius: '10dp',
+                  paddingTop: '9dp',
+                  paddingBottom: '9dp',
+                  paddingLeft: '12dp',
+                  paddingRight: '12dp',
+                  width: '100%',
+                  item: {
                     type: 'Text',
                     text: buttonText,
                     color: APL_COLORS.white,
                     fontWeight: '700',
                     fontSize: '13dp',
+                    textAlign: 'center',
                   },
-                ],
-              },
-            ],
-          },
-        ],
+                },
+              ],
+            },
+          ],
+        },
       },
     ],
   };
@@ -157,49 +159,54 @@ function createRoundSchoolRow({
     ],
     items: [
       {
-        type: 'Container',
+        type: 'Frame',
         width: '100%',
         height: '100%',
-        direction: 'row',
-        alignItems: 'center',
-        justifyContent: 'spaceBetween',
         backgroundColor: APL_COLORS.cardBg,
         borderRadius: '16dp',
         borderWidth: '1.5dp',
         borderColor: APL_COLORS.orangeBorder,
         paddingLeft: '16dp',
         paddingRight: '16dp',
-        items: [
-          {
-            type: 'Container',
-            direction: 'column',
-            justifyContent: 'center',
-            items: [
-              {
-                type: 'Text',
-                text: iconTitle,
-                color: APL_COLORS.textTitle,
-                fontSize: '17dp',
-                fontWeight: '700',
-              },
-              {
-                type: 'Text',
-                text: gradeText,
-                color: APL_COLORS.orangeAccent,
-                fontSize: '11dp',
-                fontWeight: '600',
-                spacing: '2dp',
-              },
-            ],
-          },
-          {
-            type: 'Text',
-            text: '›',
-            color: APL_COLORS.orangeAccent,
-            fontSize: '24dp',
-            fontWeight: '700',
-          },
-        ],
+        item: {
+          type: 'Container',
+          width: '100%',
+          height: '100%',
+          direction: 'row',
+          alignItems: 'center',
+          justifyContent: 'spaceBetween',
+          items: [
+            {
+              type: 'Container',
+              direction: 'column',
+              justifyContent: 'center',
+              items: [
+                {
+                  type: 'Text',
+                  text: iconTitle,
+                  color: APL_COLORS.textTitle,
+                  fontSize: '17dp',
+                  fontWeight: '700',
+                },
+                {
+                  type: 'Text',
+                  text: gradeText,
+                  color: APL_COLORS.orangeAccent,
+                  fontSize: '11dp',
+                  fontWeight: '600',
+                  spacing: '2dp',
+                },
+              ],
+            },
+            {
+              type: 'Text',
+              text: '›',
+              color: APL_COLORS.orangeAccent,
+              fontSize: '24dp',
+              fontWeight: '700',
+            },
+          ],
+        },
       },
     ],
   };
