@@ -64,6 +64,7 @@
                 "paddingRight": "24dp",
                 "paddingTop": "14dp",
                 "paddingBottom": "14dp",
+                "direction": "column",
                 "justifyContent": "space-between",
                 "items": [
                   {
@@ -72,6 +73,7 @@
                     "justifyContent": "space-between",
                     "alignItems": "center",
                     "height": "48dp",
+                    "shrink": 0,
                     "items": [
                       {
                         "type": "Container",
@@ -109,7 +111,6 @@
                       {
                         "type": "Container",
                         "direction": "row",
-                        "gap": "6dp",
                         "alignItems": "center",
                         "items": [
                           {
@@ -145,6 +146,7 @@
                           },
                           {
                             "type": "TouchWrapper",
+                            "spacing": "6dp",
                             "onPress": {
                               "type": "SendEvent",
                               "arguments": [
@@ -176,6 +178,7 @@
                           },
                           {
                             "type": "TouchWrapper",
+                            "spacing": "6dp",
                             "onPress": {
                               "type": "SendEvent",
                               "arguments": [
@@ -207,6 +210,7 @@
                           },
                           {
                             "type": "TouchWrapper",
+                            "spacing": "8dp",
                             "onPress": {
                               "type": "SetPage",
                               "componentId": "menuPager",
@@ -241,8 +245,9 @@
                     "type": "Container",
                     "direction": "row",
                     "width": "100%",
-                    "height": "calc(100% - 56dp)",
-                    "gap": "16dp",
+                    "grow": 1,
+                    "shrink": 1,
+                    "marginTop": "10dp",
                     "items": [
                       {
                         "type": "Container",
@@ -377,11 +382,13 @@
                         "type": "Container",
                         "width": "58%",
                         "height": "100%",
+                        "spacing": "16dp",
                         "backgroundColor": "#111827",
                         "borderRadius": "18dp",
                         "padding": "16dp",
                         "borderWidth": "1dp",
                         "borderColor": "rgba(255, 255, 255, 0.1)",
+                        "direction": "column",
                         "items": [
                           {
                             "type": "Container",
@@ -392,6 +399,7 @@
                             "borderBottomWidth": "1dp",
                             "borderBottomColor": "rgba(249, 115, 22, 0.3)",
                             "marginBottom": "10dp",
+                            "shrink": 0,
                             "items": [
                               {
                                 "type": "Text",
@@ -412,7 +420,8 @@
                           {
                             "type": "ScrollView",
                             "width": "100%",
-                            "height": "calc(100% - 36dp)",
+                            "grow": 1,
+                            "shrink": 1,
                             "items": [
                               {
                                 "type": "Container",
@@ -596,6 +605,7 @@
                 "paddingRight": "24dp",
                 "paddingTop": "14dp",
                 "paddingBottom": "14dp",
+                "direction": "column",
                 "justifyContent": "space-between",
                 "items": [
                   {
@@ -604,6 +614,7 @@
                     "justifyContent": "space-between",
                     "alignItems": "center",
                     "height": "48dp",
+                    "shrink": 0,
                     "items": [
                       {
                         "type": "TouchWrapper",
@@ -656,7 +667,10 @@
                     "type": "Sequence",
                     "scrollDirection": "horizontal",
                     "width": "100%",
-                    "height": "calc(100% - 96dp)",
+                    "grow": 1,
+                    "shrink": 1,
+                    "marginTop": "10dp",
+                    "marginBottom": "10dp",
                     "data": "${payload.menuData.allItems}",
                     "items": [
                       {
@@ -728,6 +742,7 @@
                     "justifyContent": "center",
                     "alignItems": "center",
                     "height": "32dp",
+                    "shrink": 0,
                     "items": [
                       {
                         "type": "TouchWrapper",
@@ -739,7 +754,7 @@
                         "items": [
                           {
                             "type": "Text",
-                            "text": "← Tap here or say 'back' to return to Dinner Menu",
+                            "text": "← Tap here or say \"back\" to return to Dinner Menu",
                             "color": "#64748B",
                             "fontSize": "12dp"
                           }

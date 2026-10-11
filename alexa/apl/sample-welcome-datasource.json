@@ -1,0 +1,14 @@
+{
+  "wizardData": {
+    "initialPage": 1,
+    "showSplash": false,
+    "title": "Verona Area School District",
+    "logoUrl": "https://vasd-lunch.vercel.app/paw-logo.png",
+    "todayDateText": "Sat, Oct 10",
+    "tomorrowDateText": "Sun, Oct 11",
+    "selectedLevel": "ES",
+    "selectedLevelName": "Verona Schools",
+    "selectedMeal": "lunch",
+    "selectedMealTitle": "Lunch"
+  }
+}

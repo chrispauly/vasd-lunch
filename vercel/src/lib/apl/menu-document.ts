@@ -1,0 +1,796 @@
+import { VASD_PAW_LOGO } from './styles';
+
+/**
+ * Returns the Restaurant-Style Dinner Menu & Image Gallery APL Document.
+ * Features:
+ *  - Page 0: High-end restaurant dinner menu with chef's hero photo, course headers (Entrées, Sides, Fruits, Beverages)
+ *  - Page 1: Complete Food Photo Gallery sequence of large cards with real photos
+ *  - Supports instant client-side SetPage switching upon tapping the hero photo or 'See Photos' button,
+ *    and supports voice navigation ('see more' / 'back to menu').
+ */
+export function buildMenuAplDocument(): any {
+  return {
+    type: 'APL',
+    version: '2023.3',
+    import: [
+      {
+        name: 'alexa-layouts',
+        version: '1.7.0',
+      },
+    ],
+    theme: 'dark',
+    styles: {
+      textTitle: {
+        values: [
+          {
+            color: '#F8FAFC',
+            fontFamily: 'Amazon Ember, Georgia, serif',
+            fontWeight: '700',
+          },
+        ],
+      },
+      textSubtitle: {
+        values: [
+          {
+            color: '#F97316',
+            fontFamily: 'Amazon Ember, sans-serif',
+            fontWeight: '600',
+          },
+        ],
+      },
+      textBody: {
+        values: [
+          {
+            color: '#94A3B8',
+            fontFamily: 'Amazon Ember, sans-serif',
+            fontWeight: '400',
+          },
+        ],
+      },
+    },
+    mainTemplate: {
+      parameters: ['payload'],
+      items: [
+        {
+          type: 'Container',
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: '#070A11',
+          items: [
+            {
+              type: 'Pager',
+              id: 'menuPager',
+              width: '100%',
+              height: '100%',
+              navigation: 'none',
+              initialPage: 0,
+              items: [
+                // ==========================================
+                // PAGE 0: RESTAURANT DINNER MENU
+                // ==========================================
+                {
+                  type: 'Container',
+                  width: '100%',
+                  height: '100%',
+                  paddingLeft: '24dp',
+                  paddingRight: '24dp',
+                  paddingTop: '14dp',
+                  paddingBottom: '14dp',
+                  direction: 'column',
+                  justifyContent: 'space-between',
+                  items: [
+                    // Header Bar
+                    {
+                      type: 'Container',
+                      direction: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      height: '48dp',
+                      shrink: 0,
+                      items: [
+                        {
+                          type: 'Container',
+                          direction: 'row',
+                          alignItems: 'center',
+                          items: [
+                            {
+                              type: 'Image',
+                              source: '${payload.menuData.logoUrl}',
+                              fallbackSource: VASD_PAW_LOGO,
+                              width: '34dp',
+                              height: '34dp',
+                              marginRight: '10dp',
+                            },
+                            {
+                              type: 'Container',
+                              items: [
+                                {
+                                  type: 'Text',
+                                  text: 'Verona Area School District • ${payload.menuData.schoolLevel}',
+                                  style: 'textTitle',
+                                  fontSize: '17dp',
+                                },
+                                {
+                                  type: 'Text',
+                                  text: '${payload.menuData.dateText} • ${payload.menuData.mealTypeTitle}',
+                                  color: '#F97316',
+                                  fontSize: '12dp',
+                                  fontWeight: '600',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        {
+                          type: 'Container',
+                          direction: 'row',
+                          alignItems: 'center',
+                          items: [
+                            {
+                              type: 'TouchWrapper',
+                              onPress: {
+                                type: 'SendEvent',
+                                arguments: ['selectLevel', 'ES', '${payload.menuData.currentMealType}'],
+                              },
+                              items: [
+                                {
+                                  type: 'Container',
+                                  backgroundColor: '${payload.menuData.currentLevel == "ES" ? "#EA580C" : "#1E293B"}',
+                                  borderRadius: '8dp',
+                                  paddingLeft: '10dp',
+                                  paddingRight: '10dp',
+                                  paddingTop: '5dp',
+                                  paddingBottom: '5dp',
+                                  items: [
+                                    {
+                                      type: 'Text',
+                                      text: 'Elementary',
+                                      color: '#FFFFFF',
+                                      fontWeight: '700',
+                                      fontSize: '12dp',
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                            {
+                              type: 'TouchWrapper',
+                              spacing: '6dp',
+                              onPress: {
+                                type: 'SendEvent',
+                                arguments: ['selectLevel', 'MS', '${payload.menuData.currentMealType}'],
+                              },
+                              items: [
+                                {
+                                  type: 'Container',
+                                  backgroundColor: '${payload.menuData.currentLevel == "MS" ? "#EA580C" : "#1E293B"}',
+                                  borderRadius: '8dp',
+                                  paddingLeft: '10dp',
+                                  paddingRight: '10dp',
+                                  paddingTop: '5dp',
+                                  paddingBottom: '5dp',
+                                  items: [
+                                    {
+                                      type: 'Text',
+                                      text: 'Middle',
+                                      color: '#FFFFFF',
+                                      fontWeight: '700',
+                                      fontSize: '12dp',
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                            {
+                              type: 'TouchWrapper',
+                              spacing: '6dp',
+                              onPress: {
+                                type: 'SendEvent',
+                                arguments: ['selectLevel', 'HS', '${payload.menuData.currentMealType}'],
+                              },
+                              items: [
+                                {
+                                  type: 'Container',
+                                  backgroundColor: '${payload.menuData.currentLevel == "HS" ? "#EA580C" : "#1E293B"}',
+                                  borderRadius: '8dp',
+                                  paddingLeft: '10dp',
+                                  paddingRight: '10dp',
+                                  paddingTop: '5dp',
+                                  paddingBottom: '5dp',
+                                  items: [
+                                    {
+                                      type: 'Text',
+                                      text: 'High School',
+                                      color: '#FFFFFF',
+                                      fontWeight: '700',
+                                      fontSize: '12dp',
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                            {
+                              type: 'TouchWrapper',
+                              spacing: '8dp',
+                              onPress: {
+                                type: 'SetPage',
+                                componentId: 'menuPager',
+                                value: 1,
+                              },
+                              items: [
+                                {
+                                  type: 'Container',
+                                  backgroundColor: '#EA580C',
+                                  borderRadius: '8dp',
+                                  paddingLeft: '12dp',
+                                  paddingRight: '12dp',
+                                  paddingTop: '5dp',
+                                  paddingBottom: '5dp',
+                                  items: [
+                                    {
+                                      type: 'Text',
+                                      text: '📷 See Photos',
+                                      color: '#FFFFFF',
+                                      fontWeight: '800',
+                                      fontSize: '12dp',
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+
+                    // 2-Column Dinner Menu Content
+                    {
+                      type: 'Container',
+                      direction: 'row',
+                      width: '100%',
+                      grow: 1,
+                      shrink: 1,
+                      marginTop: '10dp',
+                      items: [
+                        // Left Column: Chef's Featured Entrée Presentation
+                        {
+                          type: 'Container',
+                          width: '40%',
+                          height: '100%',
+                          backgroundColor: '#1E293B',
+                          borderRadius: '18dp',
+                          padding: '16dp',
+                          borderWidth: '1dp',
+                          borderColor: 'rgba(249, 115, 22, 0.35)',
+                          justifyContent: 'space-between',
+                          items: [
+                            {
+                              type: 'Container',
+                              items: [
+                                {
+                                  type: 'TouchWrapper',
+                                  width: '100%',
+                                  height: '190dp',
+                                  onPress: {
+                                    type: 'SetPage',
+                                    componentId: 'menuPager',
+                                    value: 1,
+                                  },
+                                  items: [
+                                    {
+                                      type: 'Container',
+                                      width: '100%',
+                                      height: '100%',
+                                      items: [
+                                        {
+                                          type: 'Image',
+                                          source: '${payload.menuData.heroItem.imageUrl}',
+                                          fallbackSource: VASD_PAW_LOGO,
+                                          width: '100%',
+                                          height: '100%',
+                                          scale: 'best-fill',
+                                          borderRadius: '14dp',
+                                        },
+                                        {
+                                          type: 'Container',
+                                          position: 'absolute',
+                                          bottom: '8dp',
+                                          left: '8dp',
+                                          backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                                          borderRadius: '8dp',
+                                          paddingLeft: '10dp',
+                                          paddingRight: '10dp',
+                                          paddingTop: '4dp',
+                                          paddingBottom: '4dp',
+                                          items: [
+                                            {
+                                              type: 'Text',
+                                              text: '📷 Tap photo for all dish pictures',
+                                              color: '#FDBA74',
+                                              fontSize: '11dp',
+                                              fontWeight: '700',
+                                            },
+                                          ],
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                                {
+                                  type: 'Text',
+                                  text: "CHEF'S FEATURED MAIN COURSE",
+                                  color: '#F97316',
+                                  fontSize: '11dp',
+                                  fontWeight: '800',
+                                  letterSpacing: '1dp',
+                                  marginTop: '10dp',
+                                },
+                                {
+                                  type: 'Text',
+                                  text: '${payload.menuData.heroItem.name}',
+                                  style: 'textTitle',
+                                  fontSize: '22dp',
+                                  maxLines: 2,
+                                  marginTop: '2dp',
+                                },
+                                {
+                                  type: 'Text',
+                                  text: '${payload.menuData.summarySnippet}',
+                                  color: '#CBD5E1',
+                                  fontSize: '13dp',
+                                  lineHeight: '18dp',
+                                  maxLines: 3,
+                                  marginTop: '6dp',
+                                },
+                                {
+                                  type: 'Text',
+                                  when: '${payload.menuData.heroItem.allergens != ""}',
+                                  text: 'Allergens: ${payload.menuData.heroItem.allergens}',
+                                  color: '#94A3B8',
+                                  fontSize: '12dp',
+                                  marginTop: '6dp',
+                                },
+                              ],
+                            },
+                            {
+                              type: 'TouchWrapper',
+                              width: '100%',
+                              onPress: {
+                                type: 'SetPage',
+                                componentId: 'menuPager',
+                                value: 1,
+                              },
+                              items: [
+                                {
+                                  type: 'Container',
+                                  width: '100%',
+                                  backgroundColor: '#EA580C',
+                                  borderRadius: '10dp',
+                                  padding: '10dp',
+                                  alignItems: 'center',
+                                  items: [
+                                    {
+                                      type: 'Text',
+                                      text: '📷 View Full Food Photo Gallery →',
+                                      color: '#FFFFFF',
+                                      fontWeight: '800',
+                                      fontSize: '13dp',
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+
+                        // Right Column: Restaurant Dinner Menu Board
+                        {
+                          type: 'Container',
+                          width: '58%',
+                          height: '100%',
+                          spacing: '16dp',
+                          backgroundColor: '#111827',
+                          borderRadius: '18dp',
+                          padding: '16dp',
+                          borderWidth: '1dp',
+                          borderColor: 'rgba(255, 255, 255, 0.1)',
+                          direction: 'column',
+                          items: [
+                            {
+                              type: 'Container',
+                              direction: 'row',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              paddingBottom: '8dp',
+                              borderBottomWidth: '1dp',
+                              borderBottomColor: 'rgba(249, 115, 22, 0.3)',
+                              marginBottom: '10dp',
+                              shrink: 0,
+                              items: [
+                                {
+                                  type: 'Text',
+                                  text: "TODAY'S DINNER MENU SELECTIONS",
+                                  color: '#F97316',
+                                  fontWeight: '800',
+                                  fontSize: '13dp',
+                                  letterSpacing: '1dp',
+                                },
+                                {
+                                  type: 'Text',
+                                  text: 'Prepared Fresh Daily',
+                                  color: '#64748B',
+                                  fontSize: '11dp',
+                                },
+                              ],
+                            },
+                            {
+                              type: 'ScrollView',
+                              width: '100%',
+                              grow: 1,
+                              shrink: 1,
+                              items: [
+                                {
+                                  type: 'Container',
+                                  items: [
+                                    // 1. Hot Entrées
+                                    {
+                                      type: 'Text',
+                                      text: '🍽️ MAIN HOT ENTRÉES',
+                                      color: '#FDBA74',
+                                      fontWeight: '800',
+                                      fontSize: '13dp',
+                                      marginBottom: '6dp',
+                                    },
+                                    {
+                                      type: 'Sequence',
+                                      scrollDirection: 'vertical',
+                                      width: '100%',
+                                      data: '${payload.menuData.courses.entrees}',
+                                      items: [
+                                        {
+                                          type: 'Container',
+                                          direction: 'row',
+                                          justifyContent: 'space-between',
+                                          alignItems: 'center',
+                                          paddingTop: '4dp',
+                                          paddingBottom: '4dp',
+                                          items: [
+                                            {
+                                              type: 'Text',
+                                              text: '• ${data.name}',
+                                              color: '#FFFFFF',
+                                              fontWeight: '600',
+                                              fontSize: '14dp',
+                                              width: '75%',
+                                            },
+                                            {
+                                              type: 'Text',
+                                              text: '${data.category}',
+                                              color: '#F97316',
+                                              fontSize: '11dp',
+                                              fontWeight: '600',
+                                            },
+                                          ],
+                                        },
+                                      ],
+                                    },
+
+                                    // 2. Sides & Veggies
+                                    {
+                                      type: 'Text',
+                                      text: '🥗 FARM-FRESH SIDES & VEGETABLES',
+                                      color: '#FDBA74',
+                                      fontWeight: '800',
+                                      fontSize: '13dp',
+                                      marginTop: '12dp',
+                                      marginBottom: '6dp',
+                                    },
+                                    {
+                                      type: 'Sequence',
+                                      scrollDirection: 'vertical',
+                                      width: '100%',
+                                      data: '${payload.menuData.courses.sides}',
+                                      items: [
+                                        {
+                                          type: 'Container',
+                                          direction: 'row',
+                                          justifyContent: 'space-between',
+                                          alignItems: 'center',
+                                          paddingTop: '3dp',
+                                          paddingBottom: '3dp',
+                                          items: [
+                                            {
+                                              type: 'Text',
+                                              text: '• ${data.name}',
+                                              color: '#E2E8F0',
+                                              fontSize: '13dp',
+                                              width: '75%',
+                                            },
+                                            {
+                                              type: 'Text',
+                                              text: '${data.category}',
+                                              color: '#64748B',
+                                              fontSize: '11dp',
+                                            },
+                                          ],
+                                        },
+                                      ],
+                                    },
+
+                                    // 3. Fruits & Juices
+                                    {
+                                      type: 'Text',
+                                      text: '🍎 FRUITS & JUICES',
+                                      color: '#FDBA74',
+                                      fontWeight: '800',
+                                      fontSize: '13dp',
+                                      marginTop: '12dp',
+                                      marginBottom: '6dp',
+                                    },
+                                    {
+                                      type: 'Sequence',
+                                      scrollDirection: 'vertical',
+                                      width: '100%',
+                                      data: '${payload.menuData.courses.fruits}',
+                                      items: [
+                                        {
+                                          type: 'Container',
+                                          direction: 'row',
+                                          justifyContent: 'space-between',
+                                          alignItems: 'center',
+                                          paddingTop: '3dp',
+                                          paddingBottom: '3dp',
+                                          items: [
+                                            {
+                                              type: 'Text',
+                                              text: '• ${data.name}',
+                                              color: '#E2E8F0',
+                                              fontSize: '13dp',
+                                              width: '75%',
+                                            },
+                                            {
+                                              type: 'Text',
+                                              text: '${data.category}',
+                                              color: '#64748B',
+                                              fontSize: '11dp',
+                                            },
+                                          ],
+                                        },
+                                      ],
+                                    },
+
+                                    // 4. Milk & Beverages
+                                    {
+                                      type: 'Text',
+                                      text: '🥛 BEVERAGES & MILK',
+                                      color: '#FDBA74',
+                                      fontWeight: '800',
+                                      fontSize: '13dp',
+                                      marginTop: '12dp',
+                                      marginBottom: '6dp',
+                                    },
+                                    {
+                                      type: 'Sequence',
+                                      scrollDirection: 'vertical',
+                                      width: '100%',
+                                      data: '${payload.menuData.courses.staples}',
+                                      items: [
+                                        {
+                                          type: 'Container',
+                                          direction: 'row',
+                                          justifyContent: 'space-between',
+                                          alignItems: 'center',
+                                          paddingTop: '3dp',
+                                          paddingBottom: '3dp',
+                                          items: [
+                                            {
+                                              type: 'Text',
+                                              text: '• ${data.name}',
+                                              color: '#94A3B8',
+                                              fontSize: '12dp',
+                                              width: '75%',
+                                            },
+                                            {
+                                              type: 'Text',
+                                              text: 'Dairy',
+                                              color: '#64748B',
+                                              fontSize: '11dp',
+                                            },
+                                          ],
+                                        },
+                                      ],
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+
+                // ==========================================
+                // PAGE 1: FOOD PHOTO GALLERY (IMAGE LIST)
+                // ==========================================
+                {
+                  type: 'Container',
+                  width: '100%',
+                  height: '100%',
+                  paddingLeft: '24dp',
+                  paddingRight: '24dp',
+                  paddingTop: '14dp',
+                  paddingBottom: '14dp',
+                  direction: 'column',
+                  justifyContent: 'space-between',
+                  items: [
+                    // Gallery Header
+                    {
+                      type: 'Container',
+                      direction: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      height: '48dp',
+                      shrink: 0,
+                      items: [
+                        {
+                          type: 'TouchWrapper',
+                          onPress: {
+                            type: 'SetPage',
+                            componentId: 'menuPager',
+                            value: 0,
+                          },
+                          items: [
+                            {
+                              type: 'Container',
+                              direction: 'row',
+                              alignItems: 'center',
+                              backgroundColor: '#1E293B',
+                              borderRadius: '10dp',
+                              paddingLeft: '14dp',
+                              paddingRight: '14dp',
+                              paddingTop: '8dp',
+                              paddingBottom: '8dp',
+                              borderWidth: '1dp',
+                              borderColor: '#EA580C',
+                              items: [
+                                {
+                                  type: 'Text',
+                                  text: '← Back to Restaurant Menu',
+                                  color: '#FDBA74',
+                                  fontWeight: '800',
+                                  fontSize: '13dp',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                        {
+                          type: 'Text',
+                          text: 'Food Photo Gallery • ${payload.menuData.schoolLevel}',
+                          style: 'textTitle',
+                          fontSize: '18dp',
+                        },
+                        {
+                          type: 'Text',
+                          text: '${payload.menuData.itemCountText}',
+                          color: '#F97316',
+                          fontWeight: '700',
+                          fontSize: '13dp',
+                        },
+                      ],
+                    },
+
+                    // Horizontal Photo Sequence
+                    {
+                      type: 'Sequence',
+                      scrollDirection: 'horizontal',
+                      width: '100%',
+                      grow: 1,
+                      shrink: 1,
+                      marginTop: '10dp',
+                      marginBottom: '10dp',
+                      data: '${payload.menuData.allItems}',
+                      items: [
+                        {
+                          type: 'TouchWrapper',
+                          width: '250dp',
+                          height: '100%',
+                          marginRight: '16dp',
+                          items: [
+                            {
+                              type: 'Container',
+                              width: '100%',
+                              height: '100%',
+                              backgroundColor: '#1E293B',
+                              borderRadius: '18dp',
+                              padding: '12dp',
+                              borderWidth: '1dp',
+                              borderColor: 'rgba(255, 255, 255, 0.08)',
+                              justifyContent: 'space-between',
+                              items: [
+                                {
+                                  type: 'Image',
+                                  source: '${data.imageUrl}',
+                                  fallbackSource: VASD_PAW_LOGO,
+                                  width: '100%',
+                                  height: '62%',
+                                  borderRadius: '12dp',
+                                  scale: 'best-fill',
+                                },
+                                {
+                                  type: 'Container',
+                                  height: '35%',
+                                  justifyContent: 'center',
+                                  items: [
+                                    {
+                                      type: 'Text',
+                                      text: '${data.category}',
+                                      color: '#F97316',
+                                      fontSize: '11dp',
+                                      fontWeight: '700',
+                                    },
+                                    {
+                                      type: 'Text',
+                                      text: '${data.name}',
+                                      style: 'textTitle',
+                                      fontSize: '15dp',
+                                      maxLines: 2,
+                                      marginTop: '2dp',
+                                    },
+                                    {
+                                      type: 'Text',
+                                      when: '${data.allergens != ""}',
+                                      text: 'Allergens: ${data.allergens}',
+                                      color: '#94A3B8',
+                                      fontSize: '11dp',
+                                      maxLines: 1,
+                                      marginTop: '2dp',
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+
+                    // Gallery Footer
+                    {
+                      type: 'Container',
+                      direction: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '32dp',
+                      shrink: 0,
+                      items: [
+                        {
+                          type: 'TouchWrapper',
+                          onPress: {
+                            type: 'SetPage',
+                            componentId: 'menuPager',
+                            value: 0,
+                          },
+                          items: [
+                            {
+                              type: 'Text',
+                              text: '← Tap here or say "back" to return to Dinner Menu',
+                              color: '#64748B',
+                              fontSize: '12dp',
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  };
+}
