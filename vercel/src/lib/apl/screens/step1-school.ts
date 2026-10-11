@@ -48,7 +48,7 @@ function createLandscapeSchoolCard({
         borderWidth: '2dp',
         borderColor: APL_COLORS.orangeBorder,
         direction: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'spaceBetween',
         items: [
           // Top: Grade Badge & Title
           {
@@ -73,44 +73,49 @@ function createLandscapeSchoolCard({
             ],
           },
 
-          // Middle: School List in a column container (each school on a separate line)
+          // Bottom Area: School List directly above Action Button
           {
             type: 'Container',
             direction: 'column',
-            grow: 1,
-            shrink: 1,
-            justifyContent: 'center',
-            marginTop: '8dp',
-            marginBottom: '8dp',
-            items: schools.map((school) => ({
-              type: 'Text',
-              text: school,
-              color: '#CBD5E1',
-              fontSize: '13dp',
-              fontWeight: '500',
-              lineHeight: '20dp',
-            })),
-          },
-
-          // Bottom: Action Button
-          {
-            type: 'Container',
-            shrink: 0,
-            backgroundColor: APL_COLORS.orangeBtn,
-            borderRadius: '10dp',
-            paddingTop: '9dp',
-            paddingBottom: '9dp',
-            paddingLeft: '12dp',
-            paddingRight: '12dp',
-            alignItems: 'center',
             width: '100%',
+            shrink: 0,
             items: [
+              // School List: tightly grouped together without extra spacing
               {
-                type: 'Text',
-                text: buttonText,
-                color: APL_COLORS.white,
-                fontWeight: '700',
-                fontSize: '13dp',
+                type: 'Container',
+                direction: 'column',
+                width: '100%',
+                marginBottom: '14dp',
+                items: schools.map((school) => ({
+                  type: 'Text',
+                  text: school,
+                  color: '#CBD5E1',
+                  fontSize: '12.5dp',
+                  fontWeight: '500',
+                  lineHeight: '18dp',
+                })),
+              },
+
+              // Action Button
+              {
+                type: 'Container',
+                backgroundColor: APL_COLORS.orangeBtn,
+                borderRadius: '10dp',
+                paddingTop: '9dp',
+                paddingBottom: '9dp',
+                paddingLeft: '12dp',
+                paddingRight: '12dp',
+                alignItems: 'center',
+                width: '100%',
+                items: [
+                  {
+                    type: 'Text',
+                    text: buttonText,
+                    color: APL_COLORS.white,
+                    fontWeight: '700',
+                    fontSize: '13dp',
+                  },
+                ],
               },
             ],
           },

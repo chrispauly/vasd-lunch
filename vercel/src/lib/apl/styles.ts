@@ -8,7 +8,7 @@ export const APL_COLORS = {
   orangeBtn: '#EA580C',
   orangeBtnHover: '#C2410C',
   orangePillBg: 'rgba(249, 115, 22, 0.2)',
-  orangeBorder: 'rgba(249, 115, 22, 0.4)',
+  orangeBorder: '#EA580C',
   textTitle: '#F8FAFC',
   textSubtitle: '#F97316',
   textBody: '#94A3B8',
