@@ -29,6 +29,7 @@ import {
   fetchBreakfastMenuForWeek,
   LEVEL_CONFIG,
   formatWeekDateRange,
+  findNextSchoolDay,
 } from '@/lib/healthepro';
 import {
   generateLunchSummary,
@@ -52,7 +53,8 @@ export async function GET() {
 }
 
 /**
- * Handles single-day menu requests (today, tomorrow, specific date) for voice or touchscreen taps
+ * Handles single-day menu requests (today, tomorrow, specific date) for voice or touchscreen taps.
+ * Strictly guarantees Monday-Friday school day data; automatically finds next school day if requested on weekend.
  */
 async function handleSingleDayMenu({
   schoolLevel,
@@ -72,6 +74,13 @@ async function handleSingleDayMenu({
   const isApl = supportsApl(body);
   const endSession = shouldEndSession !== undefined ? shouldEndSession : !isApl;
   const reprompt = isApl ? "Say 'see more' to view food photos, or ask for another day." : undefined;
+
+  // Ensure dateStr is NEVER a weekend! Automatically resolve to next school day
+  const checkDate = dateStr === 'next_school_day' ? getTodayDateStr() : dateStr;
+  const checkDow = new Date(checkDate + 'T12:00:00').getDay();
+  if (checkDow === 0 || checkDow === 6 || dateStr === 'next_school_day') {
+    dateStr = await findNextSchoolDay(checkDate, schoolLevel);
+  }
 
   // Preserve navigation context in session attributes
   sessionAttributes.schoolLevel = schoolLevel;
@@ -370,13 +379,22 @@ export async function POST(req: NextRequest) {
 
       sessionAttributes.wizardStep = 'school';
 
+      const todayStr = getTodayDateStr();
+      const todayDow = new Date(todayStr + 'T12:00:00').getDay();
+      const isWeekend = todayDow === 0 || todayDow === 6;
+      const nextSchoolDayDateStr = isWeekend ? await findNextSchoolDay(todayStr, 'ES') : undefined;
+
       const directives = supportsApl(body)
         ? [
             {
               type: 'Alexa.Presentation.APL.RenderDocument',
               token: 'vasdWelcomeToken',
               document: buildWelcomeAplDocument(),
-              datasources: buildWelcomeAplDatasource({ step: 'splash' }),
+              datasources: buildWelcomeAplDatasource({
+                step: 'splash',
+                isWeekend,
+                nextSchoolDayDateStr,
+              }),
             },
           ]
         : supportsAplt(body)
@@ -425,10 +443,19 @@ export async function POST(req: NextRequest) {
         // If date is not yet known, advance to Step 3 (Date)
         if (!sessionAttributes.pendingDate && !sessionAttributes.dateStr) {
           sessionAttributes.wizardStep = 'date';
+          const todayStr = getTodayDateStr();
+          const todayDow = new Date(todayStr + 'T12:00:00').getDay();
+          const isWeekend = todayDow === 0 || todayDow === 6;
+          const speech = isWeekend
+            ? 'Would you like the menu for the next school day, or for this week?'
+            : "Would you like today's menu or tomorrow's?";
+          const reprompt = isWeekend
+            ? 'Please choose the next school day or this week.'
+            : 'Please choose today or tomorrow.';
           return NextResponse.json(
             buildAlexaResponse({
-              speechText: "Would you like today's menu or tomorrow's?",
-              repromptText: 'Please choose today or tomorrow.',
+              speechText: speech,
+              repromptText: reprompt,
               shouldEndSession: false,
               sessionAttributes,
               cardTitle: 'Select Date',
@@ -487,10 +514,19 @@ export async function POST(req: NextRequest) {
         if (!sessionAttributes.pendingDate && !sessionAttributes.dateStr) {
           sessionAttributes.wizardStep = 'date';
           const mealWord = targetMeal === 'breakfast' ? 'breakfast' : targetMeal === 'lunch' ? 'lunch' : 'menu';
+          const todayStr = getTodayDateStr();
+          const todayDow = new Date(todayStr + 'T12:00:00').getDay();
+          const isWeekend = todayDow === 0 || todayDow === 6;
+          const speech = isWeekend
+            ? `Would you like the ${mealWord} for the next school day, or for this week?`
+            : `Would you like today's ${mealWord} or tomorrow's?`;
+          const reprompt = isWeekend
+            ? 'Please choose the next school day or this week.'
+            : 'Please choose today or tomorrow.';
           return NextResponse.json(
             buildAlexaResponse({
-              speechText: `Would you like today's ${mealWord} or tomorrow's?`,
-              repromptText: 'Please choose today or tomorrow.',
+              speechText: speech,
+              repromptText: reprompt,
               shouldEndSession: false,
               sessionAttributes,
               cardTitle: 'Select Date',
@@ -527,32 +563,52 @@ export async function POST(req: NextRequest) {
       // C: User tapped a Date (Page 3)
       // ==========================================
       if (action === 'selectDate') {
-        const targetLevel = (args[1] as LunchLevel) || sessionAttributes.schoolLevel || 'ES';
-        const targetMeal = (args[2] as MealType) || sessionAttributes.mealType || 'both';
-        const dateChoice = String(args[3] || 'today').toLowerCase();
+        const rawChoice = typeof args[1] === 'string' && ['today', 'tomorrow', 'week', 'nextschoolday', 'next_school_day'].includes(args[1].toLowerCase())
+          ? args[1]
+          : (args[3] || 'today');
+        const dateChoice = String(rawChoice).toLowerCase();
+
+        const targetLevel = (['ES', 'MS', 'HS'].includes(String(args[1]).toUpperCase()) ? args[1] : null) || sessionAttributes.schoolLevel || 'ES';
+        const targetMeal = (['breakfast', 'lunch', 'both'].includes(String(args[2]).toLowerCase()) ? args[2] : null) || sessionAttributes.mealType || 'both';
 
         sessionAttributes.schoolLevel = targetLevel;
         sessionAttributes.mealType = targetMeal;
 
+        const todayStr = getTodayDateStr();
+        const today = new Date(todayStr + 'T12:00:00');
+        const dow = today.getDay();
+        const isWeekend = dow === 0 || dow === 6;
+
         if (dateChoice.includes('week')) {
-          const today = new Date(getTodayDateStr() + 'T12:00:00');
-          const isSunday = today.getDay() === 0;
-          const targetDate = isSunday ? new Date(today.getTime() + 86400000) : new Date(today.getTime() + 7 * 86400000);
+          const daysUntilNextMonday = dow === 0 ? 1 : dow === 6 ? 2 : 0;
+          const targetDate = isWeekend
+            ? new Date(today.getTime() + daysUntilNextMonday * 86400000)
+            : new Date(today.getTime() + 7 * 86400000);
           return await handleWeekMenu({
             schoolLevel: targetLevel,
             mealType: targetMeal,
             resolvedDate: {
               type: 'week',
               weekStr: getIsoWeekString(targetDate),
-              label: isSunday ? 'this week' : 'next week',
+              label: isWeekend ? 'this week' : 'next week',
             },
             sessionAttributes,
             body,
           });
         }
 
+        if (dateChoice.includes('school') || dateChoice.includes('nextschoolday') || isWeekend) {
+          const nextDayStr = await findNextSchoolDay(todayStr, targetLevel);
+          return await handleSingleDayMenu({
+            schoolLevel: targetLevel,
+            mealType: targetMeal,
+            dateStr: nextDayStr,
+            sessionAttributes,
+            body,
+          });
+        }
+
         if (dateChoice.includes('tomorrow')) {
-          const today = new Date(getTodayDateStr() + 'T12:00:00');
           const tomorrow = new Date(today.getTime() + 86400000);
           const dateStr = tomorrow.toISOString().split('T')[0];
           return await handleSingleDayMenu({
@@ -843,6 +899,11 @@ export async function POST(req: NextRequest) {
         const speech = 'Which school would you like: Elementary, Middle, or High School?';
         const reprompt = 'Please choose Elementary, Middle, or High School.';
 
+        const todayStr = getTodayDateStr();
+        const todayDow = new Date(todayStr + 'T12:00:00').getDay();
+        const isWeekend = todayDow === 0 || todayDow === 6;
+        const nextSchoolDayDateStr = isWeekend ? await findNextSchoolDay(todayStr, 'ES') : undefined;
+
         const directives = supportsApl(body)
           ? [
               {
@@ -853,6 +914,8 @@ export async function POST(req: NextRequest) {
                   step: 'school',
                   schoolLevel: undefined,
                   mealType: mealType || undefined,
+                  isWeekend,
+                  nextSchoolDayDateStr,
                 }),
               },
             ]
@@ -879,6 +942,11 @@ export async function POST(req: NextRequest) {
         const speech = `For ${levelName}, would you like breakfast, lunch, or both?`;
         const reprompt = 'Would you like breakfast, lunch, or both?';
 
+        const todayStr = getTodayDateStr();
+        const todayDow = new Date(todayStr + 'T12:00:00').getDay();
+        const isWeekend = todayDow === 0 || todayDow === 6;
+        const nextSchoolDayDateStr = isWeekend ? await findNextSchoolDay(todayStr, schoolLevel) : undefined;
+
         const directives = supportsApl(body)
           ? [
               {
@@ -889,6 +957,8 @@ export async function POST(req: NextRequest) {
                   step: 'meal',
                   schoolLevel,
                   mealType: undefined,
+                  isWeekend,
+                  nextSchoolDayDateStr,
                 }),
               },
             ]
@@ -907,13 +977,23 @@ export async function POST(req: NextRequest) {
       }
 
       // =========================================================================
-      // STEP 3: Date missing -> Today or Tomorrow (or Next Week)
+      // STEP 3: Date missing -> Today or Tomorrow (or Next School Day on weekends)
       // =========================================================================
       if (!resolvedDate) {
         sessionAttributes.wizardStep = 'date';
         const mealWord = mealType === 'breakfast' ? 'breakfast' : mealType === 'lunch' ? 'lunch' : 'menu';
-        const speech = `Would you like today's ${mealWord} or tomorrow's?`;
-        const reprompt = 'Would you like today or tomorrow? You can also say next week.';
+        const todayStr = getTodayDateStr();
+        const dow = new Date(todayStr + 'T12:00:00').getDay();
+        const isWeekend = dow === 0 || dow === 6;
+
+        const speech = isWeekend
+          ? `Would you like the ${mealWord} for the next school day, or for this week?`
+          : `Would you like today's ${mealWord} or tomorrow's?`;
+        const reprompt = isWeekend
+          ? 'Would you like the next school day, or this week?'
+          : 'Would you like today or tomorrow? You can also say next week.';
+
+        const nextSchoolDayDateStr = isWeekend ? await findNextSchoolDay(todayStr, schoolLevel) : undefined;
 
         const directives = supportsApl(body)
           ? [
@@ -925,6 +1005,8 @@ export async function POST(req: NextRequest) {
                   step: 'date',
                   schoolLevel,
                   mealType,
+                  isWeekend,
+                  nextSchoolDayDateStr,
                 }),
               },
             ]

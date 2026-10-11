@@ -44,6 +44,28 @@ export async function fetchMenuForDay(
   meal: 'breakfast' | 'lunch' = 'lunch'
 ): Promise<LunchDayData> {
   const config = LEVEL_MENU_CONFIG[level] || LEVEL_MENU_CONFIG.ES;
+
+  // School menus only exist Monday through Friday. Weekends never have school.
+  const dt = new Date(dateStr + 'T12:00:00Z');
+  const dow = dt.getUTCDay();
+  if (dow === 0 || dow === 6) {
+    return {
+      date: dateStr,
+      level,
+      levelName: config.name,
+      mealType: meal,
+      entrees: [],
+      specialEntrees: [],
+      stapleEntrees: [],
+      sides: [],
+      treats: [],
+      rawItems: [],
+      hasSchool: false,
+      heroImage: null,
+      itemsWithImages: [],
+    };
+  }
+
   const menuIds = meal === 'breakfast' ? config.breakfastMenuIds : config.lunchMenuIds;
   const [year, month] = dateStr.split('-');
   const monthNum = parseInt(month, 10).toString(); // e.g. "10" or "9"
@@ -243,6 +265,86 @@ export async function fetchBreakfastMenuForDay(
   level: LunchLevel
 ): Promise<LunchDayData> {
   return fetchMenuForDay(dateStr, level, 'breakfast');
+}
+
+/**
+ * Finds the next Monday-Friday school day that has menu items,
+ * checking Health-e Pro calendar data and skipping weekends & No School days.
+ * If startDateStr is a weekend, checks starting from upcoming Monday.
+ */
+export async function findNextSchoolDay(
+  startDateStr: string = new Date().toISOString().split('T')[0],
+  level: LunchLevel = 'ES',
+  includeStartDate: boolean = false
+): Promise<string> {
+  const config = LEVEL_MENU_CONFIG[level] || LEVEL_MENU_CONFIG.ES;
+  const menuId = config.lunchMenuIds[0] || 128400;
+  let cur = new Date(startDateStr + 'T12:00:00Z');
+  // If not including start date, advance by 1 day first
+  if (!includeStartDate) {
+    cur = new Date(cur.getTime() + 86400000);
+  }
+  const monthCache = new Map<string, DateOverwriteEntry[]>();
+
+  for (let i = 0; i < 30; i++) {
+    const dayOfWeek = cur.getUTCDay(); // 0 is Sun, 6 is Sat
+    // Skip weekends
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+      const dateStr = cur.toISOString().split('T')[0];
+      const year = cur.getUTCFullYear();
+      const month = cur.getUTCMonth() + 1;
+      const monthKey = `${year}-${month}`;
+
+      if (!monthCache.has(monthKey)) {
+        try {
+          const overUrl = `${BASE_URL}/organizations/${ORG_ID}/menus/${menuId}/year/${year}/month/${month}/date_overwrites`;
+          const res = await fetch(overUrl, {
+            headers: { 'User-Agent': 'Mozilla/5.0' },
+            next: { revalidate: 3600 },
+          });
+          if (res.ok) {
+            const json = await res.json();
+            monthCache.set(monthKey, json.data || []);
+          } else {
+            monthCache.set(monthKey, []);
+          }
+        } catch {
+          monthCache.set(monthKey, []);
+        }
+      }
+
+      const entries = monthCache.get(monthKey) || [];
+      const dayEntry = entries.find((e: any) => e.day === dateStr);
+      if (dayEntry && dayEntry.setting) {
+        try {
+          const setting = JSON.parse(dayEntry.setting);
+          const isOff =
+            setting.days_off &&
+            (setting.days_off.status === 1 ||
+              String(setting.days_off.description || '').toLowerCase().includes('no school'));
+          if (!isOff) {
+            const hasRecipes = (setting.current_display || []).some(
+              (el: any) => el.type === 'recipe' && el.name
+            );
+            if (hasRecipes) {
+              return dateStr;
+            }
+          }
+        } catch {
+          // ignore parse error
+        }
+      }
+    }
+
+    cur = new Date(cur.getTime() + 86400000);
+  }
+
+  // Fallback: next Monday
+  let fallback = new Date(startDateStr + 'T12:00:00Z');
+  while (fallback.getUTCDay() !== 1) {
+    fallback = new Date(fallback.getTime() + 86400000);
+  }
+  return fallback.toISOString().split('T')[0];
 }
 
 /**

@@ -7,6 +7,7 @@ import {
   fetchBreakfastMenuForWeek,
   LEVEL_CONFIG,
   formatWeekDateRange,
+  findNextSchoolDay,
 } from '@/lib/healthepro';
 import {
   generateLunchSummary,
@@ -144,7 +145,13 @@ export async function handleMenuRequest(req: NextRequest, defaultMeal: MealType 
       );
     }
 
-    const date = parseDate(rawDateParam || null);
+    let date = parseDate(rawDateParam || null);
+    const dateObj = new Date(date + 'T12:00:00');
+    const dow = dateObj.getDay();
+    if (dow === 0 || dow === 6) {
+      // Only show Monday - Friday data in all cases. On weekends, resolve to next school day!
+      date = await findNextSchoolDay(date, level);
+    }
 
     // If raw format requested, return directly without AI summarization
     if (format === 'raw') {

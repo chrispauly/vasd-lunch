@@ -9,17 +9,19 @@ function createLandscapeDateCard({
   description,
   buttonText,
   dateCode,
+  width = '32%',
 }: {
   badge: string;
   title: string;
   subtitle: string;
   description: string;
   buttonText: string;
-  dateCode: 'today' | 'tomorrow' | 'week';
+  dateCode: 'today' | 'tomorrow' | 'week' | 'nextSchoolDay';
+  width?: string;
 }): any {
   return {
     type: 'TouchWrapper',
-    width: '32%',
+    width,
     height: '100%',
     shrink: 0,
     onPress: [
@@ -117,7 +119,7 @@ function createRoundDateRow({
 }: {
   iconTitle: string;
   subtitle: string;
-  dateCode: 'today' | 'tomorrow' | 'week';
+  dateCode: 'today' | 'tomorrow' | 'week' | 'nextSchoolDay';
   spacing?: string;
 }): any {
   return {
@@ -217,8 +219,31 @@ export function createStep3DateScreen(): any {
             letterSpacing: '1dp',
             textAlign: 'center',
           },
+          // Round container on weekends (2 rows)
           {
             type: 'Container',
+            when: '${payload.wizardData.isWeekend}',
+            width: '100%',
+            direction: 'column',
+            spacing: '12dp',
+            items: [
+              createRoundDateRow({
+                iconTitle: '🎒 Next School Day',
+                subtitle: '${payload.wizardData.nextSchoolDayDateText}',
+                dateCode: 'nextSchoolDay',
+              }),
+              createRoundDateRow({
+                iconTitle: '🗓️ Week’s Menu',
+                subtitle: '${payload.wizardData.weekDateText}',
+                dateCode: 'week',
+                spacing: '8dp',
+              }),
+            ],
+          },
+          // Round container on weekdays (3 rows)
+          {
+            type: 'Container',
+            when: '${!payload.wizardData.isWeekend}',
             width: '100%',
             direction: 'column',
             spacing: '12dp',
@@ -264,8 +289,42 @@ export function createStep3DateScreen(): any {
             badgeText: 'STEP 3 OF 3 • CHOOSE DATE',
           }),
 
+          // Weekend layout: 2 cards at 48.5% width
           {
             type: 'Container',
+            when: '${payload.wizardData.isWeekend}',
+            direction: 'row',
+            width: '100%',
+            grow: 1,
+            shrink: 1,
+            justifyContent: 'spaceBetween',
+            spacing: "${viewport.width >= 1600 ? '20dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
+            items: [
+              createLandscapeDateCard({
+                badge: 'NEXT SCHOOL DAY',
+                title: '🎒 Next School Day',
+                subtitle: '${payload.wizardData.nextSchoolDayDateText}',
+                description: 'Explore meals, fresh sides, fruits, and milks served on the upcoming school day.',
+                buttonText: 'Show Next School Day →',
+                dateCode: 'nextSchoolDay',
+                width: '48.5%',
+              }),
+              createLandscapeDateCard({
+                badge: "WEEK'S MENU",
+                title: '🗓️ Week’s Menu',
+                subtitle: '${payload.wizardData.weekDateText}',
+                description: 'Plan ahead with the full 5-day Monday to Friday meal schedule for the week.',
+                buttonText: 'Show Week’s Menu →',
+                dateCode: 'week',
+                width: '48.5%',
+              }),
+            ],
+          },
+
+          // Weekday layout: 3 cards at 32% width
+          {
+            type: 'Container',
+            when: '${!payload.wizardData.isWeekend}',
             direction: 'row',
             width: '100%',
             grow: 1,
@@ -280,6 +339,7 @@ export function createStep3DateScreen(): any {
                 description: 'Instant overview of meals, fresh sides, fruits, and milks served today.',
                 buttonText: 'Show Today →',
                 dateCode: 'today',
+                width: '32%',
               }),
               createLandscapeDateCard({
                 badge: 'NEXT SCHOOL DAY',
@@ -288,6 +348,7 @@ export function createStep3DateScreen(): any {
                 description: 'Plan ahead with tomorrow’s scheduled hot lunch, breakfast, and sides.',
                 buttonText: 'Show Tomorrow →',
                 dateCode: 'tomorrow',
+                width: '32%',
               }),
               createLandscapeDateCard({
                 badge: '5-DAY OUTLOOK',
@@ -296,11 +357,15 @@ export function createStep3DateScreen(): any {
                 description: 'Explore next week’s full weekly meal rotation from Monday to Friday.',
                 buttonText: 'Show Next Week →',
                 dateCode: 'week',
+                width: '32%',
               }),
             ],
           },
 
-          createHintBar("💡 Or say: 'Today', 'Tomorrow', or 'Next Week'", '10dp'),
+          createHintBar(
+            "${payload.wizardData.isWeekend ? \"💡 Or say: 'Next School Day' or 'This Week'\" : \"💡 Or say: 'Today', 'Tomorrow', or 'Next Week'\"}",
+            '10dp'
+          ),
         ],
       },
     ],

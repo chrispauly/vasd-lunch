@@ -346,6 +346,9 @@ export function resolveDateSlotExplicit(
   }
 
   if (sessionAttributes?.pendingDate) {
+    if (sessionAttributes.pendingDate === 'next_school_day') {
+      return { type: 'day', dateStr: 'next_school_day', label: 'the next school day' };
+    }
     return resolveDateSlot({ name: 'date', value: sessionAttributes.pendingDate });
   }
 
@@ -357,10 +360,25 @@ export function resolveDateSlotExplicit(
 }
 
 /**
- * Resolves date slot from Alexa AMAZON.DATE value
+ * Resolves date slot from Alexa AMAZON.DATE value.
+ * Strictly guarantees Monday - Friday school dates. On weekends, resolves to next school day or week.
  */
 export function resolveDateSlot(slot?: AlexaSlot): ResolvedDate {
   const todayStr = getTodayDateStr();
+  const today = new Date(todayStr + 'T12:00:00');
+  const dow = today.getDay(); // 0 is Sun, 6 is Sat
+  const isWeekend = dow === 0 || dow === 6;
+
+  // On weekends, "this week" or "the week" refers to the school week starting on the upcoming Monday
+  const daysUntilNextMonday = dow === 0 ? 1 : dow === 6 ? 2 : 0;
+  const currentWeekMonday = isWeekend
+    ? new Date(today.getTime() + daysUntilNextMonday * 86400000)
+    : today;
+  const thisWeekStr = getIsoWeekString(currentWeekMonday);
+  const nextWeekDate = isWeekend
+    ? new Date(today.getTime() + (daysUntilNextMonday + 7) * 86400000)
+    : new Date(today.getTime() + 7 * 86400000);
+  const nextWeekStr = getIsoWeekString(nextWeekDate);
 
   let val = slot?.value || (slot as any)?.slotValue?.value;
   if (!val && Array.isArray((slot as any)?.slotValue?.values) && (slot as any)?.slotValue?.values.length > 0) {
@@ -368,12 +386,18 @@ export function resolveDateSlot(slot?: AlexaSlot): ResolvedDate {
   }
 
   if (!val) {
+    if (isWeekend) {
+      return { type: 'day', dateStr: 'next_school_day', label: 'the next school day' };
+    }
     return { type: 'day', dateStr: todayStr, label: 'today' };
   }
 
   let raw = String(val).trim().toUpperCase();
 
   if (raw === 'PRESENT_REF') {
+    if (isWeekend) {
+      return { type: 'day', dateStr: 'next_school_day', label: 'the next school day' };
+    }
     return { type: 'day', dateStr: todayStr, label: 'today' };
   }
 
@@ -383,22 +407,10 @@ export function resolveDateSlot(slot?: AlexaSlot): ResolvedDate {
   }
 
   // Check if it's an ISO week format (e.g. "2026-W40")
-  const today = new Date(todayStr + 'T12:00:00');
-  const isSunday = today.getDay() === 0;
-  // Starting on Sunday, "this week" refers to the school week starting on the following Monday
-  const currentWeekMonday = isSunday
-    ? new Date(today.getTime() + 86400000)
-    : today;
-  const thisWeekStr = getIsoWeekString(currentWeekMonday);
-  const nextWeekDate = isSunday
-    ? new Date(today.getTime() + 8 * 86400000)
-    : new Date(today.getTime() + 7 * 86400000);
-  const nextWeekStr = getIsoWeekString(nextWeekDate);
-
   if (/^\d{4}-W\d{2}$/.test(raw)) {
-    // If it's Sunday, Alexa's AMAZON.DATE slot maps "this week" to the ISO week ending today (e.g. 2026-W41).
+    // If it's a weekend, Alexa's AMAZON.DATE slot maps "this week" to the ISO week ending today.
     // In that case, map it to the upcoming school week starting on the following Monday!
-    if (isSunday && raw === getIsoWeekString(today)) {
+    if (isWeekend && raw === getIsoWeekString(today)) {
       return { type: 'week', weekStr: thisWeekStr, label: 'this week' };
     }
     let label = 'that week';
@@ -412,14 +424,36 @@ export function resolveDateSlot(slot?: AlexaSlot): ResolvedDate {
 
   // Check if it's a specific date (YYYY-MM-DD)
   if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+    const specificDate = new Date(raw + 'T12:00:00');
+    const specificDow = specificDate.getDay();
+    if (specificDow === 0 || specificDow === 6) {
+      // User specified a weekend date: route to next school day!
+      return { type: 'day', dateStr: 'next_school_day', label: 'the next school day' };
+    }
     return { type: 'day', dateStr: raw };
   }
 
   // Handle human words if passed in slot
   const lower = raw.toLowerCase();
+  if (lower.includes('school day') || lower.includes('schoolday')) {
+    return { type: 'day', dateStr: 'next_school_day', label: 'the next school day' };
+  }
   if (lower.includes('tomorrow')) {
+    if (isWeekend) {
+      return { type: 'day', dateStr: 'next_school_day', label: 'the next school day' };
+    }
     const tomorrow = new Date(today.getTime() + 86400000);
+    const tomorrowDow = tomorrow.getDay();
+    if (tomorrowDow === 0 || tomorrowDow === 6) {
+      return { type: 'day', dateStr: 'next_school_day', label: 'the next school day' };
+    }
     return { type: 'day', dateStr: tomorrow.toISOString().split('T')[0], label: 'tomorrow' };
+  }
+  if (lower.includes('today')) {
+    if (isWeekend) {
+      return { type: 'day', dateStr: 'next_school_day', label: 'the next school day' };
+    }
+    return { type: 'day', dateStr: todayStr, label: 'today' };
   }
   if (lower.includes('yesterday')) {
     const yesterday = new Date(today.getTime() - 86400000);
@@ -432,6 +466,9 @@ export function resolveDateSlot(slot?: AlexaSlot): ResolvedDate {
     return { type: 'week', weekStr: thisWeekStr, label: 'this week' };
   }
 
-  // Default to today
+  // Default fallback
+  if (isWeekend) {
+    return { type: 'day', dateStr: 'next_school_day', label: 'the next school day' };
+  }
   return { type: 'day', dateStr: todayStr, label: 'today' };
 }

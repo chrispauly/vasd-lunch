@@ -1521,6 +1521,149 @@
                     },
                     {
                       "type": "Container",
+                      "when": "${payload.wizardData.isWeekend}",
+                      "width": "100%",
+                      "direction": "column",
+                      "spacing": "12dp",
+                      "items": [
+                        {
+                          "type": "TouchWrapper",
+                          "width": "100%",
+                          "height": "62dp",
+                          "onPress": [
+                            {
+                              "type": "SendEvent",
+                              "arguments": [
+                                "selectDate",
+                                "nextSchoolDay"
+                              ]
+                            }
+                          ],
+                          "items": [
+                            {
+                              "type": "Frame",
+                              "width": "100%",
+                              "height": "100%",
+                              "backgroundColor": "#1E293B",
+                              "borderRadius": "16dp",
+                              "borderWidth": "1.5dp",
+                              "borderColor": "#EA580C",
+                              "paddingLeft": "16dp",
+                              "paddingRight": "16dp",
+                              "item": {
+                                "type": "Container",
+                                "width": "100%",
+                                "height": "100%",
+                                "direction": "row",
+                                "alignItems": "center",
+                                "justifyContent": "spaceBetween",
+                                "items": [
+                                  {
+                                    "type": "Container",
+                                    "direction": "column",
+                                    "justifyContent": "center",
+                                    "items": [
+                                      {
+                                        "type": "Text",
+                                        "text": "🎒 Next School Day",
+                                        "color": "#F8FAFC",
+                                        "fontSize": "17dp",
+                                        "fontWeight": "700"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "${payload.wizardData.nextSchoolDayDateText}",
+                                        "color": "#F97316",
+                                        "fontSize": "11dp",
+                                        "fontWeight": "600",
+                                        "spacing": "2dp"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "›",
+                                    "color": "#F97316",
+                                    "fontSize": "24dp",
+                                    "fontWeight": "700"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "TouchWrapper",
+                          "width": "100%",
+                          "height": "62dp",
+                          "spacing": "8dp",
+                          "onPress": [
+                            {
+                              "type": "SendEvent",
+                              "arguments": [
+                                "selectDate",
+                                "week"
+                              ]
+                            }
+                          ],
+                          "items": [
+                            {
+                              "type": "Frame",
+                              "width": "100%",
+                              "height": "100%",
+                              "backgroundColor": "#1E293B",
+                              "borderRadius": "16dp",
+                              "borderWidth": "1.5dp",
+                              "borderColor": "#EA580C",
+                              "paddingLeft": "16dp",
+                              "paddingRight": "16dp",
+                              "item": {
+                                "type": "Container",
+                                "width": "100%",
+                                "height": "100%",
+                                "direction": "row",
+                                "alignItems": "center",
+                                "justifyContent": "spaceBetween",
+                                "items": [
+                                  {
+                                    "type": "Container",
+                                    "direction": "column",
+                                    "justifyContent": "center",
+                                    "items": [
+                                      {
+                                        "type": "Text",
+                                        "text": "🗓️ Week’s Menu",
+                                        "color": "#F8FAFC",
+                                        "fontSize": "17dp",
+                                        "fontWeight": "700"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "${payload.wizardData.weekDateText}",
+                                        "color": "#F97316",
+                                        "fontSize": "11dp",
+                                        "fontWeight": "600",
+                                        "spacing": "2dp"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Text",
+                                    "text": "›",
+                                    "color": "#F97316",
+                                    "fontSize": "24dp",
+                                    "fontWeight": "700"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "when": "${!payload.wizardData.isWeekend}",
                       "width": "100%",
                       "direction": "column",
                       "spacing": "12dp",
@@ -1791,6 +1934,205 @@
                     },
                     {
                       "type": "Container",
+                      "when": "${payload.wizardData.isWeekend}",
+                      "direction": "row",
+                      "width": "100%",
+                      "grow": 1,
+                      "shrink": 1,
+                      "justifyContent": "spaceBetween",
+                      "spacing": "${viewport.width >= 1600 ? '20dp' : (viewport.width >= 1100 ? '16dp' : '12dp')}",
+                      "items": [
+                        {
+                          "type": "TouchWrapper",
+                          "width": "48.5%",
+                          "height": "100%",
+                          "shrink": 0,
+                          "onPress": [
+                            {
+                              "type": "SendEvent",
+                              "arguments": [
+                                "selectDate",
+                                "nextSchoolDay"
+                              ]
+                            }
+                          ],
+                          "items": [
+                            {
+                              "type": "Frame",
+                              "width": "100%",
+                              "height": "100%",
+                              "backgroundColor": "#1E293B",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
+                              "borderWidth": "2dp",
+                              "borderColor": "#EA580C",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "item": {
+                                "type": "Container",
+                                "width": "100%",
+                                "height": "100%",
+                                "direction": "column",
+                                "justifyContent": "spaceBetween",
+                                "items": [
+                                  {
+                                    "type": "Container",
+                                    "items": [
+                                      {
+                                        "type": "Text",
+                                        "text": "NEXT SCHOOL DAY",
+                                        "color": "#F97316",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
+                                        "fontWeight": "800",
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "🎒 Next School Day",
+                                        "style": "textTitle",
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "${payload.wizardData.nextSchoolDayDateText}",
+                                        "color": "#F97316",
+                                        "fontSize": "${viewport.width >= 1600 ? '22dp' : (viewport.width >= 1100 ? '18dp' : '15dp')}",
+                                        "fontWeight": "700",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "Explore meals, fresh sides, fruits, and milks served on the upcoming school day.",
+                                        "color": "#94A3B8",
+                                        "fontSize": "${viewport.width >= 1600 ? '17dp' : (viewport.width >= 1100 ? '14.5dp' : '12dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '12dp' : '8dp'}",
+                                        "maxLines": 3
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Frame",
+                                    "backgroundColor": "#EA580C",
+                                    "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                    "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                    "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                    "width": "100%",
+                                    "item": {
+                                      "type": "Text",
+                                      "text": "Show Next School Day →",
+                                      "color": "#FFFFFF",
+                                      "fontWeight": "700",
+                                      "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
+                                      "textAlign": "center"
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "type": "TouchWrapper",
+                          "width": "48.5%",
+                          "height": "100%",
+                          "shrink": 0,
+                          "onPress": [
+                            {
+                              "type": "SendEvent",
+                              "arguments": [
+                                "selectDate",
+                                "week"
+                              ]
+                            }
+                          ],
+                          "items": [
+                            {
+                              "type": "Frame",
+                              "width": "100%",
+                              "height": "100%",
+                              "backgroundColor": "#1E293B",
+                              "borderRadius": "${viewport.width >= 1600 ? '24dp' : '20dp'}",
+                              "borderWidth": "2dp",
+                              "borderColor": "#EA580C",
+                              "paddingLeft": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingRight": "${viewport.width >= 1600 ? '28dp' : (viewport.width >= 1100 ? '20dp' : '14dp')}",
+                              "paddingTop": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "paddingBottom": "${viewport.width >= 1600 ? '26dp' : (viewport.width >= 1100 ? '18dp' : '14dp')}",
+                              "item": {
+                                "type": "Container",
+                                "width": "100%",
+                                "height": "100%",
+                                "direction": "column",
+                                "justifyContent": "spaceBetween",
+                                "items": [
+                                  {
+                                    "type": "Container",
+                                    "items": [
+                                      {
+                                        "type": "Text",
+                                        "text": "WEEK'S MENU",
+                                        "color": "#F97316",
+                                        "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '11dp')}",
+                                        "fontWeight": "800",
+                                        "letterSpacing": "${viewport.width >= 1600 ? '1.5dp' : '1dp'}"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "🗓️ Week’s Menu",
+                                        "style": "textTitle",
+                                        "fontSize": "${viewport.width >= 1600 ? '38dp' : (viewport.width >= 1100 ? '28dp' : '22dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "${payload.wizardData.weekDateText}",
+                                        "color": "#F97316",
+                                        "fontSize": "${viewport.width >= 1600 ? '22dp' : (viewport.width >= 1100 ? '18dp' : '15dp')}",
+                                        "fontWeight": "700",
+                                        "spacing": "${viewport.width >= 1600 ? '8dp' : '4dp'}"
+                                      },
+                                      {
+                                        "type": "Text",
+                                        "text": "Plan ahead with the full 5-day Monday to Friday meal schedule for the week.",
+                                        "color": "#94A3B8",
+                                        "fontSize": "${viewport.width >= 1600 ? '17dp' : (viewport.width >= 1100 ? '14.5dp' : '12dp')}",
+                                        "spacing": "${viewport.width >= 1600 ? '12dp' : '8dp'}",
+                                        "maxLines": 3
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "Frame",
+                                    "backgroundColor": "#EA580C",
+                                    "borderRadius": "${viewport.width >= 1600 ? '14dp' : '10dp'}",
+                                    "paddingTop": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingBottom": "${viewport.width >= 1600 ? '13dp' : (viewport.width >= 1100 ? '10dp' : '8dp')}",
+                                    "paddingLeft": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                    "paddingRight": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13dp' : '10dp')}",
+                                    "width": "100%",
+                                    "item": {
+                                      "type": "Text",
+                                      "text": "Show Week’s Menu →",
+                                      "color": "#FFFFFF",
+                                      "fontWeight": "700",
+                                      "fontSize": "${viewport.width >= 1600 ? '18dp' : (viewport.width >= 1100 ? '15dp' : '13dp')}",
+                                      "textAlign": "center"
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "when": "${!payload.wizardData.isWeekend}",
                       "direction": "row",
                       "width": "100%",
                       "grow": 1,
@@ -2091,7 +2433,7 @@
                       "items": [
                         {
                           "type": "Text",
-                          "text": "💡 Or say: 'Today', 'Tomorrow', or 'Next Week'",
+                          "text": "${payload.wizardData.isWeekend ? \"💡 Or say: 'Next School Day' or 'This Week'\" : \"💡 Or say: 'Today', 'Tomorrow', or 'Next Week'\"}",
                           "color": "#64748B",
                           "fontSize": "${viewport.width >= 1600 ? '16dp' : (viewport.width >= 1100 ? '13.5dp' : '12dp')}"
                         }
