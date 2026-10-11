@@ -100,15 +100,15 @@
                         "source": "${payload.wizardData.logoUrl}",
                         "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
                         "width": "130dp",
-                        "height": "130dp",
-                        "marginBottom": "20dp"
+                        "height": "130dp"
                       },
                       {
                         "type": "Text",
                         "text": "Verona Area School District",
                         "style": "textTitle",
                         "fontSize": "32dp",
-                        "textAlign": "center"
+                        "textAlign": "center",
+                        "spacing": "20dp"
                       },
                       {
                         "type": "Text",
@@ -116,12 +116,12 @@
                         "color": "#F97316",
                         "fontSize": "18dp",
                         "fontWeight": "700",
-                        "marginTop": "8dp",
+                        "spacing": "8dp",
                         "textAlign": "center"
                       },
                       {
                         "type": "Container",
-                        "marginTop": "24dp",
+                        "spacing": "24dp",
                         "backgroundColor": "rgba(249, 115, 22, 0.15)",
                         "borderRadius": "20dp",
                         "paddingLeft": "18dp",
@@ -166,19 +166,18 @@
                         "fontSize": "14dp",
                         "fontWeight": "800",
                         "letterSpacing": "1dp",
-                        "textAlign": "center",
-                        "marginBottom": "12dp"
+                        "textAlign": "center"
                       },
                       {
                         "type": "Container",
                         "width": "100%",
                         "direction": "column",
+                        "spacing": "12dp",
                         "items": [
                           {
                             "type": "TouchWrapper",
                             "width": "100%",
                             "height": "62dp",
-                            "marginBottom": "8dp",
                             "onPress": [
                               {
                                 "type": "SendEvent",
@@ -200,7 +199,7 @@
                                 "height": "100%",
                                 "direction": "row",
                                 "alignItems": "center",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "backgroundColor": "#1E293B",
                                 "borderRadius": "16dp",
                                 "borderWidth": "1.5dp",
@@ -226,7 +225,7 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "600",
-                                        "marginTop": "2dp"
+                                        "spacing": "2dp"
                                       }
                                     ]
                                   },
@@ -245,7 +244,7 @@
                             "type": "TouchWrapper",
                             "width": "100%",
                             "height": "62dp",
-                            "marginBottom": "8dp",
+                            "spacing": "8dp",
                             "onPress": [
                               {
                                 "type": "SendEvent",
@@ -267,7 +266,7 @@
                                 "height": "100%",
                                 "direction": "row",
                                 "alignItems": "center",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "backgroundColor": "#1E293B",
                                 "borderRadius": "16dp",
                                 "borderWidth": "1.5dp",
@@ -293,7 +292,7 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "600",
-                                        "marginTop": "2dp"
+                                        "spacing": "2dp"
                                       }
                                     ]
                                   },
@@ -312,7 +311,7 @@
                             "type": "TouchWrapper",
                             "width": "100%",
                             "height": "62dp",
-                            "marginBottom": "0dp",
+                            "spacing": "8dp",
                             "onPress": [
                               {
                                 "type": "SendEvent",
@@ -334,7 +333,7 @@
                                 "height": "100%",
                                 "direction": "row",
                                 "alignItems": "center",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "backgroundColor": "#1E293B",
                                 "borderRadius": "16dp",
                                 "borderWidth": "1.5dp",
@@ -360,7 +359,7 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "600",
-                                        "marginTop": "2dp"
+                                        "spacing": "2dp"
                                       }
                                     ]
                                   },
@@ -389,12 +388,12 @@
                     "paddingTop": "16dp",
                     "paddingBottom": "16dp",
                     "direction": "column",
-                    "justifyContent": "space-between",
+                    "justifyContent": "spaceBetween",
                     "items": [
                       {
                         "type": "Container",
                         "direction": "row",
-                        "justifyContent": "space-between",
+                        "justifyContent": "spaceBetween",
                         "alignItems": "center",
                         "height": "48dp",
                         "width": "100%",
@@ -410,14 +409,14 @@
                                 "source": "${payload.wizardData.logoUrl}",
                                 "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
                                 "width": "32dp",
-                                "height": "32dp",
-                                "marginRight": "10dp"
+                                "height": "32dp"
                               },
                               {
                                 "type": "Text",
                                 "text": "Verona Area School District",
                                 "style": "textTitle",
-                                "fontSize": "18dp"
+                                "fontSize": "18dp",
+                                "spacing": "10dp"
                               }
                             ]
                           },
@@ -448,9 +447,8 @@
                         "width": "100%",
                         "grow": 1,
                         "shrink": 1,
-                        "justifyContent": "space-between",
-                        "marginTop": "12dp",
-                        "marginBottom": "10dp",
+                        "justifyContent": "spaceBetween",
+                        "spacing": "12dp",
                         "items": [
                           {
                             "type": "TouchWrapper",
@@ -497,14 +495,14 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp",
-                                        "marginBottom": "4dp"
+                                        "letterSpacing": "1dp"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Elementary",
                                         "style": "textTitle",
-                                        "fontSize": "24dp"
+                                        "fontSize": "24dp",
+                                        "spacing": "4dp"
                                       }
                                     ]
                                   },
@@ -518,7 +516,6 @@
                                         "type": "Container",
                                         "direction": "column",
                                         "width": "100%",
-                                        "marginBottom": "14dp",
                                         "items": [
                                           {
                                             "type": "Text",
@@ -572,6 +569,7 @@
                                       },
                                       {
                                         "type": "Container",
+                                        "spacing": "14dp",
                                         "backgroundColor": "#EA580C",
                                         "borderRadius": "10dp",
                                         "paddingTop": "9dp",
@@ -641,14 +639,14 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp",
-                                        "marginBottom": "4dp"
+                                        "letterSpacing": "1dp"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "Middle School",
                                         "style": "textTitle",
-                                        "fontSize": "24dp"
+                                        "fontSize": "24dp",
+                                        "spacing": "4dp"
                                       }
                                     ]
                                   },
@@ -662,7 +660,6 @@
                                         "type": "Container",
                                         "direction": "column",
                                         "width": "100%",
-                                        "marginBottom": "14dp",
                                         "items": [
                                           {
                                             "type": "Text",
@@ -684,6 +681,7 @@
                                       },
                                       {
                                         "type": "Container",
+                                        "spacing": "14dp",
                                         "backgroundColor": "#EA580C",
                                         "borderRadius": "10dp",
                                         "paddingTop": "9dp",
@@ -753,14 +751,14 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp",
-                                        "marginBottom": "4dp"
+                                        "letterSpacing": "1dp"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "High School",
                                         "style": "textTitle",
-                                        "fontSize": "24dp"
+                                        "fontSize": "24dp",
+                                        "spacing": "4dp"
                                       }
                                     ]
                                   },
@@ -774,7 +772,6 @@
                                         "type": "Container",
                                         "direction": "column",
                                         "width": "100%",
-                                        "marginBottom": "14dp",
                                         "items": [
                                           {
                                             "type": "Text",
@@ -788,6 +785,7 @@
                                       },
                                       {
                                         "type": "Container",
+                                        "spacing": "14dp",
                                         "backgroundColor": "#EA580C",
                                         "borderRadius": "10dp",
                                         "paddingTop": "9dp",
@@ -822,6 +820,7 @@
                         "height": "28dp",
                         "width": "100%",
                         "shrink": 0,
+                        "spacing": "10dp",
                         "items": [
                           {
                             "type": "Text",
@@ -859,19 +858,18 @@
                         "fontSize": "14dp",
                         "fontWeight": "800",
                         "letterSpacing": "1dp",
-                        "textAlign": "center",
-                        "marginBottom": "12dp"
+                        "textAlign": "center"
                       },
                       {
                         "type": "Container",
                         "width": "100%",
                         "direction": "column",
+                        "spacing": "12dp",
                         "items": [
                           {
                             "type": "TouchWrapper",
                             "width": "100%",
                             "height": "62dp",
-                            "marginBottom": "8dp",
                             "onPress": [
                               {
                                 "type": "SendEvent",
@@ -893,7 +891,7 @@
                                 "height": "100%",
                                 "direction": "row",
                                 "alignItems": "center",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "backgroundColor": "#1E293B",
                                 "borderRadius": "16dp",
                                 "borderWidth": "1.5dp",
@@ -919,7 +917,7 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "600",
-                                        "marginTop": "2dp"
+                                        "spacing": "2dp"
                                       }
                                     ]
                                   },
@@ -938,7 +936,7 @@
                             "type": "TouchWrapper",
                             "width": "100%",
                             "height": "62dp",
-                            "marginBottom": "8dp",
+                            "spacing": "8dp",
                             "onPress": [
                               {
                                 "type": "SendEvent",
@@ -960,7 +958,7 @@
                                 "height": "100%",
                                 "direction": "row",
                                 "alignItems": "center",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "backgroundColor": "#1E293B",
                                 "borderRadius": "16dp",
                                 "borderWidth": "1.5dp",
@@ -986,7 +984,7 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "600",
-                                        "marginTop": "2dp"
+                                        "spacing": "2dp"
                                       }
                                     ]
                                   },
@@ -1005,7 +1003,7 @@
                             "type": "TouchWrapper",
                             "width": "100%",
                             "height": "62dp",
-                            "marginBottom": "0dp",
+                            "spacing": "8dp",
                             "onPress": [
                               {
                                 "type": "SendEvent",
@@ -1027,7 +1025,7 @@
                                 "height": "100%",
                                 "direction": "row",
                                 "alignItems": "center",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "backgroundColor": "#1E293B",
                                 "borderRadius": "16dp",
                                 "borderWidth": "1.5dp",
@@ -1053,7 +1051,7 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "600",
-                                        "marginTop": "2dp"
+                                        "spacing": "2dp"
                                       }
                                     ]
                                   },
@@ -1082,12 +1080,12 @@
                     "paddingTop": "16dp",
                     "paddingBottom": "16dp",
                     "direction": "column",
-                    "justifyContent": "space-between",
+                    "justifyContent": "spaceBetween",
                     "items": [
                       {
                         "type": "Container",
                         "direction": "row",
-                        "justifyContent": "space-between",
+                        "justifyContent": "spaceBetween",
                         "alignItems": "center",
                         "height": "48dp",
                         "width": "100%",
@@ -1103,14 +1101,14 @@
                                 "source": "${payload.wizardData.logoUrl}",
                                 "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
                                 "width": "32dp",
-                                "height": "32dp",
-                                "marginRight": "10dp"
+                                "height": "32dp"
                               },
                               {
                                 "type": "Text",
                                 "text": "${payload.wizardData.selectedLevelName || 'Verona Schools'}",
                                 "style": "textTitle",
-                                "fontSize": "18dp"
+                                "fontSize": "18dp",
+                                "spacing": "10dp"
                               }
                             ]
                           },
@@ -1141,9 +1139,8 @@
                         "width": "100%",
                         "grow": 1,
                         "shrink": 1,
-                        "justifyContent": "space-between",
-                        "marginTop": "12dp",
-                        "marginBottom": "10dp",
+                        "justifyContent": "spaceBetween",
+                        "spacing": "12dp",
                         "items": [
                           {
                             "type": "TouchWrapper",
@@ -1174,7 +1171,7 @@
                                 "padding": "20dp",
                                 "borderWidth": "2dp",
                                 "borderColor": "#EA580C",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "items": [
                                   {
                                     "type": "Container",
@@ -1185,14 +1182,14 @@
                                         "color": "#F97316",
                                         "fontSize": "12dp",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp",
-                                        "marginBottom": "6dp"
+                                        "letterSpacing": "1dp"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "🥞 Breakfast",
                                         "style": "textTitle",
-                                        "fontSize": "26dp"
+                                        "fontSize": "26dp",
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1200,7 +1197,7 @@
                                         "color": "#F97316",
                                         "fontSize": "16dp",
                                         "fontWeight": "700",
-                                        "marginTop": "6dp"
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1208,7 +1205,7 @@
                                         "color": "#94A3B8",
                                         "fontSize": "13dp",
                                         "lineHeight": "18dp",
-                                        "marginTop": "8dp",
+                                        "spacing": "8dp",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1263,7 +1260,7 @@
                                 "padding": "20dp",
                                 "borderWidth": "2dp",
                                 "borderColor": "#EA580C",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "items": [
                                   {
                                     "type": "Container",
@@ -1274,14 +1271,14 @@
                                         "color": "#F97316",
                                         "fontSize": "12dp",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp",
-                                        "marginBottom": "6dp"
+                                        "letterSpacing": "1dp"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "🍱 Lunch",
                                         "style": "textTitle",
-                                        "fontSize": "26dp"
+                                        "fontSize": "26dp",
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1289,7 +1286,7 @@
                                         "color": "#F97316",
                                         "fontSize": "16dp",
                                         "fontWeight": "700",
-                                        "marginTop": "6dp"
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1297,7 +1294,7 @@
                                         "color": "#94A3B8",
                                         "fontSize": "13dp",
                                         "lineHeight": "18dp",
-                                        "marginTop": "8dp",
+                                        "spacing": "8dp",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1352,7 +1349,7 @@
                                 "padding": "20dp",
                                 "borderWidth": "2dp",
                                 "borderColor": "#EA580C",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "items": [
                                   {
                                     "type": "Container",
@@ -1363,14 +1360,14 @@
                                         "color": "#F97316",
                                         "fontSize": "12dp",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp",
-                                        "marginBottom": "6dp"
+                                        "letterSpacing": "1dp"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "🌟 Both Meals",
                                         "style": "textTitle",
-                                        "fontSize": "26dp"
+                                        "fontSize": "26dp",
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1378,7 +1375,7 @@
                                         "color": "#F97316",
                                         "fontSize": "16dp",
                                         "fontWeight": "700",
-                                        "marginTop": "6dp"
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1386,7 +1383,7 @@
                                         "color": "#94A3B8",
                                         "fontSize": "13dp",
                                         "lineHeight": "18dp",
-                                        "marginTop": "8dp",
+                                        "spacing": "8dp",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1422,6 +1419,7 @@
                         "height": "28dp",
                         "width": "100%",
                         "shrink": 0,
+                        "spacing": "10dp",
                         "items": [
                           {
                             "type": "Text",
@@ -1459,19 +1457,18 @@
                         "fontSize": "14dp",
                         "fontWeight": "800",
                         "letterSpacing": "1dp",
-                        "textAlign": "center",
-                        "marginBottom": "12dp"
+                        "textAlign": "center"
                       },
                       {
                         "type": "Container",
                         "width": "100%",
                         "direction": "column",
+                        "spacing": "12dp",
                         "items": [
                           {
                             "type": "TouchWrapper",
                             "width": "100%",
                             "height": "62dp",
-                            "marginBottom": "8dp",
                             "onPress": [
                               {
                                 "type": "SendEvent",
@@ -1488,7 +1485,7 @@
                                 "height": "100%",
                                 "direction": "row",
                                 "alignItems": "center",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "backgroundColor": "#1E293B",
                                 "borderRadius": "16dp",
                                 "borderWidth": "1.5dp",
@@ -1514,7 +1511,7 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "600",
-                                        "marginTop": "2dp"
+                                        "spacing": "2dp"
                                       }
                                     ]
                                   },
@@ -1533,7 +1530,7 @@
                             "type": "TouchWrapper",
                             "width": "100%",
                             "height": "62dp",
-                            "marginBottom": "8dp",
+                            "spacing": "8dp",
                             "onPress": [
                               {
                                 "type": "SendEvent",
@@ -1550,7 +1547,7 @@
                                 "height": "100%",
                                 "direction": "row",
                                 "alignItems": "center",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "backgroundColor": "#1E293B",
                                 "borderRadius": "16dp",
                                 "borderWidth": "1.5dp",
@@ -1576,7 +1573,7 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "600",
-                                        "marginTop": "2dp"
+                                        "spacing": "2dp"
                                       }
                                     ]
                                   },
@@ -1595,7 +1592,7 @@
                             "type": "TouchWrapper",
                             "width": "100%",
                             "height": "62dp",
-                            "marginBottom": "0dp",
+                            "spacing": "8dp",
                             "onPress": [
                               {
                                 "type": "SendEvent",
@@ -1612,7 +1609,7 @@
                                 "height": "100%",
                                 "direction": "row",
                                 "alignItems": "center",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "backgroundColor": "#1E293B",
                                 "borderRadius": "16dp",
                                 "borderWidth": "1.5dp",
@@ -1638,7 +1635,7 @@
                                         "color": "#F97316",
                                         "fontSize": "11dp",
                                         "fontWeight": "600",
-                                        "marginTop": "2dp"
+                                        "spacing": "2dp"
                                       }
                                     ]
                                   },
@@ -1667,12 +1664,12 @@
                     "paddingTop": "16dp",
                     "paddingBottom": "16dp",
                     "direction": "column",
-                    "justifyContent": "space-between",
+                    "justifyContent": "spaceBetween",
                     "items": [
                       {
                         "type": "Container",
                         "direction": "row",
-                        "justifyContent": "space-between",
+                        "justifyContent": "spaceBetween",
                         "alignItems": "center",
                         "height": "48dp",
                         "width": "100%",
@@ -1688,14 +1685,14 @@
                                 "source": "${payload.wizardData.logoUrl}",
                                 "fallbackSource": "https://vasd-lunch.vercel.app/paw-logo.png",
                                 "width": "32dp",
-                                "height": "32dp",
-                                "marginRight": "10dp"
+                                "height": "32dp"
                               },
                               {
                                 "type": "Text",
                                 "text": "${payload.wizardData.selectedLevelName || 'Verona Schools'} • ${payload.wizardData.selectedMealTitle || 'Menu'}",
                                 "style": "textTitle",
-                                "fontSize": "18dp"
+                                "fontSize": "18dp",
+                                "spacing": "10dp"
                               }
                             ]
                           },
@@ -1726,9 +1723,8 @@
                         "width": "100%",
                         "grow": 1,
                         "shrink": 1,
-                        "justifyContent": "space-between",
-                        "marginTop": "12dp",
-                        "marginBottom": "10dp",
+                        "justifyContent": "spaceBetween",
+                        "spacing": "12dp",
                         "items": [
                           {
                             "type": "TouchWrapper",
@@ -1754,7 +1750,7 @@
                                 "padding": "20dp",
                                 "borderWidth": "2dp",
                                 "borderColor": "#EA580C",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "items": [
                                   {
                                     "type": "Container",
@@ -1765,14 +1761,14 @@
                                         "color": "#F97316",
                                         "fontSize": "12dp",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp",
-                                        "marginBottom": "6dp"
+                                        "letterSpacing": "1dp"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "📅 Today",
                                         "style": "textTitle",
-                                        "fontSize": "26dp"
+                                        "fontSize": "26dp",
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1780,7 +1776,7 @@
                                         "color": "#F97316",
                                         "fontSize": "16dp",
                                         "fontWeight": "700",
-                                        "marginTop": "6dp"
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1788,7 +1784,7 @@
                                         "color": "#94A3B8",
                                         "fontSize": "13dp",
                                         "lineHeight": "18dp",
-                                        "marginTop": "8dp",
+                                        "spacing": "8dp",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1838,7 +1834,7 @@
                                 "padding": "20dp",
                                 "borderWidth": "2dp",
                                 "borderColor": "#EA580C",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "items": [
                                   {
                                     "type": "Container",
@@ -1849,14 +1845,14 @@
                                         "color": "#F97316",
                                         "fontSize": "12dp",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp",
-                                        "marginBottom": "6dp"
+                                        "letterSpacing": "1dp"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "🌅 Tomorrow",
                                         "style": "textTitle",
-                                        "fontSize": "26dp"
+                                        "fontSize": "26dp",
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1864,7 +1860,7 @@
                                         "color": "#F97316",
                                         "fontSize": "16dp",
                                         "fontWeight": "700",
-                                        "marginTop": "6dp"
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1872,7 +1868,7 @@
                                         "color": "#94A3B8",
                                         "fontSize": "13dp",
                                         "lineHeight": "18dp",
-                                        "marginTop": "8dp",
+                                        "spacing": "8dp",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1922,7 +1918,7 @@
                                 "padding": "20dp",
                                 "borderWidth": "2dp",
                                 "borderColor": "#EA580C",
-                                "justifyContent": "space-between",
+                                "justifyContent": "spaceBetween",
                                 "items": [
                                   {
                                     "type": "Container",
@@ -1933,14 +1929,14 @@
                                         "color": "#F97316",
                                         "fontSize": "12dp",
                                         "fontWeight": "800",
-                                        "letterSpacing": "1dp",
-                                        "marginBottom": "6dp"
+                                        "letterSpacing": "1dp"
                                       },
                                       {
                                         "type": "Text",
                                         "text": "📆 Next Week",
                                         "style": "textTitle",
-                                        "fontSize": "26dp"
+                                        "fontSize": "26dp",
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1948,7 +1944,7 @@
                                         "color": "#F97316",
                                         "fontSize": "16dp",
                                         "fontWeight": "700",
-                                        "marginTop": "6dp"
+                                        "spacing": "6dp"
                                       },
                                       {
                                         "type": "Text",
@@ -1956,7 +1952,7 @@
                                         "color": "#94A3B8",
                                         "fontSize": "13dp",
                                         "lineHeight": "18dp",
-                                        "marginTop": "8dp",
+                                        "spacing": "8dp",
                                         "maxLines": 3
                                       }
                                     ]
@@ -1992,6 +1988,7 @@
                         "height": "28dp",
                         "width": "100%",
                         "shrink": 0,
+                        "spacing": "10dp",
                         "items": [
                           {
                             "type": "Text",

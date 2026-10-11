@@ -43,7 +43,7 @@ function createLandscapeMealCard({
         padding: '20dp',
         borderWidth: '2dp',
         borderColor: APL_COLORS.orangeBorder,
-        justifyContent: 'space-between',
+        justifyContent: 'spaceBetween',
         items: [
           {
             type: 'Container',
@@ -55,13 +55,13 @@ function createLandscapeMealCard({
                 fontSize: '12dp',
                 fontWeight: '800',
                 letterSpacing: '1dp',
-                marginBottom: '6dp',
               },
               {
                 type: 'Text',
                 text: title,
                 style: 'textTitle',
                 fontSize: '26dp',
+                spacing: '6dp',
               },
               {
                 type: 'Text',
@@ -69,7 +69,7 @@ function createLandscapeMealCard({
                 color: APL_COLORS.orangeAccent,
                 fontSize: '16dp',
                 fontWeight: '700',
-                marginTop: '6dp',
+                spacing: '6dp',
               },
               {
                 type: 'Text',
@@ -77,7 +77,7 @@ function createLandscapeMealCard({
                 color: APL_COLORS.textBody,
                 fontSize: '13dp',
                 lineHeight: '18dp',
-                marginTop: '8dp',
+                spacing: '8dp',
                 maxLines: 3,
               },
             ],
@@ -109,18 +109,18 @@ function createRoundMealRow({
   iconTitle,
   subtitle,
   mealCode,
-  isLast = false,
+  spacing,
 }: {
   iconTitle: string;
   subtitle: string;
   mealCode: 'breakfast' | 'lunch' | 'both';
-  isLast?: boolean;
+  spacing?: string;
 }): any {
   return {
     type: 'TouchWrapper',
     width: '100%',
     height: '62dp',
-    marginBottom: isLast ? '0dp' : '8dp',
+    ...(spacing ? { spacing } : {}),
     onPress: [
       {
         type: 'SendEvent',
@@ -139,7 +139,7 @@ function createRoundMealRow({
         height: '100%',
         direction: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'spaceBetween',
         backgroundColor: APL_COLORS.cardBg,
         borderRadius: '16dp',
         borderWidth: '1.5dp',
@@ -165,7 +165,7 @@ function createRoundMealRow({
                 color: APL_COLORS.orangeAccent,
                 fontSize: '11dp',
                 fontWeight: '600',
-                marginTop: '2dp',
+                spacing: '2dp',
               },
             ],
           },
@@ -212,12 +212,12 @@ export function createStep2MealScreen(): any {
             fontWeight: '800',
             letterSpacing: '1dp',
             textAlign: 'center',
-            marginBottom: '12dp',
           },
           {
             type: 'Container',
             width: '100%',
             direction: 'column',
+            spacing: '12dp',
             items: [
               createRoundMealRow({
                 iconTitle: '🥞 Breakfast',
@@ -228,12 +228,13 @@ export function createStep2MealScreen(): any {
                 iconTitle: '🍱 Lunch',
                 subtitle: 'Hot Entrées & Sides',
                 mealCode: 'lunch',
+                spacing: '8dp',
               }),
               createRoundMealRow({
                 iconTitle: '🌟 Both Meals',
                 subtitle: 'Full Day Menu Breakdown',
                 mealCode: 'both',
-                isLast: true,
+                spacing: '8dp',
               }),
             ],
           },
@@ -251,7 +252,7 @@ export function createStep2MealScreen(): any {
         paddingTop: '16dp',
         paddingBottom: '16dp',
         direction: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'spaceBetween',
         items: [
           createHeaderBar({
             titleText: "${payload.wizardData.selectedLevelName || 'Verona Schools'}",
@@ -264,9 +265,8 @@ export function createStep2MealScreen(): any {
             width: '100%',
             grow: 1,
             shrink: 1,
-            justifyContent: 'space-between',
-            marginTop: '12dp',
-            marginBottom: '10dp',
+            justifyContent: 'spaceBetween',
+            spacing: '12dp',
             items: [
               createLandscapeMealCard({
                 badge: 'MORNING FUEL',
@@ -295,7 +295,7 @@ export function createStep2MealScreen(): any {
             ],
           },
 
-          createHintBar("💡 Or say: 'Breakfast', 'Lunch', or 'Both'"),
+          createHintBar("💡 Or say: 'Breakfast', 'Lunch', or 'Both'", '10dp'),
         ],
       },
     ],

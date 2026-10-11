@@ -3,7 +3,7 @@ import { APL_COLORS } from '../styles';
 /**
  * Reusable footer hint bar displaying helpful voice commands and guidance.
  */
-export function createHintBar(hintText: string): any {
+export function createHintBar(hintText: string, spacing?: string): any {
   return {
     type: 'Container',
     direction: 'row',
@@ -12,6 +12,7 @@ export function createHintBar(hintText: string): any {
     height: '28dp',
     width: '100%',
     shrink: 0,
+    ...(spacing ? { spacing } : {}),
     items: [
       {
         type: 'Text',

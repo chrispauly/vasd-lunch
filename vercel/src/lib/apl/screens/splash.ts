@@ -32,7 +32,6 @@ export function createSplashScreen(): any {
             fallbackSource: VASD_PAW_LOGO,
             width: '130dp',
             height: '130dp',
-            marginBottom: '20dp',
           },
           {
             type: 'Text',
@@ -40,6 +39,7 @@ export function createSplashScreen(): any {
             style: 'textTitle',
             fontSize: '32dp',
             textAlign: 'center',
+            spacing: '20dp',
           },
           {
             type: 'Text',
@@ -47,12 +47,12 @@ export function createSplashScreen(): any {
             color: APL_COLORS.orangeAccent,
             fontSize: '18dp',
             fontWeight: '700',
-            marginTop: '8dp',
+            spacing: '8dp',
             textAlign: 'center',
           },
           {
             type: 'Container',
-            marginTop: '24dp',
+            spacing: '24dp',
             backgroundColor: 'rgba(249, 115, 22, 0.15)',
             borderRadius: '20dp',
             paddingLeft: '18dp',

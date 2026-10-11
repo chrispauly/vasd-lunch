@@ -77,13 +77,13 @@ export function buildMenuAplDocument(): any {
                   paddingTop: '12dp',
                   paddingBottom: '10dp',
                   direction: 'column',
-                  justifyContent: 'space-between',
+                  justifyContent: 'spaceBetween',
                   items: [
                     // Header Bar
                     {
                       type: 'Container',
                       direction: 'row',
-                      justifyContent: 'space-between',
+                      justifyContent: 'spaceBetween',
                       alignItems: 'center',
                       height: '48dp',
                       shrink: 0,
@@ -99,10 +99,10 @@ export function buildMenuAplDocument(): any {
                               fallbackSource: VASD_PAW_LOGO,
                               width: '34dp',
                               height: '34dp',
-                              marginRight: '10dp',
                             },
                             {
                               type: 'Container',
+                              spacing: '10dp',
                               items: [
                                 {
                                   type: 'Text',
@@ -250,7 +250,7 @@ export function buildMenuAplDocument(): any {
                       width: '100%',
                       grow: 1,
                       shrink: 1,
-                      marginTop: '10dp',
+                      spacing: '10dp',
                       items: [
                         // Left Column: Chef's Featured Entrée Presentation
                         {
@@ -262,7 +262,7 @@ export function buildMenuAplDocument(): any {
                           padding: '16dp',
                           borderWidth: '1dp',
                           borderColor: 'rgba(249, 115, 22, 0.35)',
-                          justifyContent: 'space-between',
+                          justifyContent: 'spaceBetween',
                           items: [
                             {
                               type: 'Container',
@@ -323,7 +323,7 @@ export function buildMenuAplDocument(): any {
                                   fontSize: '11dp',
                                   fontWeight: '800',
                                   letterSpacing: '1dp',
-                                  marginTop: '10dp',
+                                  spacing: '10dp',
                                 },
                                 {
                                   type: 'Text',
@@ -331,7 +331,7 @@ export function buildMenuAplDocument(): any {
                                   style: 'textTitle',
                                   fontSize: '22dp',
                                   maxLines: 2,
-                                  marginTop: '2dp',
+                                  spacing: '2dp',
                                 },
                                 {
                                   type: 'Text',
@@ -339,7 +339,7 @@ export function buildMenuAplDocument(): any {
                                   text: 'Allergens: ${payload.menuData.heroItem.allergens}',
                                   color: '#94A3B8',
                                   fontSize: '12dp',
-                                  marginTop: '6dp',
+                                  spacing: '6dp',
                                 },
                               ],
                             },
@@ -390,12 +390,11 @@ export function buildMenuAplDocument(): any {
                             {
                               type: 'Container',
                               direction: 'row',
-                              justifyContent: 'space-between',
+                              justifyContent: 'spaceBetween',
                               alignItems: 'center',
                               paddingBottom: '8dp',
                               borderBottomWidth: '1dp',
                               borderBottomColor: 'rgba(249, 115, 22, 0.3)',
-                              marginBottom: '10dp',
                               shrink: 0,
                               items: [
                                 {
@@ -419,6 +418,7 @@ export function buildMenuAplDocument(): any {
                               width: '100%',
                               grow: 1,
                               shrink: 1,
+                              spacing: '10dp',
                               items: [
                                 {
                                   type: 'Container',
@@ -430,18 +430,18 @@ export function buildMenuAplDocument(): any {
                                       color: '#FDBA74',
                                       fontWeight: '800',
                                       fontSize: '13dp',
-                                      marginBottom: '6dp',
                                     },
                                     {
                                       type: 'Sequence',
                                       scrollDirection: 'vertical',
                                       width: '100%',
+                                      spacing: '6dp',
                                       data: '${payload.menuData.courses.entrees}',
                                       items: [
                                         {
                                           type: 'Container',
                                           direction: 'row',
-                                          justifyContent: 'space-between',
+                                          justifyContent: 'spaceBetween',
                                           alignItems: 'center',
                                           paddingTop: '4dp',
                                           paddingBottom: '4dp',
@@ -473,19 +473,19 @@ export function buildMenuAplDocument(): any {
                                       color: '#FDBA74',
                                       fontWeight: '800',
                                       fontSize: '13dp',
-                                      marginTop: '12dp',
-                                      marginBottom: '6dp',
+                                      spacing: '12dp',
                                     },
                                     {
                                       type: 'Sequence',
                                       scrollDirection: 'vertical',
                                       width: '100%',
+                                      spacing: '6dp',
                                       data: '${payload.menuData.courses.sides}',
                                       items: [
                                         {
                                           type: 'Container',
                                           direction: 'row',
-                                          justifyContent: 'space-between',
+                                          justifyContent: 'spaceBetween',
                                           alignItems: 'center',
                                           paddingTop: '3dp',
                                           paddingBottom: '3dp',
@@ -515,19 +515,19 @@ export function buildMenuAplDocument(): any {
                                       color: '#FDBA74',
                                       fontWeight: '800',
                                       fontSize: '13dp',
-                                      marginTop: '12dp',
-                                      marginBottom: '6dp',
+                                      spacing: '12dp',
                                     },
                                     {
                                       type: 'Sequence',
                                       scrollDirection: 'vertical',
                                       width: '100%',
+                                      spacing: '6dp',
                                       data: '${payload.menuData.courses.fruits}',
                                       items: [
                                         {
                                           type: 'Container',
                                           direction: 'row',
-                                          justifyContent: 'space-between',
+                                          justifyContent: 'spaceBetween',
                                           alignItems: 'center',
                                           paddingTop: '3dp',
                                           paddingBottom: '3dp',
@@ -557,19 +557,19 @@ export function buildMenuAplDocument(): any {
                                       color: '#FDBA74',
                                       fontWeight: '800',
                                       fontSize: '13dp',
-                                      marginTop: '12dp',
-                                      marginBottom: '6dp',
+                                      spacing: '12dp',
                                     },
                                     {
                                       type: 'Sequence',
                                       scrollDirection: 'vertical',
                                       width: '100%',
+                                      spacing: '6dp',
                                       data: '${payload.menuData.courses.staples}',
                                       items: [
                                         {
                                           type: 'Container',
                                           direction: 'row',
-                                          justifyContent: 'space-between',
+                                          justifyContent: 'spaceBetween',
                                           alignItems: 'center',
                                           paddingTop: '3dp',
                                           paddingBottom: '3dp',
@@ -609,7 +609,7 @@ export function buildMenuAplDocument(): any {
                       width: '100%',
                       height: '24dp',
                       shrink: 0,
-                      marginTop: '6dp',
+                      spacing: '6dp',
                       paddingLeft: '12dp',
                       paddingRight: '12dp',
                       backgroundColor: 'rgba(255, 255, 255, 0.04)',
@@ -642,13 +642,13 @@ export function buildMenuAplDocument(): any {
                   paddingTop: '14dp',
                   paddingBottom: '14dp',
                   direction: 'column',
-                  justifyContent: 'space-between',
+                  justifyContent: 'spaceBetween',
                   items: [
                     // Gallery Header
                     {
                       type: 'Container',
                       direction: 'row',
-                      justifyContent: 'space-between',
+                      justifyContent: 'spaceBetween',
                       alignItems: 'center',
                       height: '48dp',
                       shrink: 0,
@@ -708,15 +708,14 @@ export function buildMenuAplDocument(): any {
                       width: '100%',
                       grow: 1,
                       shrink: 1,
-                      marginTop: '10dp',
-                      marginBottom: '10dp',
+                      spacing: '10dp',
                       data: '${payload.menuData.allItems}',
                       items: [
                         {
                           type: 'TouchWrapper',
                           width: '250dp',
                           height: '100%',
-                          marginRight: '16dp',
+                          spacing: '16dp',
                           items: [
                             {
                               type: 'Container',
@@ -727,7 +726,7 @@ export function buildMenuAplDocument(): any {
                               padding: '12dp',
                               borderWidth: '1dp',
                               borderColor: 'rgba(255, 255, 255, 0.08)',
-                              justifyContent: 'space-between',
+                              justifyContent: 'spaceBetween',
                               items: [
                                 {
                                   type: 'Image',
@@ -756,7 +755,7 @@ export function buildMenuAplDocument(): any {
                                       style: 'textTitle',
                                       fontSize: '15dp',
                                       maxLines: 2,
-                                      marginTop: '2dp',
+                                      spacing: '2dp',
                                     },
                                     {
                                       type: 'Text',
@@ -765,7 +764,7 @@ export function buildMenuAplDocument(): any {
                                       color: '#94A3B8',
                                       fontSize: '11dp',
                                       maxLines: 1,
-                                      marginTop: '2dp',
+                                      spacing: '2dp',
                                     },
                                   ],
                                 },
@@ -784,6 +783,7 @@ export function buildMenuAplDocument(): any {
                       alignItems: 'center',
                       height: '32dp',
                       shrink: 0,
+                      spacing: '10dp',
                       items: [
                         {
                           type: 'TouchWrapper',

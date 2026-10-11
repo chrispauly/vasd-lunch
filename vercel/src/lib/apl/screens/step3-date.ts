@@ -38,7 +38,7 @@ function createLandscapeDateCard({
         padding: '20dp',
         borderWidth: '2dp',
         borderColor: APL_COLORS.orangeBorder,
-        justifyContent: 'space-between',
+        justifyContent: 'spaceBetween',
         items: [
           {
             type: 'Container',
@@ -50,13 +50,13 @@ function createLandscapeDateCard({
                 fontSize: '12dp',
                 fontWeight: '800',
                 letterSpacing: '1dp',
-                marginBottom: '6dp',
               },
               {
                 type: 'Text',
                 text: title,
                 style: 'textTitle',
                 fontSize: '26dp',
+                spacing: '6dp',
               },
               {
                 type: 'Text',
@@ -64,7 +64,7 @@ function createLandscapeDateCard({
                 color: APL_COLORS.orangeAccent,
                 fontSize: '16dp',
                 fontWeight: '700',
-                marginTop: '6dp',
+                spacing: '6dp',
               },
               {
                 type: 'Text',
@@ -72,7 +72,7 @@ function createLandscapeDateCard({
                 color: APL_COLORS.textBody,
                 fontSize: '13dp',
                 lineHeight: '18dp',
-                marginTop: '8dp',
+                spacing: '8dp',
                 maxLines: 3,
               },
             ],
@@ -104,18 +104,18 @@ function createRoundDateRow({
   iconTitle,
   subtitle,
   dateCode,
-  isLast = false,
+  spacing,
 }: {
   iconTitle: string;
   subtitle: string;
   dateCode: 'today' | 'tomorrow' | 'week';
-  isLast?: boolean;
+  spacing?: string;
 }): any {
   return {
     type: 'TouchWrapper',
     width: '100%',
     height: '62dp',
-    marginBottom: isLast ? '0dp' : '8dp',
+    ...(spacing ? { spacing } : {}),
     onPress: [
       {
         type: 'SendEvent',
@@ -129,7 +129,7 @@ function createRoundDateRow({
         height: '100%',
         direction: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'spaceBetween',
         backgroundColor: APL_COLORS.cardBg,
         borderRadius: '16dp',
         borderWidth: '1.5dp',
@@ -155,7 +155,7 @@ function createRoundDateRow({
                 color: APL_COLORS.orangeAccent,
                 fontSize: '11dp',
                 fontWeight: '600',
-                marginTop: '2dp',
+                spacing: '2dp',
               },
             ],
           },
@@ -202,12 +202,12 @@ export function createStep3DateScreen(): any {
             fontWeight: '800',
             letterSpacing: '1dp',
             textAlign: 'center',
-            marginBottom: '12dp',
           },
           {
             type: 'Container',
             width: '100%',
             direction: 'column',
+            spacing: '12dp',
             items: [
               createRoundDateRow({
                 iconTitle: '📅 Today',
@@ -218,12 +218,13 @@ export function createStep3DateScreen(): any {
                 iconTitle: '🌅 Tomorrow',
                 subtitle: '${payload.wizardData.tomorrowDateText}',
                 dateCode: 'tomorrow',
+                spacing: '8dp',
               }),
               createRoundDateRow({
                 iconTitle: '📆 Next Week',
                 subtitle: '5-Day Monday–Friday Outlook',
                 dateCode: 'week',
-                isLast: true,
+                spacing: '8dp',
               }),
             ],
           },
@@ -241,7 +242,7 @@ export function createStep3DateScreen(): any {
         paddingTop: '16dp',
         paddingBottom: '16dp',
         direction: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'spaceBetween',
         items: [
           createHeaderBar({
             titleText:
@@ -255,9 +256,8 @@ export function createStep3DateScreen(): any {
             width: '100%',
             grow: 1,
             shrink: 1,
-            justifyContent: 'space-between',
-            marginTop: '12dp',
-            marginBottom: '10dp',
+            justifyContent: 'spaceBetween',
+            spacing: '12dp',
             items: [
               createLandscapeDateCard({
                 badge: "TODAY'S MENU",
@@ -286,7 +286,7 @@ export function createStep3DateScreen(): any {
             ],
           },
 
-          createHintBar("💡 Or say: 'Today', 'Tomorrow', or 'Next Week'"),
+          createHintBar("💡 Or say: 'Today', 'Tomorrow', or 'Next Week'", '10dp'),
         ],
       },
     ],

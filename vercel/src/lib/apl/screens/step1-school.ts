@@ -62,13 +62,13 @@ function createLandscapeSchoolCard({
                 fontSize: '11dp',
                 fontWeight: '800',
                 letterSpacing: '1dp',
-                marginBottom: '4dp',
               },
               {
                 type: 'Text',
                 text: title,
                 style: 'textTitle',
                 fontSize: '24dp',
+                spacing: '4dp',
               },
             ],
           },
@@ -85,7 +85,6 @@ function createLandscapeSchoolCard({
                 type: 'Container',
                 direction: 'column',
                 width: '100%',
-                marginBottom: '14dp',
                 items: schools.map((school) => ({
                   type: 'Text',
                   text: school,
@@ -99,6 +98,7 @@ function createLandscapeSchoolCard({
               // Action Button
               {
                 type: 'Container',
+                spacing: '14dp',
                 backgroundColor: APL_COLORS.orangeBtn,
                 borderRadius: '10dp',
                 paddingTop: '9dp',
@@ -132,18 +132,18 @@ function createRoundSchoolRow({
   iconTitle,
   gradeText,
   levelCode,
-  isLast = false,
+  spacing,
 }: {
   iconTitle: string;
   gradeText: string;
   levelCode: 'ES' | 'MS' | 'HS';
-  isLast?: boolean;
+  spacing?: string;
 }): any {
   return {
     type: 'TouchWrapper',
     width: '100%',
     height: '62dp',
-    marginBottom: isLast ? '0dp' : '8dp',
+    ...(spacing ? { spacing } : {}),
     onPress: [
       {
         type: 'SendEvent',
@@ -162,7 +162,7 @@ function createRoundSchoolRow({
         height: '100%',
         direction: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'spaceBetween',
         backgroundColor: APL_COLORS.cardBg,
         borderRadius: '16dp',
         borderWidth: '1.5dp',
@@ -188,7 +188,7 @@ function createRoundSchoolRow({
                 color: APL_COLORS.orangeAccent,
                 fontSize: '11dp',
                 fontWeight: '600',
-                marginTop: '2dp',
+                spacing: '2dp',
               },
             ],
           },
@@ -240,12 +240,12 @@ export function createStep1SchoolScreen(): any {
             fontWeight: '800',
             letterSpacing: '1dp',
             textAlign: 'center',
-            marginBottom: '12dp',
           },
           {
             type: 'Container',
             width: '100%',
             direction: 'column',
+            spacing: '12dp',
             items: [
               createRoundSchoolRow({
                 iconTitle: '🏫 Elementary',
@@ -256,12 +256,13 @@ export function createStep1SchoolScreen(): any {
                 iconTitle: '🎒 Middle School',
                 gradeText: 'Grades 6-8',
                 levelCode: 'MS',
+                spacing: '8dp',
               }),
               createRoundSchoolRow({
                 iconTitle: '🎓 High School',
                 gradeText: 'Grades 9-12',
                 levelCode: 'HS',
-                isLast: true,
+                spacing: '8dp',
               }),
             ],
           },
@@ -281,7 +282,7 @@ export function createStep1SchoolScreen(): any {
         paddingTop: '16dp',
         paddingBottom: '16dp',
         direction: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'spaceBetween',
         items: [
           // Header Bar
           createHeaderBar({
@@ -289,16 +290,15 @@ export function createStep1SchoolScreen(): any {
             badgeText: 'STEP 1 OF 3 • SELECT SCHOOL',
           }),
 
-          // Middle Content: 3 Big Clickable Boxes (each taking 1/3 screen width with space-between)
+          // Middle Content: 3 Big Clickable Boxes (each taking 1/3 screen width with spaceBetween)
           {
             type: 'Container',
             direction: 'row',
             width: '100%',
             grow: 1,
             shrink: 1,
-            justifyContent: 'space-between',
-            marginTop: '12dp',
-            marginBottom: '10dp',
+            justifyContent: 'spaceBetween',
+            spacing: '12dp',
             items: [
               createLandscapeSchoolCard({
                 gradeBadge: 'GRADES K-5',
@@ -337,7 +337,7 @@ export function createStep1SchoolScreen(): any {
           },
 
           // Bottom Hint Bar
-          createHintBar("💡 Or say: 'Elementary', 'Middle School', or 'High School'"),
+          createHintBar("💡 Or say: 'Elementary', 'Middle School', or 'High School'", '10dp'),
         ],
       },
     ],

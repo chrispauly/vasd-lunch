@@ -18,7 +18,7 @@ export function createHeaderBar({
   return {
     type: 'Container',
     direction: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'spaceBetween',
     alignItems: 'center',
     height: '48dp',
     width: '100%',
@@ -35,13 +35,13 @@ export function createHeaderBar({
             fallbackSource: VASD_PAW_LOGO,
             width: '32dp',
             height: '32dp',
-            marginRight: '10dp',
           },
           {
             type: 'Text',
             text: titleText,
             style: 'textTitle',
             fontSize: '18dp',
+            spacing: '10dp',
           },
         ],
       },

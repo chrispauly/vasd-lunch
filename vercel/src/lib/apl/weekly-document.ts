@@ -49,10 +49,9 @@ export function buildWeeklyAplDocument(): any {
             {
               type: 'Container',
               direction: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'spaceBetween',
               alignItems: 'center',
               height: '48dp',
-              marginBottom: '14dp',
               shrink: 0,
               items: [
                 {
@@ -66,13 +65,13 @@ export function buildWeeklyAplDocument(): any {
                       fallbackSource: VASD_PAW_LOGO,
                       width: '36dp',
                       height: '36dp',
-                      marginRight: '12dp',
                     },
                     {
                       type: 'Text',
                       text: 'Verona Area School District — Weekly Forecast',
                       style: 'textTitle',
                       fontSize: '20dp',
+                      spacing: '12dp',
                     },
                   ],
                 },
@@ -93,13 +92,14 @@ export function buildWeeklyAplDocument(): any {
               width: '100%',
               grow: 1,
               shrink: 1,
+              spacing: '14dp',
               data: '${payload.weeklyData.days}',
               items: [
                 {
                   type: 'TouchWrapper',
                   width: '260dp',
                   height: '100%',
-                  marginRight: '16dp',
+                  spacing: '16dp',
                   items: [
                     {
                       type: 'Container',
@@ -108,7 +108,7 @@ export function buildWeeklyAplDocument(): any {
                       backgroundColor: '#1E293B',
                       borderRadius: '18dp',
                       padding: '14dp',
-                      justifyContent: 'space-between',
+                      justifyContent: 'spaceBetween',
                       items: [
                         {
                           type: 'Container',
@@ -125,7 +125,7 @@ export function buildWeeklyAplDocument(): any {
                               text: '${data.dateText}',
                               color: '#94A3B8',
                               fontSize: '12dp',
-                              marginTop: '2dp',
+                              spacing: '2dp',
                             },
                           ],
                         },
@@ -155,7 +155,7 @@ export function buildWeeklyAplDocument(): any {
                               color: '#64748B',
                               fontSize: '11dp',
                               maxLines: 1,
-                              marginTop: '2dp',
+                              spacing: '2dp',
                             },
                           ],
                         },
