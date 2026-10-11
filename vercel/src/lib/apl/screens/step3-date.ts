@@ -9,7 +9,6 @@ function createLandscapeDateCard({
   description,
   buttonText,
   dateCode,
-  isFirst = false,
 }: {
   badge: string;
   title: string;
@@ -17,14 +16,12 @@ function createLandscapeDateCard({
   description: string;
   buttonText: string;
   dateCode: 'today' | 'tomorrow' | 'week';
-  isFirst?: boolean;
 }): any {
   return {
     type: 'TouchWrapper',
-    grow: 1,
-    shrink: 1,
+    width: '32%',
     height: '100%',
-    spacing: isFirst ? undefined : '16dp',
+    shrink: 0,
     onPress: [
       {
         type: 'SendEvent',
@@ -258,6 +255,7 @@ export function createStep3DateScreen(): any {
             width: '100%',
             grow: 1,
             shrink: 1,
+            justifyContent: 'space-between',
             marginTop: '12dp',
             marginBottom: '10dp',
             items: [
@@ -268,7 +266,6 @@ export function createStep3DateScreen(): any {
                 description: 'Instant overview of meals, fresh sides, fruits, and milks served today.',
                 buttonText: 'Show Today →',
                 dateCode: 'today',
-                isFirst: true,
               }),
               createLandscapeDateCard({
                 badge: 'NEXT SCHOOL DAY',

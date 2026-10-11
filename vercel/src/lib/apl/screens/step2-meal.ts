@@ -9,7 +9,6 @@ function createLandscapeMealCard({
   description,
   buttonText,
   mealCode,
-  isFirst = false,
 }: {
   badge: string;
   title: string;
@@ -17,14 +16,12 @@ function createLandscapeMealCard({
   description: string;
   buttonText: string;
   mealCode: 'breakfast' | 'lunch' | 'both';
-  isFirst?: boolean;
 }): any {
   return {
     type: 'TouchWrapper',
-    grow: 1,
-    shrink: 1,
+    width: '32%',
     height: '100%',
-    spacing: isFirst ? undefined : '16dp',
+    shrink: 0,
     onPress: [
       {
         type: 'SendEvent',
@@ -267,6 +264,7 @@ export function createStep2MealScreen(): any {
             width: '100%',
             grow: 1,
             shrink: 1,
+            justifyContent: 'space-between',
             marginTop: '12dp',
             marginBottom: '10dp',
             items: [
@@ -277,7 +275,6 @@ export function createStep2MealScreen(): any {
                 description: 'Featured daily pastries, whole grains, 100% fruit juices, and milk.',
                 buttonText: 'Choose Breakfast →',
                 mealCode: 'breakfast',
-                isFirst: true,
               }),
               createLandscapeMealCard({
                 badge: 'POPULAR CHOICE',

@@ -8,24 +8,21 @@ import { createHintBar } from '../components/hint-bar';
 function createLandscapeSchoolCard({
   gradeBadge,
   title,
-  description,
+  schools,
   buttonText,
   levelCode,
-  isFirst = false,
 }: {
   gradeBadge: string;
   title: string;
-  description: string;
+  schools: string[];
   buttonText: string;
   levelCode: 'ES' | 'MS' | 'HS';
-  isFirst?: boolean;
 }): any {
   return {
     type: 'TouchWrapper',
-    grow: 1,
-    shrink: 1,
+    width: '32%',
     height: '100%',
-    spacing: isFirst ? undefined : '16dp',
+    shrink: 0,
     onPress: [
       {
         type: 'SendEvent',
@@ -44,45 +41,85 @@ function createLandscapeSchoolCard({
         height: '100%',
         backgroundColor: APL_COLORS.cardBg,
         borderRadius: '20dp',
-        padding: '20dp',
+        paddingLeft: '16dp',
+        paddingRight: '16dp',
+        paddingTop: '16dp',
+        paddingBottom: '16dp',
         borderWidth: '2dp',
         borderColor: APL_COLORS.orangeBorder,
+        direction: 'column',
         justifyContent: 'space-between',
         items: [
+          // Top: Grade Badge & Title
           {
             type: 'Container',
+            shrink: 0,
             items: [
               {
                 type: 'Text',
                 text: gradeBadge,
                 color: APL_COLORS.orangeAccent,
-                fontSize: '12dp',
+                fontSize: '11dp',
                 fontWeight: '800',
                 letterSpacing: '1dp',
-                marginBottom: '6dp',
+                marginBottom: '4dp',
               },
               {
                 type: 'Text',
                 text: title,
                 style: 'textTitle',
-                fontSize: '26dp',
-              },
-              {
-                type: 'Text',
-                text: description,
-                color: APL_COLORS.textBody,
-                fontSize: '13dp',
-                lineHeight: '18dp',
-                marginTop: '8dp',
-                maxLines: 4,
+                fontSize: '24dp',
               },
             ],
           },
+
+          // Middle: Bulleted School List (in the middle of the box, vertically centered)
           {
             type: 'Container',
+            grow: 1,
+            shrink: 1,
+            justifyContent: 'center',
+            marginTop: '8dp',
+            marginBottom: '8dp',
+            items: schools.map((school) => ({
+              type: 'Container',
+              direction: 'row',
+              alignItems: 'flex-start',
+              marginBottom: '5dp',
+              items: [
+                {
+                  type: 'Text',
+                  text: '•',
+                  color: APL_COLORS.orangeAccent,
+                  fontSize: '13dp',
+                  fontWeight: '800',
+                  marginRight: '7dp',
+                  lineHeight: '18dp',
+                },
+                {
+                  type: 'Text',
+                  text: school,
+                  color: '#CBD5E1',
+                  fontSize: '12dp',
+                  fontWeight: '500',
+                  lineHeight: '18dp',
+                  grow: 1,
+                  shrink: 1,
+                },
+              ],
+            })),
+          },
+
+          // Bottom: Action Button
+          {
+            type: 'Container',
+            shrink: 0,
             backgroundColor: APL_COLORS.orangeBtn,
             borderRadius: '10dp',
-            padding: '10dp',
+            paddingTop: '9dp',
+            paddingBottom: '9dp',
+            paddingLeft: '12dp',
+            paddingRight: '12dp',
             alignItems: 'center',
             width: '100%',
             items: [
@@ -265,37 +302,47 @@ export function createStep1SchoolScreen(): any {
             badgeText: 'STEP 1 OF 3 • SELECT SCHOOL',
           }),
 
-          // Middle Content: 3 Big Clickable Boxes
+          // Middle Content: 3 Big Clickable Boxes (each taking 1/3 screen width with space-between)
           {
             type: 'Container',
             direction: 'row',
             width: '100%',
             grow: 1,
             shrink: 1,
+            justifyContent: 'space-between',
             marginTop: '12dp',
             marginBottom: '10dp',
             items: [
               createLandscapeSchoolCard({
                 gradeBadge: 'GRADES K-5',
                 title: 'Elementary',
-                description:
-                  'Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS • Core Knowledge (CKCS)',
+                schools: [
+                  'Sugar Creek',
+                  'Stoner Prairie',
+                  'Glacier Edge',
+                  'Country View',
+                  'VAIS',
+                  'Core Knowledge (CKCS)',
+                ],
                 buttonText: 'Select Elementary →',
                 levelCode: 'ES',
-                isFirst: true,
               }),
               createLandscapeSchoolCard({
                 gradeBadge: 'GRADES 6-8',
                 title: 'Middle School',
-                description:
-                  'Badger Ridge Middle School • Core Knowledge (CKCS)',
+                schools: [
+                  'Badger Ridge Middle School',
+                  'Core Knowledge (CKCS)',
+                ],
                 buttonText: 'Select Middle School →',
                 levelCode: 'MS',
               }),
               createLandscapeSchoolCard({
                 gradeBadge: 'GRADES 9-12',
                 title: 'High School',
-                description: 'Verona Area High School (VAHS)',
+                schools: [
+                  'Verona Area High School (VAHS)',
+                ],
                 buttonText: 'Select High School →',
                 levelCode: 'HS',
               }),
