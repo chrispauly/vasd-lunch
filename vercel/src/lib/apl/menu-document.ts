@@ -335,15 +335,6 @@ export function buildMenuAplDocument(): any {
                                 },
                                 {
                                   type: 'Text',
-                                  text: '${payload.menuData.summarySnippet}',
-                                  color: '#CBD5E1',
-                                  fontSize: '13dp',
-                                  lineHeight: '18dp',
-                                  maxLines: 3,
-                                  marginTop: '6dp',
-                                },
-                                {
-                                  type: 'Text',
                                   when: '${payload.menuData.heroItem.allergens != ""}',
                                   text: 'Allergens: ${payload.menuData.heroItem.allergens}',
                                   color: '#94A3B8',
