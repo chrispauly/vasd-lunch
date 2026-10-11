@@ -279,7 +279,7 @@ export function createStep1SchoolScreen(): any {
                 gradeBadge: 'GRADES K-5',
                 title: 'Elementary',
                 description:
-                  'Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS',
+                  'Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS • Core Knowledge (CKCS)',
                 buttonText: 'Select Elementary →',
                 levelCode: 'ES',
                 isFirst: true,
@@ -288,7 +288,7 @@ export function createStep1SchoolScreen(): any {
                 gradeBadge: 'GRADES 6-8',
                 title: 'Middle School',
                 description:
-                  'Badger Ridge Middle School • Core Knowledge Charter School (CKCS)',
+                  'Badger Ridge Middle School • Core Knowledge (CKCS)',
                 buttonText: 'Select Middle School →',
                 levelCode: 'MS',
               }),

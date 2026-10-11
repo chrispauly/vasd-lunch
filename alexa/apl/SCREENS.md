@@ -64,8 +64,8 @@ stateDiagram-v2
 
 #### Page 1: Step 1 • School Level Selection
 - **Purpose:** Prompts the user to select one of the three Verona school levels:
-  1. **Elementary** (Grades K-5: Sugar Creek, Stoner Prairie, Glacier Edge, Country View, VAIS)
-  2. **Middle School** (Grades 6-8: Badger Ridge, CKCS)
+  1. **Elementary** (Grades K-5: Sugar Creek, Stoner Prairie, Glacier Edge, Country View, VAIS, Core Knowledge (CKCS))
+  2. **Middle School** (Grades 6-8: Badger Ridge Middle School, Core Knowledge (CKCS))
   3. **High School** (Grades 9-12: Verona Area High School)
 - **Voice Prompt:** *"Welcome to Unofficial Verona Wisconsin School Lunch. Would you like the menu for Elementary, Middle, or High School?"*
 - **Touch Event:** Sends an `Alexa.Presentation.APL.UserEvent` with `arguments: ["selectLevel", "ES" | "MS" | "HS"]` and executes `SetPage` to Page 2.
@@ -100,7 +100,7 @@ stateDiagram-v2
       - *Sides & Vegetables* (Baked Beans, Garden Salad, Steamed Broccoli)
       - *Fresh Fruits & Juices* (Cantaloupe Wedges, 100% Orange Juice)
       - *Milk & Beverages* (1% White Milk, Fat-Free Chocolate Milk)
-    - **Bottom School Names Footer Bar:** Displays the exact school names included with the active school level (e.g., *Elementary Schools (K-5): Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS*).
+    - **Bottom School Names Footer Bar:** Displays the exact school names included with the active school level (e.g., *Elementary Schools (K-5): Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS • Core Knowledge (CKCS)*).
   - **Page 1 (Food Photo Gallery View):**
     - Large 250dp wide horizontal gallery cards showcasing real CloudFront photographs for every single item on the menu.
     - Touch-scrollable sequence with standardized *"← Back to School Menu"* header button and *"← Tap here or say 'back' to return to School Menu"* bottom prompt.

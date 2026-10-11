@@ -7,13 +7,13 @@ import { VASD_PAW_LOGO } from './styles';
 export const LEVEL_SCHOOLS: Record<LunchLevel, { title: string; schools: string; footerText: string }> = {
   ES: {
     title: 'Elementary Schools',
-    schools: 'Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS',
-    footerText: 'Elementary Schools (K-5): Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS',
+    schools: 'Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS • Core Knowledge (CKCS)',
+    footerText: 'Elementary Schools (K-5): Sugar Creek • Stoner Prairie • Glacier Edge • Country View • VAIS • Core Knowledge (CKCS)',
   },
   MS: {
     title: 'Middle Schools',
-    schools: 'Badger Ridge Middle School • Core Knowledge Charter School (CKCS)',
-    footerText: 'Middle Schools (6-8): Badger Ridge Middle School • Core Knowledge Charter School (CKCS)',
+    schools: 'Badger Ridge Middle School • Core Knowledge (CKCS)',
+    footerText: 'Middle Schools (6-8): Badger Ridge Middle School • Core Knowledge (CKCS)',
   },
   HS: {
     title: 'High School',
